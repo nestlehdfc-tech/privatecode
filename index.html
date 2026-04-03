@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>safeblue stationary | Smart Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --primary: #0052cc; --border: #e2e8f0; --input: #ffffff; }
+        [data-theme="dark"] { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --primary: #3b82f6; --border: #334155; --input: #0f172a; }
+        
+        * { box-sizing: border-box; } 
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: background-color 0.4s ease, color 0.4s ease; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        
+        nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; transition: 0.3s; }
+        .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; text-transform: lowercase; }
+        .nav-actions { display: flex; gap: 8px; align-items: center; }
+        .theme-btn { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .theme-btn:active { transform: scale(0.95); }
+        .support-btn { background: #10b981; color: white; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .support-btn:active { transform: scale(0.95); }
+
+        header { background: var(--primary); color: white; padding: 30px 15px 50px; text-align: center; }
+        header h1 { margin: 0 0 5px 0; font-size: 24px; text-transform: lowercase; letter-spacing: -0.5px; }
+        header p { margin: 0; font-size: 13px; opacity: 0.9; }
+
+        .container { display: flex; max-width: 1200px; margin: -30px auto 60px; gap: 20px; padding: 0 15px; flex-wrap: wrap; }
+        .catalog { flex: 2; width: 100%; min-width: 300px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; align-items: stretch; }
+        
+        .card { background: var(--card); border-radius: 16px; padding: 15px; border: 1px solid var(--border); text-align: center; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 100%; }
+        .card:active { transform: scale(0.97); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        .card h3 { margin: 0 0 12px 0; font-size: 13px; line-height: 1.4; flex-grow: 1; display: flex; align-items: center; justify-content: center; word-wrap: break-word; }
+        .price { font-size: 20px; font-weight: 800; color: var(--primary); margin: 0 0 12px 0; }
+        
+        .btn-container { height: 40px; width: 100%; margin-top: auto; }
+        .add-btn { background: var(--primary); color: white; border: none; width: 100%; height: 100%; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .add-btn:active { background: #0042a3; }
+        .cart-qty-toggle { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: white; width: 100%; height: 100%; padding: 0 5px; border-radius: 10px; font-weight: 800; }
+        .toggle-btn { background: white; color: var(--primary); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 0; transition: 0.1s; }
+        .toggle-btn:active { background: #e2e8f0; transform: scale(0.9); }
+
+        .sidebar { flex: 1; min-width: 320px; background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); height: fit-content; width: 100%; position: sticky; top: 80px; border: 1px solid var(--border); transition: 0.3s; }
+        
+        .cart-receipt { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin: 15px 0; transition: 0.3s; }
+        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; color: var(--text); animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .cart-item-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .cart-item-name { font-weight: 600; width: 70%; line-height: 1.3; }
+        .cart-item-price { font-weight: 800; color: var(--primary); text-align: right; }
+        
+        .receipt-summary { margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border); }
+        .summary-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text); opacity: 0.8; }
+        .grand-total { font-size: 18px; font-weight: 800; color: var(--text); opacity: 1; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+        .grand-total span:last-child { color: var(--primary); transition: color 0.3s; }
+        
+        #minAlert { background: #fee2e2; color: #ef4444; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 15px; display: none; animation: popIn 0.3s ease; }
+
+        input, textarea { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; background: var(--input); color: var(--text); font-size: 14px; outline: none; transition: all 0.2s; }
+        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,82,204,0.1); }
+        input[readonly] { background: var(--bg); cursor: not-allowed; color: var(--primary); font-weight: 700; text-align: center; border-style: dashed; }
+        
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .confirm-btn { background: #25D366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
+        .confirm-btn:active:not(:disabled) { transform: scale(0.98); box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2); }
+        .confirm-btn:disabled { background: var(--border); color: #888; cursor: not-allowed; box-shadow: none; }
+        
+        .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Mobile Breakpoint */
+        @media (max-width: 900px) {
+            nav { padding: 12px 15px; }
+            .brand { font-size: 20px; }
+            .nav-actions { gap: 6px; }
+            .theme-btn, .support-btn { padding: 8px 10px; font-size: 11px; }
+            .container { flex-direction: column; padding: 0 10px; margin-top: -20px; }
+            .catalog { flex: none; width: 100%; }
+            .sidebar { flex: none; width: 100%; position: static; padding: 15px; margin-top: 10px; min-width: auto; }
+            .input-group { grid-template-columns: 1fr; gap: 0; }
+        }
+
+        /* Offline Popup Styles */
+        #offlineOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 999999; justify-content: center; align-items: center; text-align: center; backdrop-filter: blur(8px); }
+        .offline-card { background: var(--card); padding: 30px 20px; border-radius: 16px; width: 90%; max-width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--border); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .offline-icon { font-size: 50px; margin-bottom: 10px; }
+        .offline-card h2 { margin: 0 0 10px 0; color: #ef4444; font-size: 20px; }
+        .offline-card p { font-size: 14px; opacity: 0.8; margin-bottom: 20px; line-height: 1.5; color: var(--text); }
+        .offline-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 800; width: 100%; cursor: pointer; font-size: 15px; transition: 0.2s; }
+        .offline-btn:active { transform: scale(0.95); }
+    </style>
+</head>
+<body data-theme="light">
+
+<div id="offlineOverlay">
+    <div class="offline-card">
+        <div class="offline-icon">📶❌</div>
+        <h2>No Internet Connection</h2>
+        <p>Please swipe down from the top of your screen to turn on your Mobile Data or Wi-Fi, then click the button below.</p>
+        <button class="offline-btn" onclick="userManualRefreshCheck()">I've Turned It On, Continue</button>
+    </div>
+</div>
+
+<nav>
+    <div class="brand">safeblue</div>
+    <div class="nav-actions">
+        <a href="tel:+916263839343" class="support-btn">📞 Support</a>
+        <button class="theme-btn" onclick="toggleTheme()" id="tBtn">Dark Mode</button>
+    </div>
+</nav>
+
+<header>
+    <h1>safeblue stationary</h1>
+    <p>Kawardha (491995) | Free Delivery</p>
+</header>
+
+<div class="container">
+    <div class="catalog">
+        <div class="grid" id="productGrid"></div>
+    </div>
+
+    <div class="sidebar">
+        <div id="checkoutForm">
+            <h3 style="margin:0 0 15px 0; font-size: 18px;">Order Summary</h3>
+            
+            <div class="cart-receipt">
+                <div id="cartItemsContainer">
+                    <div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.6; font-size: 13px; font-weight: 600;">🛒 Cart is empty</div>
+                </div>
+                
+                <div id="receiptSummary" class="receipt-summary" style="display:none;">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subTotal">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <span style="color: #10b981;">Free</span>
+                    </div>
+                    <div class="summary-row grand-total">
+                        <span>Grand Total</span>
+                        <span id="grandTotal">₹0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="minAlert">Minimum ₹100 required for delivery</div>
+
+            <form id="orderForm" style="margin-top: 15px;">
+                <input type="text" id="custName" placeholder="Customer Name" autocomplete="name" required>
+                
+                <input type="tel" id="custPhone" placeholder="Mobile Number" autocomplete="tel" required>
+                
+                <textarea id="custAddr" rows="2" placeholder="Full Delivery Address" autocomplete="street-address" required></textarea>
+                
+                <div class="input-group">
+                    <input type="text" id="pincode" value="491995" readonly title="Delivery available only in this pincode">
+                    <input type="text" id="ward" placeholder="Ward No. (Optional)">
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" id="house" placeholder="House No. (Optional)">
+                    <input type="text" id="landmark" placeholder="Landmark (Optional)">
+                </div>
+
+                <div style="background:rgba(0,82,204,0.05); padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-weight:700; color:var(--primary); font-size:12px; border:1px dashed var(--primary);">🚚 Cash on Delivery Only</div>
+                
+                <button type="submit" class="confirm-btn" id="submitBtn" disabled>
+                    <div class="loader" id="btnLoader"></div>
+                    <span id="btnText">Proceed to WhatsApp</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- WebIntoApp Ad Blocker (New Addition) ---
+    (function blockInjectedAds() {
+        const removeAds = () => {
+            const elements = document.querySelectorAll('div, iframe');
+            elements.forEach(el => {
+                if (el.innerHTML && el.innerHTML.includes('WebIntoApp.com')) {
+                    el.style.display = 'none';
+                    el.remove();
+                }
+            });
+        };
+        // Run immediately and observe for DOM changes
+        const observer = new MutationObserver(() => removeAds());
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        // Fallback interval
+        setInterval(removeAds, 1000);
+    })();
+    // ---------------------------------------------
+
+    // --- Smooth & Responsive Internet Checker ---
+    const offlineOverlay = document.getElementById('offlineOverlay');
+    
+    function checkInternetStatus() {
+        if (navigator.onLine) {
+            offlineOverlay.style.display = 'none';
+            return true;
+        } else {
+            offlineOverlay.style.display = 'flex';
+            return false;
+        }
+    }
+
+    function userManualRefreshCheck() {
+        if (navigator.onLine) {
+            offlineOverlay.style.display = 'none';
+        } else {
+            const btn = document.querySelector('.offline-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Still Offline! Please check settings.";
+            btn.style.backgroundColor = "#ef4444";
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.backgroundColor = "var(--primary)";
+            }, 2000);
+        }
+    }
+
+    window.addEventListener('online', checkInternetStatus);
+    window.addEventListener('offline', checkInternetStatus);
+    setInterval(checkInternetStatus, 3000); 
+    checkInternetStatus();
+
+    // --- Store Logic ---
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3n2VF63ueYdHDhsnsMtDgYELpYWNbf5m2dTu3mnl6uPkoWp-WClNvfkWTy-udfA9R/exec";
+    const ADMIN_WA = "916263839343";
+
+    // Full product list maintained
+    const products = [
+        { id:1, name:'Combine copy page180 M.R.P=42', price:21 },
+        { id:2, name:'Combine copy page180 M.R.P=50', price:25 },
+        { id:3, name:'Combine copy page112 M.R.P=20', price:10 },
+        { id:4, name:'Box Maths Copy Page172 M.R.P=45', price:22.5 },
+        { id:5, name:'Four Line Copy page128 M.R.P=20', price:10 },
+        { id:6, name:'Double line page172 M.R.P=45', price:22.5 },
+        { id:7, name:'Blank Copy page172 M.R.P=40', price:20 },
+        { id:8, name:'Blank Copy page128 M.R.P=20', price:10 },
+        { id:9, name:'Rough Copy page108 M.R.P=10', price:5 }, 
+        { id:10, name:'Rough Copy page100 M.R.P=5', price:2.5 },
+        { id:11, name:'Chart Paper', price:5 }
+    ];
+
+    let cart = [];
+
+    function toggleTheme() {
+        const b = document.body;
+        const theme = b.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        b.setAttribute('data-theme', theme);
+        document.getElementById('tBtn').innerText = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+    }
+
+    // Advanced Phone input listener to flawlessly handle Auto-Fill data
+    document.getElementById('custPhone').addEventListener('input', function() {
+        let cleanedValue = this.value.replace(/[^0-9]/g, '');
+        if (cleanedValue.length > 12) {
+            cleanedValue = cleanedValue.substring(0, 12);
+        }
+        this.value = cleanedValue;
+        updateUI();
+    });
+
+    function renderGrid() {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = products.map(p => {
+            const inCart = cart.find(c => c.id === p.id);
+            const displayPrice = p.price % 1 === 0 ? p.price : p.price.toFixed(2);
+            return `
+            <div class="card">
+                <h3>${p.name}</h3>
+                <div class="price">₹${displayPrice}</div>
+                <div class="btn-container" id="btn-p-${p.id}">
+                    ${inCart ? `
+                        <div class="cart-qty-toggle">
+                            <button class="toggle-btn" onclick="updateCartQty(${p.id}, -1)">-</button>
+                            <span style="font-size:15px;">${inCart.qty}</span>
+                            <button class="toggle-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
+                        </div>
+                    ` : `
+                        <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                    `}
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    function addToCart(id) {
+        if(!checkInternetStatus()) return; 
+        const p = products.find(i => i.id === id);
+        cart.push({...p, qty: 1});
+        updateUI();
+    }
+
+    function updateCartQty(id, delta) {
+        if(!checkInternetStatus()) return;
+        const item = cart.find(c => c.id === id);
+        if(item) {
+            item.qty += delta;
+            if(item.qty < 1) cart = cart.filter(c => c.id !== id);
+        }
+        updateUI();
+    }
+
+    function updateUI() {
+        renderGrid(); 
+        const total = cart.reduce((a, c) => a + (c.price * c.qty), 0);
+        const cleanTotal = Math.round(total * 100) / 100;
+        const displayTotal = cleanTotal % 1 === 0 ? cleanTotal : cleanTotal.toFixed(2);
+        
+        const container = document.getElementById('cartItemsContainer');
+        const emptyMsg = document.getElementById('emptyCartMsg');
+        const summary = document.getElementById('receiptSummary');
+        const phone = document.getElementById('custPhone').value;
+        const btn = document.getElementById('submitBtn');
+        const alert = document.getElementById('minAlert');
+
+        if(cart.length === 0) {
+            container.innerHTML = `<div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.6; font-size: 13px; font-weight: 600;">🛒 Cart is empty</div>`;
+            summary.style.display = 'none';
+        } else {
+            container.innerHTML = cart.map(c => {
+                const itemTotal = Math.round((c.price * c.qty) * 100) / 100;
+                const displayItemTotal = itemTotal % 1 === 0 ? itemTotal : itemTotal.toFixed(2);
+                return `
+                <div class="cart-item-row">
+                    <span class="cart-item-name">${c.qty}x ${c.name}</span>
+                    <span class="cart-item-price">₹${displayItemTotal}</span>
+                </div>`
+            }).join("");
+            
+            document.getElementById('subTotal').innerText = `₹${displayTotal}`;
+            document.getElementById('grandTotal').innerText = `₹${displayTotal}`;
+            summary.style.display = 'block';
+        }
+
+        if(cleanTotal >= 100 && phone.length >= 10 && phone.length <= 12) {
+            btn.disabled = false;
+            alert.style.display = 'none';
+        } else {
+            btn.disabled = true;
+            if(cleanTotal < 100 && cleanTotal > 0) {
+                alert.style.display = 'block';
+                const remaining = Math.round((100 - cleanTotal) * 100) / 100;
+                alert.innerText = `Add ₹${remaining % 1 === 0 ? remaining : remaining.toFixed(2)} more for free delivery`;
+            } else if(phone.length > 0 && (phone.length < 10 || phone.length > 12)) {
+                alert.style.display = 'block';
+                alert.innerText = "Enter a valid 10 to 12-digit mobile number";
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if(!checkInternetStatus()) return;
+
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoader = document.getElementById('btnLoader');
+        
+        btnText.innerText = "Connecting..."; 
+        btnLoader.style.display = "block";
+        btn.disabled = true;
+
+        const ward = document.getElementById('ward').value || 'NA';
+        const house = document.getElementById('house').value || 'NA';
+        const landmark = document.getElementById('landmark').value || 'NA';
+        
+        const addr = `${document.getElementById('custAddr').value}, Ward no: ${ward}, House: ${house}, Landmark: ${landmark}, Pincode: 491995`;
+        
+        const itemsList = cart.map(i => {
+            const itemTotal = Math.round((i.price * i.qty) * 100) / 100;
+            const displayItemTotal = itemTotal % 1 === 0 ? itemTotal : itemTotal.toFixed(2);
+            return `▪️ ${i.qty}x ${i.name} (₹${displayItemTotal})`;
+        }).join("\n");
+        
+        const total = document.getElementById('grandTotal').innerText.replace('₹', '');
+
+        const payload = {
+            name: document.getElementById('custName').value,
+            phone: document.getElementById('custPhone').value,
+            address: addr,
+            items: cart.map(i => `${i.qty}x ${i.name}`).join(", "), 
+            total: total,
+            method: "COD"
+        };
+
+        fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).catch(err => console.log(err));
+        
+        const msg = `*🛍️ NEW ORDER (safeblue stationary)*\n\n*👤 Customer Details:*\nName: ${payload.name}\nPhone: ${payload.phone}\n\n*📍 Delivery Address:*\n${addr}\n\n*📦 Order Summary:*\n${itemsList}\n\n*💰 Total Amount:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
+        const encodedMsg = encodeURIComponent(msg);
+
+        const nativeAppUrl = `whatsapp://send?phone=${ADMIN_WA}&text=${encodedMsg}`;
+
+        const link = document.createElement('a');
+        link.href = nativeAppUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setTimeout(() => {
+            btnText.innerText = "Proceed to WhatsApp";
+            btnLoader.style.display = "none";
+            btn.disabled = false;
+        }, 2000);
+    });
+
+    // Initialize store
+    renderGrid();
+</script>
+</body>
+</html>
