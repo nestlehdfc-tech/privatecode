@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <meta name="theme-color" content="#ff0000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <title>safeblue stationery | Smart Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -283,6 +287,14 @@
         const theme = b.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         b.setAttribute('data-theme', theme);
         document.getElementById('tBtn').innerText = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+        
+        // Dynamically update theme color for browsers
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (theme === 'dark') {
+            metaThemeColor.setAttribute("content", "#0f172a");
+        } else {
+            metaThemeColor.setAttribute("content", "#ff0000");
+        }
     }
 
     // Advanced Phone input listener to flawlessly handle Auto-Fill data
