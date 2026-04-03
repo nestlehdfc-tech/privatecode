@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>safeblue stationary | Smart Store</title>
+    <title>safeblue stationery | Smart Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --primary: #0052cc; --border: #e2e8f0; --input: #ffffff; }
@@ -72,6 +72,15 @@
         .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* Confirmation Popup Styles */
+        #successOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .success-card { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; max-width: 320px; width: 90%; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .success-icon { font-size: 50px; color: #10b981; margin-bottom: 15px; }
+        .success-card h2 { margin: 0 0 10px; color: var(--text); font-size: 22px; }
+        .success-card p { font-size: 14px; color: var(--text); opacity: 0.8; margin-bottom: 20px; line-height: 1.5; }
+        .success-btn { background: var(--primary); color: white; border: none; padding: 14px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; }
+        .success-btn:active { transform: scale(0.95); }
+
         /* Mobile Breakpoint */
         @media (max-width: 900px) {
             nav { padding: 12px 15px; }
@@ -97,6 +106,15 @@
 </head>
 <body data-theme="light">
 
+<div id="successOverlay">
+    <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h2>Order Confirmed!</h2>
+        <p>Your order details have been sent to WhatsApp. We will contact you shortly.</p>
+        <button class="success-btn" onclick="refreshPage()">OK</button>
+    </div>
+</div>
+
 <div id="offlineOverlay">
     <div class="offline-card">
         <div class="offline-icon">📶❌</div>
@@ -115,7 +133,7 @@
 </nav>
 
 <header>
-    <h1>safeblue stationary</h1>
+    <h1>safeblue stationery</h1>
     <p>Kawardha (491995) | Free Delivery</p>
 </header>
 
@@ -180,7 +198,7 @@
 </div>
 
 <script>
-    // --- WebIntoApp Ad Blocker (New Addition) ---
+    // --- WebIntoApp Ad Blocker ---
     (function blockInjectedAds() {
         const removeAds = () => {
             const elements = document.querySelectorAll('div, iframe');
@@ -226,6 +244,11 @@
                 btn.style.backgroundColor = "var(--primary)";
             }, 2000);
         }
+    }
+
+    // Refresh function for the Success Modal
+    function refreshPage() {
+        window.location.reload();
     }
 
     window.addEventListener('online', checkInternetStatus);
@@ -398,24 +421,29 @@
             method: "COD"
         };
 
+        // Send data to Google Sheets
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).catch(err => console.log(err));
         
-        const msg = `*🛍️ NEW ORDER (safeblue stationary)*\n\n*👤 Customer Details:*\nName: ${payload.name}\nPhone: ${payload.phone}\n\n*📍 Delivery Address:*\n${addr}\n\n*📦 Order Summary:*\n${itemsList}\n\n*💰 Total Amount:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
+        const msg = `*🛍️ NEW ORDER (safeblue stationery)*\n\n*👤 Customer Details:*\nName: ${payload.name}\nPhone: ${payload.phone}\n\n*📍 Delivery Address:*\n${addr}\n\n*📦 Order Summary:*\n${itemsList}\n\n*💰 Total Amount:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
         const encodedMsg = encodeURIComponent(msg);
 
+        // Open WhatsApp
         const nativeAppUrl = `whatsapp://send?phone=${ADMIN_WA}&text=${encodedMsg}`;
-
         const link = document.createElement('a');
         link.href = nativeAppUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
+        // Show Order Confirmed Modal and Reset Button
         setTimeout(() => {
+            const successOverlay = document.getElementById('successOverlay');
+            successOverlay.style.display = 'flex'; // This will show when they return to the app
+
             btnText.innerText = "Proceed to WhatsApp";
             btnLoader.style.display = "none";
             btn.disabled = false;
-        }, 2000);
+        }, 1500); // 1.5 seconds delay allows WhatsApp to trigger first
     });
 
     // Initialize store
