@@ -22,6 +22,12 @@
             --whatsapp: #25D366; 
             --success: #10b981;
             --muted: #64748b;
+            
+            /* Support Section Premium Colors */
+            --phone-color: #0284c7; --phone-bg: #e0f2fe;
+            --wa-color: #16a34a; --wa-bg: #dcfce7;
+            --email-color: #dc2626; --email-bg: #fee2e2;
+            --time-color: #ca8a04; --time-bg: #fef9c3;
         }
         [data-theme="dark"] { 
             --bg: #0f172a; 
@@ -33,6 +39,12 @@
             --danger: #f87171; 
             --success: #34d399;
             --muted: #94a3b8;
+
+            /* Support Section Dark Mode Adaptation */
+            --phone-color: #38bdf8; --phone-bg: rgba(2, 132, 199, 0.15);
+            --wa-color: #4ade80; --wa-bg: rgba(22, 163, 74, 0.15);
+            --email-color: #f87171; --email-bg: rgba(220, 38, 38, 0.15);
+            --time-color: #facc15; --time-bg: rgba(202, 138, 4, 0.15);
         }
         
         * { box-sizing: border-box; } 
@@ -55,16 +67,17 @@
 
         /* Splash Screen */
         .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease-out; }
-        .splash-logo svg { width: 90px; height: 90px; filter: drop-shadow(0px 10px 15px rgba(26, 92, 255, 0.25)); animation: pulseLogo 1.2s infinite alternate; }
+        .splash-logo svg { width: 90px; height: 90px; color: var(--primary); filter: drop-shadow(0px 10px 15px rgba(26, 92, 255, 0.25)); animation: pulseLogo 1.2s infinite alternate; }
         @keyframes pulseLogo { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
 
-        /* Headers & Navigation */
-        nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; }
+        /* Premium Top App Bar */
+        nav { background: var(--card); padding: 16px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        .brand-icon { width: 24px; height: 24px; }
         
-        .support-btn { background: var(--success); color: white; text-decoration: none; padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); transition: 0.2s; }
-        .support-btn:active { transform: scale(0.92); }
-        .support-btn svg { fill: var(--danger); stroke: var(--danger); }
+        .nav-profile-btn { background: rgba(26,92,255,0.08); padding: 8px; border-radius: 50%; cursor: pointer; color: var(--primary); display: flex; justify-content: center; align-items: center; transition: 0.2s; border: none; outline: none; }
+        .nav-profile-btn:active { transform: scale(0.92); background: rgba(26,92,255,0.15); }
+        .nav-profile-btn svg { width: 20px; height: 20px; }
 
         .sub-header { background: var(--card); padding: 16px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; font-size: 18px; font-weight: 600; }
         .sub-header svg { width: 24px; height: 24px; cursor: pointer; stroke: var(--text); padding: 2px; }
@@ -192,6 +205,67 @@
         .bottom-nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; transition: 0.2s; }
         .bottom-nav-item.active svg { transform: scale(1.1); }
 
+        /* Premium Support Action Cards */
+        .contact-item-premium {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 15px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .contact-item-premium:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+        .contact-item-premium.time-btn {
+            cursor: default;
+        }
+        .contact-item-premium.time-btn:hover {
+            transform: none;
+            border-color: var(--border);
+            box-shadow: none;
+        }
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 18px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .contact-item-premium:hover .icon-circle {
+            transform: scale(1.1);
+        }
+        .icon-circle svg {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2;
+        }
+        .btn-text-content {
+            display: flex;
+            flex-direction: column;
+        }
+        .btn-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
+        .btn-subtitle {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+
         /* Toast Message */
         #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 80px; font-size: 14px; transform: translateX(-50%); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
@@ -293,15 +367,20 @@
 </div>
 
 <nav id="topNav">
-    <div class="brand">safeblue</div>
-    <div class="nav-actions">
-        <a href="tel:+916263839343" class="support-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="var(--danger)" stroke="var(--danger)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-            </svg>
-            Support
-        </a>
+    <div class="brand">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="currentColor" fill-opacity="0.15"></path>
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        safeblue
     </div>
+    
+    <button class="nav-profile-btn" onclick="navTo('account')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </button>
 </nav>
 
 <div id="view-onboarding-profile" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingProfile)">
@@ -424,6 +503,58 @@
         </div>
 </div>
 
+<div id="view-support" class="view-section">
+    <div class="sub-header">
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Help & Support
+    </div>
+    <div class="page-wrapper" style="padding-bottom: 85px;">
+        <h2 style="font-size: 24px; margin-bottom: 8px; color: var(--text);">Get in Touch</h2>
+        <p style="color: var(--muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5;">We are always here to help you. Choose an option below to connect with our team directly.</p>
+
+        <a href="tel:+916263839343" class="contact-item-premium">
+            <div class="icon-circle" style="background: var(--phone-bg); color: var(--phone-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <div class="btn-text-content">
+                <span class="btn-title">Call Us Directly</span>
+                <span class="btn-subtitle">+91 62638 39343</span>
+            </div>
+        </a>
+
+        <a href="whatsapp://send?phone=916263839343" class="contact-item-premium">
+            <div class="icon-circle" style="background: var(--wa-bg); color: var(--wa-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            </div>
+            <div class="btn-text-content">
+                <span class="btn-title">WhatsApp Support</span>
+                <span class="btn-subtitle">Instant smooth chat</span>
+            </div>
+        </a>
+
+        <a href="mailto:safebluechip@gmail.com" class="contact-item-premium">
+            <div class="icon-circle" style="background: var(--email-bg); color: var(--email-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div class="btn-text-content">
+                <span class="btn-title">Send an Email</span>
+                <span class="btn-subtitle">safebluechip@gmail.com</span>
+            </div>
+        </a>
+
+        <div class="contact-item-premium time-btn">
+            <div class="icon-circle" style="background: var(--time-bg); color: var(--time-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="btn-text-content">
+                <span class="btn-title">Working Hours</span>
+                <span class="btn-subtitle">Mon - Sat: 10:00 AM to 4:00 PM</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <div id="view-account" class="view-section">
     <div class="sub-header">
         <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
@@ -452,6 +583,15 @@
                 </div>
                 <div class="chevron">›</div>
             </div>
+            
+            <div class="menu-item" onclick="navTo('support')">
+                <div class="menu-item-left">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Contact Us
+                </div>
+                <div class="chevron">›</div>
+            </div>
+
             <div class="menu-item">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -679,7 +819,8 @@
     });
 
     // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
-    const validSections = ['home', 'orders', 'order-details', 'account', 'profile-view', 'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 'onboarding-address'];
+    // Added 'support' to validSections
+    const validSections = ['home', 'orders', 'order-details', 'account', 'profile-view', 'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 'onboarding-address', 'support'];
 
     function navTo(section, isTabClick = false, isPopState = false) {
         if (!validSections.includes(section)) section = 'home';
@@ -768,7 +909,7 @@
             }, 400);
         }, 500);
         
-        syncToggleSwitch(); // Ensure UI matches the theme set by the early script
+        syncToggleSwitch();
         migrateAddressData(); 
         renderAddressList();
         renderGrid();
@@ -791,20 +932,17 @@
         document.body.setAttribute('data-theme', newTheme);
         document.getElementById('themeCheckbox').checked = !isCurrentlyDark;
         
-        // Save the manual preference so it overrides system settings in the future
         localStorage.setItem('sb_theme', newTheme); 
     }
     
     function syncToggleSwitch() {
-        // Just visually syncs the toggle switch based on what the body theme actually is right now
         const isDark = document.body.getAttribute('data-theme') === 'dark';
         const checkbox = document.getElementById('themeCheckbox');
         if (checkbox) checkbox.checked = isDark;
     }
 
-    // Listen for Phone System Theme Changes in Real-Time (If user hasn't forced a manual preference)
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (!localStorage.getItem('sb_theme')) { // Only auto-change if user hasn't set a manual preference
+        if (!localStorage.getItem('sb_theme')) {
             const newTheme = event.matches ? "dark" : "light";
             document.documentElement.setAttribute('data-theme', newTheme);
             document.body.setAttribute('data-theme', newTheme);
@@ -890,7 +1028,6 @@
         navTo('home', false, false);
     }
 
-
     // --- SMART PROFILE LOGIC (MANAGE ACCOUNT SECTION) ---
     function handleProfileClick() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
@@ -950,7 +1087,6 @@
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         showToast("Profile Saved Successfully!");
         
-        // --- STRICT CHAIN LOGIC: CHECKOUT FORCE FILL (STEP 1 DONE) ---
         if(sessionStorage.getItem('checkout_chain') === 'step1_profile') {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
             if (addresses.length === 0) {
@@ -1018,7 +1154,6 @@
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         showToast("Address Saved Successfully!");
 
-        // --- STRICT CHAIN LOGIC: CHECKOUT FORCE FILL (STEP 2 DONE) ---
         if(sessionStorage.getItem('checkout_chain') === 'step2_address') {
             sessionStorage.removeItem('checkout_chain');
             navTo('home'); 
@@ -1118,15 +1253,6 @@
         }
     });
 
-    // =========================================================================
-    // 📦 PRODUCTS LIST - EASY TO MANAGE (यहाँ आप आसानी से प्रोडक्ट जोड़/हटा सकते हैं)
-    // =========================================================================
-    // नियम:
-    // 1. नया प्रोडक्ट जोड़ने के लिए सबसे आखिरी लाइन को कॉपी करें और नई लाइन में पेस्ट करें।
-    // 2. हर प्रोडक्ट का "id" अलग होना चाहिए (जैसे 11, 12, 13)।
-    // 3. "name" के अंदर प्रोडक्ट का नाम और "price" के अंदर उसकी कीमत (बिना ₹ के) लिखें।
-    // 4. आखिरी प्रोडक्ट को छोड़कर, हर लाइन के अंत में 'कॉमा' (,) लगाना जरूरी है!
-    // =========================================================================
     const products = [
         { id: 1, name: 'Combine copy page180 M.R.P=42', price: 21 },
         { id: 2, name: 'Combine copy page180 M.R.P=50', price: 25 },
@@ -1139,10 +1265,7 @@
         { id: 9, name: 'Rough Copy page108 M.R.P=10', price: 5 }, 
         { id: 10, name: 'Rough Copy page100 M.R.P=5', price: 2.5 },
         { id: 11, name: 'Chart Paper', price: 5 }
-        // आप यहाँ नीचे अपने नए प्रोडक्ट जोड़ सकते हैं:
-        // ,{ id: 12, name: 'New Product Name', price: 50 } 
     ];
-    // =========================================================================
     
     let cart = [];
 
@@ -1216,8 +1339,6 @@
         }
     }
 
-    // --- CHECKOUT LOGIC WITH FORCED CHAIN (PROFILE -> ADDRESS -> WHATSAPP) ---
-    // Temporary storage for order pending WA confirmation
     let pendingOrderData = null;
 
     document.getElementById('submitOrderBtn').addEventListener('click', function() {
@@ -1225,7 +1346,6 @@
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
-        // 1. Check Profile (Step 1)
         if(!p.fName || !p.phone) {
             showToast("Please complete your profile to place the order.");
             sessionStorage.setItem('checkout_chain', 'step1_profile'); 
@@ -1233,7 +1353,6 @@
             return;
         }
         
-        // 2. Check Address (Step 2)
         if(!defaultAddr || !defaultAddr.street) {
             showToast("Please add your delivery address to proceed.");
             sessionStorage.setItem('checkout_chain', 'step2_address'); 
@@ -1241,7 +1360,6 @@
             return;
         }
 
-        // 3. Final Step: Everything is filled, Proceed to WhatsApp
         const name = `${p.fName} ${p.lName||''}`.trim();
         const finalAddr = `${defaultAddr.house ? defaultAddr.house + ', ' : ''}${defaultAddr.street}, Ward: ${defaultAddr.ward||'NA'}, Landmark: ${defaultAddr.landmark||'NA'}, Pin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
@@ -1255,7 +1373,6 @@
         
         const msg = `*🛍️ ORDER DETAILS (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* COD`;
         
-        // Save pending order temporarily
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
         
@@ -1269,18 +1386,15 @@
         document.body.removeChild(link);
     });
 
-    // WHEN USER RETURNS FROM WHATSAPP APP
     document.addEventListener("visibilitychange", function() {
         if (document.visibilityState === 'visible') {
             if (sessionStorage.getItem('waitingForWaReturn') === 'true') {
                 sessionStorage.removeItem('waitingForWaReturn');
-                // Open confirmation dialog instead of saving immediately
                 document.getElementById('waConfirmOverlay').style.display = 'flex';
             }
         }
     });
 
-    // YES, SENT
     function waConfirmYes() {
         document.getElementById('waConfirmOverlay').style.display = 'none';
         if (pendingOrderData) {
@@ -1289,7 +1403,7 @@
             pendingOrderData.id = orderId;
             orders.push(pendingOrderData);
             localStorage.setItem('sb_orders', JSON.stringify(orders));
-            pendingOrderData = null; // Clear pending
+            pendingOrderData = null; 
 
             cart = [];
             updateUI();
@@ -1297,19 +1411,17 @@
         }
     }
 
-    // NO, CANCELLED
     function waConfirmNo() {
         document.getElementById('waConfirmOverlay').style.display = 'none';
-        pendingOrderData = null; // Clear pending
+        pendingOrderData = null; 
         showToast("No problem, your order was not saved.");
     }
 
     function closeSuccessPopup() {
         document.getElementById('successOverlay').style.display = 'none';
-        navTo('home'); // Redirects to Home page instead of Orders page
+        navTo('home');
     }
 
-    // --- MY ORDERS LOGIC ---
     window.openOrderDetails = function(id) {
         navTo('order-details');
         renderSingleOrderDetails(id);
