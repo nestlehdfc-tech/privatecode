@@ -11,36 +11,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================
+           ADVANCED DESIGN SYSTEM & VARIABLES
+           ========================================= */
         :root { 
             --bg: #f8fafc; 
-            --card: #ffffff; 
-            --text: #1e293b; 
+            --card: rgba(255, 255, 255, 0.95); 
+            --solid-card: #ffffff;
+            --text: #0f172a; 
             --primary: #1a5cff; 
+            --primary-glow: rgba(26, 92, 255, 0.15);
             --border: #e2e8f0; 
-            --input-bg: transparent; 
+            --input-bg: #f1f5f9; 
             --danger: #ef4444; 
             --whatsapp: #25D366; 
             --success: #10b981;
             --muted: #64748b;
             
-            /* Support Section Premium Colors */
+            /* Premium Support Gradients & Colors */
             --phone-color: #0284c7; --phone-bg: #e0f2fe;
             --wa-color: #16a34a; --wa-bg: #dcfce7;
             --email-color: #dc2626; --email-bg: #fee2e2;
             --time-color: #ca8a04; --time-bg: #fef9c3;
         }
-        [data-theme="dark"] { 
-            --bg: #0f172a; 
-            --card: #1e293b; 
-            --text: #f1f5f9; 
+
+        :root[data-theme="dark"] { 
+            --bg: #0b1120; 
+            --card: rgba(30, 41, 59, 0.85); 
+            --solid-card: #1e293b;
+            --text: #f8fafc; 
             --primary: #3b82f6; 
+            --primary-glow: rgba(59, 130, 246, 0.15);
             --border: #334155; 
-            --input-bg: transparent; 
+            --input-bg: #0f172a; 
             --danger: #f87171; 
             --success: #34d399;
             --muted: #94a3b8;
 
-            /* Support Section Dark Mode Adaptation */
             --phone-color: #38bdf8; --phone-bg: rgba(2, 132, 199, 0.15);
             --wa-color: #4ade80; --wa-bg: rgba(22, 163, 74, 0.15);
             --email-color: #f87171; --email-bg: rgba(220, 38, 38, 0.15);
@@ -53,218 +60,252 @@
             margin: 0; 
             background: var(--bg); 
             color: var(--text); 
-            transition: background-color 0.3s ease, color 0.3s ease; 
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease; 
             -webkit-tap-highlight-color: transparent; 
         }
 
-        /* View Routing with Premium Native Animation */
-        .view-section { display: none; padding-bottom: 85px; animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        /* =========================================
+           ROUTING & ANIMATION
+           ========================================= */
+        .view-section { 
+            display: none; 
+            padding-bottom: 95px; 
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
         .view-section.active { display: block; }
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateY(15px); } 
+        @keyframes slideUpFade { 
+            from { opacity: 0; transform: translateY(20px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Splash Screen */
-        .splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease-out; }
-        .splash-logo svg { width: 90px; height: 90px; color: var(--primary); filter: drop-shadow(0px 10px 15px rgba(26, 92, 255, 0.25)); animation: pulseLogo 1.2s infinite alternate; }
-        @keyframes pulseLogo { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
+        /* =========================================
+           SPLASH SCREEN & LOGO
+           ========================================= */
+        .splash-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg); z-index: 9999999; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            transition: opacity 0.5s ease-out; 
+        }
+        .splash-logo svg { 
+            width: 100px; height: 100px; color: var(--primary); 
+            filter: drop-shadow(0px 15px 30px var(--primary-glow)); 
+            animation: elegantPulse 1.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        @keyframes elegantPulse { 
+            0% { transform: scale(0.97) translateY(0); } 
+            100% { transform: scale(1.03) translateY(-5px); } 
+        }
 
-        /* Premium Top App Bar */
-        nav { background: var(--card); padding: 16px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
-        .brand-icon { width: 26px; height: 26px; }
+        /* =========================================
+           NAVIGATION & HEADER (GLASSMORPHISM)
+           ========================================= */
+        nav { 
+            background: var(--card); 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 16px 5%; display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border); 
+            position: sticky; top: 0; z-index: 1000; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03); 
+        }
+        .brand { 
+            font-weight: 800; font-size: 22px; color: var(--primary); 
+            letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; 
+        }
+        .brand-icon { width: 30px; height: 30px; }
         
-        .nav-profile-btn { background: rgba(26,92,255,0.08); padding: 8px; border-radius: 50%; cursor: pointer; color: var(--primary); display: flex; justify-content: center; align-items: center; transition: 0.2s; border: none; outline: none; }
-        .nav-profile-btn:active { transform: scale(0.92); background: rgba(26,92,255,0.15); }
+        .nav-profile-btn { 
+            background: var(--primary-glow); padding: 8px; border-radius: 50%; 
+            cursor: pointer; color: var(--primary); display: flex; 
+            justify-content: center; align-items: center; transition: 0.2s; border: none; outline: none; 
+        }
+        .nav-profile-btn:active { transform: scale(0.90); }
         .nav-profile-btn svg { width: 20px; height: 20px; }
 
-        .sub-header { background: var(--card); padding: 16px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; font-size: 18px; font-weight: 600; }
+        .sub-header { 
+            background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 16px 20px; display: flex; align-items: center; gap: 15px; 
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; 
+            font-size: 18px; font-weight: 700; 
+        }
         .sub-header svg { width: 24px; height: 24px; cursor: pointer; stroke: var(--text); padding: 2px; }
 
-        header { background: var(--primary); color: white; padding: 25px 15px 45px; text-align: center; }
-        header h1 { margin: 0 0 5px 0; font-size: 22px; }
-        header p { margin: 0; font-size: 13px; opacity: 0.9; }
+        header { 
+            background: linear-gradient(135deg, var(--primary) 0%, #003ebd 100%); 
+            color: white; padding: 30px 15px 50px; text-align: center; 
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+        }
+        header h1 { margin: 0 0 5px 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        header p { margin: 0; font-size: 13px; opacity: 0.9; font-weight: 500; }
 
-        /* Home Store Layout */
-        .container { display: flex; max-width: 1200px; margin: -25px auto 20px; gap: 15px; padding: 0 15px; flex-wrap: wrap; }
+        /* =========================================
+           HOME & CATALOG GRID
+           ========================================= */
+        .container { display: flex; max-width: 1200px; margin: -30px auto 20px; gap: 18px; padding: 0 15px; flex-wrap: wrap; position: relative; z-index: 10;}
         .catalog { flex: 2; width: 100%; min-width: 300px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-        .card { background: var(--card); border-radius: 14px; padding: 15px; border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; height: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .card h3 { margin: 0 0 10px 0; font-size: 13px; line-height: 1.4; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
-        .price { font-size: 18px; font-weight: 800; color: var(--primary); margin: 0 0 12px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .card { 
+            background: var(--solid-card); border-radius: 16px; padding: 18px; 
+            border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; 
+            height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform 0.2s;
+        }
+        .card h3 { margin: 0 0 12px 0; font-size: 14px; font-weight: 600; line-height: 1.4; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+        .price { font-size: 20px; font-weight: 800; color: var(--primary); margin: 0 0 15px 0; }
         
-        .btn-container { height: 38px; width: 100%; margin-top: auto; }
-        .add-btn { background: var(--primary); color: white; border: none; width: 100%; height: 100%; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .btn-container { height: 42px; width: 100%; margin-top: auto; }
+        .add-btn { 
+            background: var(--primary); color: white; border: none; width: 100%; height: 100%; 
+            border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; 
+        }
         .add-btn:active { transform: scale(0.95); }
-        .cart-qty-toggle { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: white; width: 100%; height: 100%; padding: 0 4px; border-radius: 8px; font-weight: 700; }
-        .toggle-btn { background: white; color: var(--primary); border: none; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+        .cart-qty-toggle { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: white; width: 100%; height: 100%; padding: 0 5px; border-radius: 10px; font-weight: 700; }
+        .toggle-btn { background: white; color: var(--primary); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-        /* Cart Sidebar */
-        .sidebar { flex: 1; min-width: 320px; background: var(--card); padding: 20px; border-radius: 16px; border: 1px solid var(--border); position: sticky; top: 75px; height: fit-content; }
-        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 12px; }
+        /* =========================================
+           SIDEBAR & CART
+           ========================================= */
+        .sidebar { flex: 1; min-width: 320px; background: var(--solid-card); padding: 22px; border-radius: 20px; border: 1px solid var(--border); position: sticky; top: 85px; height: fit-content; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
         .cart-item-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .receipt-summary { margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border); }
-        .summary-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--muted); }
-        .grand-total { font-size: 18px; font-weight: 800; color: var(--text); margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+        .receipt-summary { margin-top: 18px; padding-top: 18px; border-top: 2px solid var(--border); }
+        .summary-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--muted); }
+        .grand-total { font-size: 20px; font-weight: 800; color: var(--text); margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border); }
         
-        #minAlert { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 800; text-align: center; margin-top: 15px; display: none; border: 1px solid rgba(239, 68, 68, 0.2); }
+        #minAlert { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 800; text-align: center; margin-top: 15px; display: none; border: 1px solid rgba(239, 68, 68, 0.2); }
         
-        .confirm-btn { background: var(--whatsapp); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2); transition: 0.2s; }
+        .confirm-btn { background: var(--whatsapp); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 16px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 8px 25px rgba(37, 211, 102, 0.25); transition: 0.2s; }
         .confirm-btn:active:not(:disabled) { transform: scale(0.96); }
         .confirm-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; box-shadow: none; }
 
-        /* Account Root Screen */
+        /* =========================================
+           FORMS & INPUTS
+           ========================================= */
         .page-wrapper { max-width: 800px; margin: 0 auto; padding: 20px 15px; }
-        .account-menu { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); font-weight: 600; font-size: 15px; transition: background 0.2s; }
-        .menu-item:active { background: rgba(0,0,0,0.02); }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item-left { display: flex; align-items: center; gap: 12px; }
-        .menu-item svg { width: 20px; height: 20px; stroke: var(--primary); }
-        .chevron { color: var(--muted); font-size: 18px; }
-
-        /* Read-Only Profile View */
-        .profile-info-box { background: var(--card); border-radius: 16px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
-        .info-row { display: flex; flex-direction: column; margin-bottom: 15px; }
-        .info-row:last-child { margin-bottom: 0; }
-        .info-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-value { font-size: 16px; color: var(--text); font-weight: 700; }
-
-        /* Floating Material Inputs */
-        .material-input { position: relative; margin-bottom: 20px; width: 100%; }
-        .material-input input, .material-input textarea, .material-input select { width: 100%; padding: 16px 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--input-bg); color: var(--text); font-family: inherit; outline: none; transition: 0.2s; }
-        .material-input input:focus, .material-input textarea:focus { border-color: var(--primary); }
-        .material-input label { position: absolute; top: -8px; left: 12px; background: var(--card); padding: 0 4px; font-size: 12px; color: var(--muted); border-radius: 4px; z-index: 1; transition: 0.2s; }
+        
+        .material-input { position: relative; margin-bottom: 22px; width: 100%; }
+        .material-input input, .material-input textarea, .material-input select { 
+            width: 100%; padding: 18px 16px; border: 2px solid var(--border); 
+            border-radius: 14px; font-size: 15px; background: var(--input-bg); 
+            color: var(--text); font-family: inherit; font-weight: 500; outline: none; transition: 0.2s; 
+        }
+        .material-input input:focus, .material-input textarea:focus { border-color: var(--primary); background: var(--solid-card); box-shadow: 0 0 0 4px var(--primary-glow); }
+        .material-input label { position: absolute; top: -10px; left: 14px; background: var(--solid-card); padding: 0 6px; font-size: 12px; font-weight: 700; color: var(--muted); border-radius: 4px; z-index: 1; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
         
         .gender-options { display: flex; gap: 20px; margin-top: 15px; margin-bottom: 30px;}
-        .gender-options label { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text); cursor: pointer;}
-        .gender-options input[type="radio"] { width: 18px; height: 18px; accent-color: var(--primary); }
+        .gender-options label { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: var(--text); cursor: pointer;}
+        .gender-options input[type="radio"] { width: 20px; height: 20px; accent-color: var(--primary); }
 
-        .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); padding: 15px; border-top: 1px solid var(--border); z-index: 2000; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; }
-        .large-save-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        /* =========================================
+           COMPONENTS (MENUS, BUTTONS, CARDS)
+           ========================================= */
+        .account-menu { background: var(--solid-card); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); font-weight: 700; font-size: 16px; transition: background 0.2s; }
+        .menu-item:active { background: var(--input-bg); }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item-left { display: flex; align-items: center; gap: 15px; }
+        .menu-item svg { width: 22px; height: 22px; stroke: var(--primary); }
+        .chevron { color: var(--muted); font-size: 20px; }
+
+        .profile-info-box { background: var(--solid-card); border-radius: 20px; padding: 22px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .info-row { display: flex; flex-direction: column; margin-bottom: 18px; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-label { font-size: 11px; color: var(--muted); font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .info-value { font-size: 16px; color: var(--text); font-weight: 700; }
+
+        .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 15px; border-top: 1px solid var(--border); z-index: 2000; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; }
+        .large-save-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px var(--primary-glow); }
         .large-save-btn:active { transform: scale(0.97); }
-        .clear-all-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .clear-all-btn { background: transparent; color: var(--danger); border: 2px solid var(--danger); width: 100%; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; }
         .clear-all-btn:active { background: rgba(239, 68, 68, 0.05); transform: scale(0.97); }
-        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 600; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; margin-top: 5px; transition: 0.2s; }
-        .text-btn:active { background: rgba(0,0,0,0.05); border-radius: 8px; }
+        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 700; font-size: 15px; padding: 12px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .text-btn:active { background: var(--input-bg); border-radius: 10px; }
 
-        /* Manage Address Cards */
-        .add-new-addr-btn { background: transparent; color: var(--primary); border: 1px solid var(--primary); width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 25px; transition: 0.2s; }
-        .add-new-addr-btn:active { background: rgba(26,92,255,0.05); }
+        /* ADDRESS CARDS */
+        .add-new-addr-btn { background: var(--primary-glow); color: var(--primary); border: none; width: 100%; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 25px; transition: 0.2s; }
+        .add-new-addr-btn:active { transform: scale(0.98); background: rgba(26,92,255,0.15); }
         
-        .address-card { background: var(--bg); border-radius: 12px; padding: 15px; display: flex; gap: 15px; position: relative; margin-bottom: 15px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
-        .address-card.selected { border-color: var(--primary); background: rgba(26, 92, 255, 0.03); }
-        .addr-radio { margin-top: 4px; accent-color: var(--primary); width: 18px; height: 18px; }
+        .address-card { background: var(--solid-card); border-radius: 16px; padding: 18px; display: flex; gap: 15px; position: relative; margin-bottom: 15px; border: 2px solid var(--border); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .address-card.selected { border-color: var(--primary); background: var(--primary-glow); }
+        .addr-radio { margin-top: 4px; accent-color: var(--primary); width: 20px; height: 20px; }
         .addr-details { flex-grow: 1; }
-        .addr-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-        .addr-pin { font-weight: 400; color: var(--muted); font-size: 13px; }
-        .addr-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
-        .addr-3dots { cursor: pointer; padding: 0 5px; font-size: 18px; color: var(--muted); font-weight: bold; }
+        .addr-title { font-weight: 800; font-size: 16px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; color: var(--text); }
+        .addr-pin { font-weight: 600; color: var(--muted); font-size: 13px; background: var(--input-bg); padding: 2px 8px; border-radius: 6px; }
+        .addr-text { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 500; }
+        .addr-3dots { cursor: pointer; padding: 0 5px; font-size: 20px; color: var(--muted); font-weight: bold; }
         
-        .dot-menu { position: absolute; right: 15px; top: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10; display: none; overflow: hidden; min-width: 120px; }
-        .dot-menu div { padding: 10px 15px; font-size: 14px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); }
+        .dot-menu { position: absolute; right: 15px; top: 45px; background: var(--solid-card); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 10; display: none; overflow: hidden; min-width: 130px; }
+        .dot-menu div { padding: 12px 18px; font-size: 14px; font-weight: 600; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); transition: 0.2s;}
+        .dot-menu div:active { background: var(--input-bg); }
         .dot-menu div:last-child { border-bottom: none; color: var(--danger); }
 
-        /* Order Card Compact Style */
-        .order-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); overflow: hidden; }
-        .order-status-pill { display: inline-block; font-weight: 600; font-size: 11px; padding: 4px 8px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        
-        .view-details-btn { display: block; width: 100%; text-align: center; background: rgba(26,92,255,0.08); color: var(--primary); font-weight: 700; padding: 12px; border-radius: 10px; margin-top: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
-        .view-details-btn:active { background: rgba(26,92,255,0.15); }
+        /* ORDER CARDS */
+        .order-card { background: var(--solid-card); border: 1px solid var(--border); border-radius: 20px; margin-bottom: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; }
+        .order-status-pill { display: inline-block; font-weight: 700; font-size: 11px; padding: 6px 12px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); text-transform: uppercase; letter-spacing: 0.5px;}
+        .view-details-btn { display: block; width: 100%; text-align: center; background: var(--primary-glow); color: var(--primary); font-weight: 800; padding: 14px; border-radius: 12px; margin-top: 15px; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .view-details-btn:active { transform: scale(0.98); }
 
-        /* Theme Switch */
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 2500; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 11px; font-weight: 600; gap: 4px; background: none; border: none; cursor: pointer; transition: 0.2s; }
+        /* =========================================
+           BOTTOM NAVIGATION
+           ========================================= */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; z-index: 2500; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 11px; font-weight: 700; gap: 5px; background: none; border: none; cursor: pointer; transition: 0.2s; }
         .bottom-nav-item.active { color: var(--primary); }
-        .bottom-nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; transition: 0.2s; }
-        .bottom-nav-item.active svg { transform: scale(1.1); }
+        .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; fill: none; transition: 0.2s; }
+        .bottom-nav-item.active svg { transform: scale(1.15); }
 
-        /* Premium Support Action Cards */
+        /* =========================================
+           SUPPORT & ACTION CARDS
+           ========================================= */
         .contact-item-premium {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            margin-bottom: 15px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            display: flex; align-items: center; padding: 18px; margin-bottom: 16px;
+            background: var(--solid-card); border: 1px solid var(--border);
+            border-radius: 18px; text-decoration: none; transition: all 0.2s ease;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
-        .contact-item-premium:active {
-            transform: scale(0.98);
-            background: rgba(0,0,0,0.02);
-        }
-        .contact-item-premium.time-btn {
-            cursor: default;
-        }
-        .contact-item-premium.time-btn:active {
-            transform: none;
-            background: var(--card);
-        }
+        .contact-item-premium:active { transform: scale(0.97); background: var(--input-bg); }
+        .contact-item-premium.time-btn { cursor: default; }
+        .contact-item-premium.time-btn:active { transform: none; background: var(--solid-card); }
+        
         .icon-circle {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 18px;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
+            width: 52px; height: 52px; border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; margin-right: 18px; flex-shrink: 0;
         }
-        .icon-circle svg {
-            width: 22px;
-            height: 22px;
-            stroke-width: 2;
-        }
-        .btn-text-content {
-            display: flex;
-            flex-direction: column;
-        }
-        .btn-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 3px;
-        }
-        .btn-subtitle {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--muted);
-        }
+        .icon-circle svg { width: 24px; height: 24px; stroke-width: 2.5; }
+        
+        .btn-text-content { display: flex; flex-direction: column; }
+        .btn-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+        .btn-subtitle { font-size: 13px; font-weight: 600; color: var(--muted); }
 
-        /* Toast Message */
-        #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 80px; font-size: 14px; transform: translateX(-50%); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-
-        /* General Modals */
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 4000; justify-content: center; align-items: center; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
-        .modal-card { background: var(--card); padding: 35px 25px; border-radius: 20px; text-align: center; max-width: 320px; width: 90%; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.15); position: relative; }
-        .modal-icon { font-size: 55px; margin-bottom: 10px; color: var(--success); }
-        .modal-card h2 { margin: 0 0 10px; color: var(--text); font-size: 20px; font-weight: 800; }
-        .modal-card p { font-size: 13px; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
-        .modal-btn { background: var(--primary); color: white; border: none; padding: 15px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; }
+        /* =========================================
+           MODALS & TOAST
+           ========================================= */
+        #toast { visibility: hidden; min-width: 250px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 12px; padding: 16px; font-weight: 600; position: fixed; z-index: 5000; left: 50%; bottom: 100px; font-size: 14px; transform: translateX(-50%); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.5s; }
+        
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .modal-card { background: var(--solid-card); padding: 35px 25px; border-radius: 24px; text-align: center; max-width: 330px; width: 90%; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; }
+        .modal-icon { font-size: 55px; margin-bottom: 15px; color: var(--success); }
+        .modal-card h2 { margin: 0 0 12px; color: var(--text); font-size: 22px; font-weight: 800; }
+        .modal-card p { font-size: 14px; font-weight: 500; color: var(--muted); margin-bottom: 30px; line-height: 1.6; }
+        .modal-btn { background: var(--primary); color: white; border: none; padding: 16px 20px; border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; box-shadow: 0 8px 20px var(--primary-glow);}
         .modal-btn:active { transform: scale(0.96); }
         
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 80px; opacity: 1; } }
-        @keyframes fadeout { from { bottom: 80px; opacity: 1; } to { bottom: 0; opacity: 0; } }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 100px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 100px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+        @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* SWITCH TOGGLE */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
         @media (max-width: 900px) {
-            .container { flex-direction: column; padding: 0 12px; margin-top: -20px; }
+            .container { flex-direction: column; padding: 0 12px; margin-top: -25px; }
             .catalog { flex: none; width: 100%; }
-            .sidebar { position: static; margin-top: 15px; }
+            .sidebar { position: static; margin-top: 15px; padding: 20px; }
         }
     </style>
 
@@ -273,7 +314,6 @@
             var savedTheme = localStorage.getItem('sb_theme');
             var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
             
-            // Apply logic: use saved preference, otherwise default to system theme
             if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             } else {
@@ -287,11 +327,12 @@
 
 <div id="splashScreen" class="splash-screen">
     <div class="splash-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 5V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2" />
-            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="currentColor" fill-opacity="0.15" />
-            <path d="M6 14a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4Z" />
-            <line x1="16" y1="12" x2="20" y2="8" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 7V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2"></path>
+            <rect x="3" y="7" width="18" height="15" rx="4" fill="currentColor" fill-opacity="0.08"></rect>
+            <path d="M7 13a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6H7v-6z" fill="var(--bg)" stroke="currentColor"></path>
+            <line x1="12" y1="11" x2="12" y2="13"></line>
+            <circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"></circle>
         </svg>
     </div>
 </div>
@@ -300,39 +341,43 @@
 
 <div id="customConfirmOverlay" class="overlay">
     <div class="modal-card" style="padding: 25px;">
-        <h2 id="confirmTitle" style="font-size: 18px; margin-bottom: 8px;">Confirm Action</h2>
+        <h2 id="confirmTitle" style="font-size: 20px; margin-bottom: 8px;">Confirm Action</h2>
         <p id="confirmMessage" style="margin-bottom: 25px;">Are you sure?</p>
-        <div style="display: flex; gap: 10px;">
-            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeCustomConfirm()">Cancel</button>
-            <button class="modal-btn" style="background: var(--danger); flex: 1; padding: 12px;" id="confirmActionBtn">Confirm</button>
+        <div style="display: flex; gap: 12px;">
+            <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 12px; flex: 1; margin: 0;" onclick="closeCustomConfirm()">Cancel</button>
+            <button class="modal-btn" style="background: var(--danger); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2); flex: 1; padding: 14px;" id="confirmActionBtn">Confirm</button>
         </div>
     </div>
 </div>
 
 <div id="advancedConfirmOverlay" class="overlay">
     <div class="modal-card" style="padding: 25px;">
-        <h2 style="font-size: 20px; margin-bottom: 8px; color: var(--danger);">Clear All Data</h2>
-        <p style="margin-bottom: 15px; font-size: 13px; line-height: 1.5;">This action cannot be undone. To proceed, please type <b>clear all data</b> below.</p>
+        <h2 style="font-size: 22px; margin-bottom: 10px; color: var(--danger);">Clear Local Data</h2>
+        <p style="margin-bottom: 20px; font-size: 14px; line-height: 1.6; text-align: left;">
+            This will securely delete your <b>Profile</b> and <b>Saved Addresses</b>.<br><br>
+            <span style="color: var(--success); font-weight: 700;">✅ Your "My Orders" history will NOT be deleted. It will remain safe.</span><br><br>
+            Type <b>clear data</b> below to confirm:
+        </p>
         
-        <div class="material-input" style="margin-bottom: 20px; text-align: left;">
-            <input type="text" id="advancedConfirmInput" placeholder="Type here..." oninput="checkAdvancedConfirm()" style="text-align: center; font-weight: bold; color: var(--danger);">
+        <div class="material-input" style="margin-bottom: 25px; text-align: left;">
+            <input type="text" id="advancedConfirmInput" placeholder="clear data" oninput="checkAdvancedConfirm()" style="text-align: center; font-weight: 800; color: var(--danger); font-size: 16px;">
         </div>
 
-        <div style="display: flex; gap: 10px;">
-            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeAdvancedConfirm()">Cancel</button>
-            <button class="modal-btn" style="background: var(--danger); flex: 1; padding: 12px; opacity: 0.4; cursor: not-allowed; transition: 0.3s;" id="advancedConfirmBtn" disabled>Okay</button>
+        <div style="display: flex; gap: 12px;">
+            <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 12px; flex: 1; margin: 0;" onclick="closeAdvancedConfirm()">Cancel</button>
+            <button class="modal-btn" style="background: var(--danger); box-shadow: none; flex: 1; padding: 14px; opacity: 0.4; cursor: not-allowed; transition: 0.3s;" id="advancedConfirmBtn" disabled>Clear Now</button>
         </div>
     </div>
 </div>
 
 <div id="waConfirmOverlay" class="overlay">
-    <div class="modal-card" style="padding: 25px;">
-        <div class="modal-icon" style="color: var(--whatsapp); font-size: 45px; margin-bottom: 15px;">📱</div>
-        <h2 style="font-size: 20px; margin-bottom: 8px;">Message Sent?</h2>
-        <p style="margin-bottom: 25px;">Did you successfully send the order message on WhatsApp?</p>
-        <div style="display: flex; gap: 10px;">
-            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0; padding: 12px 5px;" onclick="waConfirmNo()">No, Cancel</button>
-            <button class="modal-btn" style="background: var(--whatsapp); flex: 1.2; padding: 12px 5px;" onclick="waConfirmYes()">Yes, Sent ✅</button>
+    <div class="modal-card" style="padding: 30px 25px;">
+        <div class="modal-icon" style="color: var(--whatsapp); font-size: 60px; margin-bottom: 20px;">📱</div>
+        <h2 style="font-size: 22px; margin-bottom: 10px;">Message Sent?</h2>
+        <p style="margin-bottom: 30px;">Did you successfully send the order message on WhatsApp?</p>
+        <div style="display: flex; gap: 12px;">
+            <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 12px; flex: 1; margin: 0; padding: 14px 5px;" onclick="waConfirmNo()">Cancel</button>
+            <button class="modal-btn" style="background: var(--whatsapp); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25); flex: 1.2; padding: 14px 5px;" onclick="waConfirmYes()">Yes, Sent ✅</button>
         </div>
     </div>
 </div>
@@ -341,24 +386,25 @@
     <div class="modal-card">
         <div class="modal-icon">✅</div>
         <h2>Order Confirmed!</h2>
-        <p>Your order details have been successfully recorded in My Orders.</p>
-        <button class="modal-btn" onclick="closeSuccessPopup()">Okay</button>
+        <p>Your order details have been successfully recorded securely in My Orders.</p>
+        <button class="modal-btn" onclick="closeSuccessPopup()">Continue</button>
     </div>
 </div>
 
 <nav id="topNav">
     <div class="brand">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 5V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2" />
-            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="currentColor" fill-opacity="0.15" />
-            <path d="M6 14a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4Z" />
-            <line x1="16" y1="12" x2="20" y2="8" />
+            <path d="M8 7V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2"></path>
+            <rect x="3" y="7" width="18" height="15" rx="4" fill="currentColor" fill-opacity="0.08"></rect>
+            <path d="M7 13a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v6H7v-6z" fill="var(--bg)" stroke="currentColor"></path>
+            <line x1="12" y1="11" x2="12" y2="13"></line>
+            <circle cx="12" cy="16" r="1.2" fill="currentColor" stroke="none"></circle>
         </svg>
         safeblue
     </div>
     
     <button class="nav-profile-btn" onclick="navTo('account')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
         </svg>
@@ -367,8 +413,8 @@
 
 <div id="view-onboarding-profile" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingProfile)">
     <div class="page-wrapper" style="margin-top: 20px; padding-bottom: 100px;">
-        <h2 style="font-size: 26px; margin-bottom: 10px; color: var(--text);">Welcome to safeblue! 👋</h2>
-        <p style="color: var(--muted); margin-bottom: 30px; font-size: 15px; line-height: 1.5;">Let's get your account set up. Please enter your details below.</p>
+        <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 10px; color: var(--text);">Welcome to safeblue! 👋</h2>
+        <p style="color: var(--muted); margin-bottom: 35px; font-size: 15px; font-weight: 500; line-height: 1.6;">Let's get your account set up perfectly. Please enter your details below.</p>
         
         <div class="material-input">
             <label>First Name</label>
@@ -392,7 +438,7 @@
         </div>
         
         <div>
-            <label style="font-weight: 700; font-size: 15px;">Gender</label>
+            <label style="font-weight: 800; font-size: 14px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px;">Gender</label>
             <div class="gender-options">
                 <label><input type="radio" name="obGender" value="Male"> Male</label>
                 <label><input type="radio" name="obGender" value="Female"> Female</label>
@@ -401,16 +447,16 @@
         </div>
 
         <div style="margin-top: 40px;">
-            <button class="large-save-btn" onclick="saveOnboardingProfile()">Continue</button>
-            <button class="text-btn" onclick="skipOnboardingProfile()">Skip for now</button>
+            <button class="large-save-btn" onclick="saveOnboardingProfile()">Continue Setup</button>
+            <button class="text-btn" onclick="skipOnboardingProfile()" style="margin-top: 10px;">Skip for now</button>
         </div>
     </div>
 </div>
 
 <div id="view-onboarding-address" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingAddress)">
     <div class="page-wrapper" style="margin-top: 20px; padding-bottom: 100px;">
-        <h2 style="font-size: 26px; margin-bottom: 10px; color: var(--text);">Where to deliver? 📍</h2>
-        <p style="color: var(--muted); margin-bottom: 30px; font-size: 15px; line-height: 1.5;">Add your delivery address to get your stationery delivered quickly.</p>
+        <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 10px; color: var(--text);">Where to deliver? 📍</h2>
+        <p style="color: var(--muted); margin-bottom: 35px; font-size: 15px; font-weight: 500; line-height: 1.6;">Add your primary delivery address to get your stationery delivered quickly and safely.</p>
         
         <div class="material-input">
             <label>House No. / Flat / Building</label>
@@ -431,7 +477,7 @@
 
         <div style="margin-top: 40px;">
             <button class="large-save-btn" onclick="saveOnboardingAddress()">Save Address & Start Shopping</button>
-            <button class="text-btn" onclick="skipOnboardingAddress()">Skip for now</button>
+            <button class="text-btn" onclick="skipOnboardingAddress()" style="margin-top: 10px;">Skip for now</button>
         </div>
     </div>
 </div>
@@ -439,28 +485,28 @@
 <div id="view-home" class="view-section">
     <header>
         <h1>safeblue stationery</h1>
-        <p>Kawardha (491995) | Free Delivery</p>
+        <p>Kawardha (491995) | Fast & Free Delivery</p>
     </header>
     <div class="container">
         <div class="catalog">
             <div class="grid" id="productGrid"></div>
         </div>
         <div class="sidebar">
-            <h3 style="margin:0 0 15px 0; font-size: 16px;">Order Summary</h3>
+            <h3 style="margin:0 0 18px 0; font-size: 18px; font-weight: 800;">Order Summary</h3>
             <div id="cartItemsContainer"></div>
             
             <div id="receiptSummary" class="receipt-summary" style="display:none;">
                 <div class="summary-row"><span>Subtotal</span><span id="subTotal">₹0</span></div>
-                <div class="summary-row"><span>Delivery</span><span style="color: var(--success);">Free</span></div>
+                <div class="summary-row"><span>Delivery Fee</span><span style="color: var(--success); font-weight: 800;">FREE</span></div>
                 <div class="summary-row grand-total"><span>Grand Total</span><span id="grandTotal">₹0</span></div>
             </div>
             
-            <div id="minAlert">Minimum ₹100 required for delivery</div>
+            <div id="minAlert">Minimum ₹100 required for free delivery</div>
 
-            <div style="margin-top: 15px;">
-                <div style="background:rgba(26,92,255,0.06); padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; font-weight:800; color:var(--primary); font-size:12px; border:1px dashed rgba(26,92,255,0.3);">🚚 Cash on Delivery Only</div>
+            <div style="margin-top: 20px;">
+                <div style="background: var(--primary-glow); padding:14px; border-radius:12px; margin-bottom:18px; text-align:center; font-weight:800; color:var(--primary); font-size:13px; border: 1px dashed rgba(26,92,255,0.4);">🚚 Cash on Delivery Only</div>
                 <button type="button" class="confirm-btn" id="submitOrderBtn" disabled>
-                    Proceed to WhatsApp
+                    Proceed via WhatsApp
                 </button>
             </div>
         </div>
@@ -469,7 +515,7 @@
 
 <div id="view-orders" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         My Orders
     </div>
     <div class="page-wrapper" id="fullOrderHistoryList">
@@ -478,21 +524,21 @@
 
 <div id="view-order-details" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Order Details
     </div>
     <div class="page-wrapper" id="singleOrderDetailsContainer" style="padding-bottom: 85px;">
-        </div>
+    </div>
 </div>
 
 <div id="view-support" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Help & Support
     </div>
     <div class="page-wrapper" style="padding-bottom: 85px;">
-        <h2 style="font-size: 24px; margin-bottom: 8px; color: var(--text);">Get in Touch</h2>
-        <p style="color: var(--muted); margin-bottom: 25px; font-size: 14px; line-height: 1.5;">We are always here to help you. Choose an option below to connect with our team directly.</p>
+        <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 10px; color: var(--text);">Get in Touch</h2>
+        <p style="color: var(--muted); margin-bottom: 30px; font-size: 15px; font-weight: 500; line-height: 1.6;">We are always here to provide exceptional support. Connect with our team instantly.</p>
 
         <a href="tel:+916263839343" class="contact-item-premium">
             <div class="icon-circle" style="background: var(--phone-bg); color: var(--phone-color);">
@@ -504,13 +550,13 @@
             </div>
         </a>
 
-        <a href="https://wa.me/916263839343" target="_blank" rel="noopener noreferrer" class="contact-item-premium">
+        <a href="whatsapp://send?phone=916263839343" class="contact-item-premium">
             <div class="icon-circle" style="background: var(--wa-bg); color: var(--wa-color);">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">WhatsApp Support</span>
-                <span class="btn-subtitle">Instant smooth chat</span>
+                <span class="btn-subtitle" style="color: var(--wa-color); font-weight: 700;">Instant smooth chat ⚡</span>
             </div>
         </a>
 
@@ -539,7 +585,7 @@
 
 <div id="view-account" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Account
     </div>
     <div class="page-wrapper">
@@ -553,7 +599,13 @@
             </div>
             <div class="menu-item" onclick="navTo('orders')">
                 <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M9 14h6"></path>
+                        <path d="M9 18h6"></path>
+                        <path d="M9 10h.01"></path>
+                    </svg>
                     My Orders
                 </div>
                 <div class="chevron">›</div>
@@ -577,7 +629,7 @@
             <div class="menu-item">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    Dark Mode
+                    Dark Mode Theme
                 </div>
                 <label class="switch">
                     <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
@@ -590,7 +642,7 @@
 
 <div id="view-profile-view" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         My Profile
     </div>
     <div class="page-wrapper" style="padding-bottom: 100px;">
@@ -607,7 +659,7 @@
                 <span class="info-label">Email Address</span>
                 <span class="info-value" id="dispEmail">Not provided</span>
             </div>
-            <div class="info-row" style="flex-direction: row; gap: 40px;">
+            <div class="info-row" style="flex-direction: row; gap: 50px;">
                 <div style="display:flex; flex-direction:column;">
                     <span class="info-label">Age</span>
                     <span class="info-value" id="dispAge">N/A</span>
@@ -620,13 +672,13 @@
         </div>
     </div>
     <div class="fixed-bottom-btn">
-        <button class="large-save-btn" onclick="navTo('profile-edit')">Edit Profile</button>
+        <button class="large-save-btn" onclick="navTo('profile-edit')">Edit Profile Details</button>
     </div>
 </div>
 
 <div id="view-profile-edit" class="view-section" onkeydown="handleEnterKey(event, saveProfileData)">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Edit Details
     </div>
     <div class="page-wrapper" style="padding-bottom: 150px;">
@@ -652,7 +704,7 @@
         </div>
         
         <div>
-            <label style="font-weight: 700; font-size: 15px;">Gender</label>
+            <label style="font-weight: 800; font-size: 14px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px;">Gender</label>
             <div class="gender-options">
                 <label><input type="radio" name="accGender" value="Male"> Male</label>
                 <label><input type="radio" name="accGender" value="Female"> Female</label>
@@ -661,23 +713,23 @@
         </div>
     </div>
     <div class="fixed-bottom-btn">
-        <button class="large-save-btn" onclick="saveProfileData()">Save Changes</button>
-        <button class="clear-all-btn" onclick="clearAllData()">Clear All Data</button>
+        <button class="large-save-btn" onclick="saveProfileData()">Save All Changes</button>
+        <button class="clear-all-btn" onclick="clearAllData()">Clear Local Data</button>
     </div>
 </div>
 
 <div id="view-addresses" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Manage Addresses
     </div>
     <div class="page-wrapper">
         <button class="add-new-addr-btn" onclick="openAddressEdit(null)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            Add new address
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Address
         </button>
         
-        <div style="font-weight: 600; font-size: 16px; margin-bottom: 15px; color: var(--text);">Saved Addresses (Select Default)</div>
+        <div style="font-weight: 800; font-size: 16px; margin-bottom: 15px; color: var(--text);">Saved Addresses (Select Default)</div>
         
         <div id="addressDisplayList">
         </div>
@@ -686,7 +738,7 @@
 
 <div id="view-address-edit" class="view-section" onkeydown="handleEnterKey(event, saveAddressData)">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         <span id="addressEditTitle">Add Address</span>
     </div>
     <div class="page-wrapper" style="padding-bottom: 80px;">
@@ -710,28 +762,30 @@
         </div>
     </div>
     <div class="fixed-bottom-btn" style="flex-direction: row;">
-        <button class="large-save-btn" onclick="saveAddressData()">Save Address</button>
+        <button class="large-save-btn" onclick="saveAddressData()">Save Address Securely</button>
     </div>
 </div>
 
 <div class="bottom-nav" id="mainBottomNav">
     <button class="bottom-nav-item active" onclick="navTo('home', true)" id="nav-home">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         Home
     </button>
     <button class="bottom-nav-item" onclick="navTo('orders', true)" id="nav-orders">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            <path d="M9 14h6"></path>
+            <path d="M9 18h6"></path>
+            <path d="M9 10h.01"></path>
         </svg>
         My Orders
     </button>
     <button class="bottom-nav-item" onclick="navTo('account', true)" id="nav-account">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
         </svg>
@@ -751,7 +805,7 @@
         }
     }
 
-    // --- CUSTOM CONFIRM MODAL LOGIC (SECURE) ---
+    // --- SECURE MODALS CONTROLLERS ---
     let confirmActionCallback = null;
 
     function openCustomConfirm(title, message, callback) {
@@ -769,7 +823,6 @@
         closeCustomConfirm();
     });
 
-    // --- ADVANCED CONFIRM LOGIC (For Clear All Data) ---
     let advancedConfirmCallback = null;
 
     function openAdvancedConfirm(callback) {
@@ -782,10 +835,11 @@
         document.getElementById('advancedConfirmOverlay').style.display = 'none';
         advancedConfirmCallback = null;
     }
+    
     function checkAdvancedConfirm() {
         const val = document.getElementById('advancedConfirmInput').value.trim().toLowerCase();
         const btn = document.getElementById('advancedConfirmBtn');
-        if (val === 'clear all data') {
+        if (val === 'clear data') {
             btn.disabled = false;
             btn.style.opacity = '1';
             btn.style.cursor = 'pointer';
@@ -795,12 +849,13 @@
             btn.style.cursor = 'not-allowed';
         }
     }
+    
     document.getElementById('advancedConfirmBtn').addEventListener('click', function() {
         if (advancedConfirmCallback && !this.disabled) advancedConfirmCallback();
         closeAdvancedConfirm();
     });
 
-    // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
+    // --- ADVANCED ROUTING SYSTEM ---
     const validSections = ['home', 'orders', 'order-details', 'account', 'profile-view', 'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 'onboarding-address', 'support'];
 
     function navTo(section, isTabClick = false, isPopState = false) {
@@ -817,7 +872,7 @@
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         const newSection = document.getElementById('view-' + section);
         if(newSection) newSection.classList.add('active');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         const isRootTab = ['home', 'account', 'orders'].includes(section);
         const isOnboarding = ['onboarding-profile', 'onboarding-address'].includes(section);
@@ -863,7 +918,6 @@
         }
     });
 
-    // --- INIT APP & ONBOARDING LOGIC ---
     function bootApp() {
         const hash = window.location.hash.replace('#', '');
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
@@ -881,24 +935,21 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Ensure theme is applied based on HTML tag state set earlier
         syncToggleSwitch();
-
         bootApp();
 
         setTimeout(() => {
             document.getElementById('splashScreen').style.opacity = '0';
             setTimeout(() => { 
                 document.getElementById('splashScreen').style.display = 'none'; 
-            }, 400);
-        }, 500);
+            }, 500);
+        }, 600);
         
         migrateAddressData(); 
         renderAddressList();
         renderGrid();
     });
 
-    // --- UTILS ---
     function showToast(message) {
         const toast = document.getElementById("toast");
         toast.innerText = message;
@@ -906,16 +957,14 @@
         setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
     }
 
-    // --- 100% SMART THEME DETECTION & TOGGLE LOGIC ---
+    // --- SMART THEME ENGINE LOGIC ---
     function toggleTheme() {
         const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const newTheme = isCurrentlyDark ? 'light' : 'dark';
         
         document.documentElement.setAttribute('data-theme', newTheme);
-        document.body.setAttribute('data-theme', newTheme);
         document.getElementById('themeCheckbox').checked = !isCurrentlyDark;
         
-        // Save the manual preference, overriding system default
         localStorage.setItem('sb_theme', newTheme); 
     }
     
@@ -925,18 +974,15 @@
         if (checkbox) checkbox.checked = isDark;
     }
 
-    // Listen for system theme changes dynamically
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        // Only switch automatically if user hasn't set a manual preference
         if (!localStorage.getItem('sb_theme')) {
             const newTheme = event.matches ? "dark" : "light";
             document.documentElement.setAttribute('data-theme', newTheme);
-            document.body.setAttribute('data-theme', newTheme);
             syncToggleSwitch();
         }
     });
 
-    // --- NUMBER VALIDATOR UTILITY ---
+    // --- FORM VALIDATION UTILS ---
     function isPhoneNumberValid(phone) {
         const digitsOnly = phone.replace(/[^0-9]/g, ''); 
         if(digitsOnly.length < 10) {
@@ -950,7 +996,7 @@
         return true;
     }
 
-    // --- FULL PAGE ONBOARDING LOGIC ---
+    // --- ONBOARDING ENGINE ---
     function skipOnboardingProfile() {
         localStorage.setItem('sb_skip_onboarding', 'true');
         navTo('home', false, false);
@@ -984,7 +1030,7 @@
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         localStorage.removeItem('sb_skip_onboarding'); 
         
-        showToast(`Profile Saved!`);
+        showToast(`Profile Setup Successful!`);
         navTo('onboarding-address', false, false);
     }
 
@@ -1014,7 +1060,7 @@
         navTo('home', false, false);
     }
 
-    // --- SMART PROFILE LOGIC (MANAGE ACCOUNT SECTION) ---
+    // --- PROFILE MANAGEMENT ---
     function handleProfileClick() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         if (!p.fName || !p.phone) {
@@ -1090,18 +1136,22 @@
 
     function clearAllData() {
         openAdvancedConfirm(function() {
-            localStorage.clear(); 
+            // SAFE CLEAR: Only remove profile, addresses & onboarding. KEEP Orders Safe!
+            localStorage.removeItem('sb_profile');
+            localStorage.removeItem('sb_addresses');
+            localStorage.removeItem('sb_skip_onboarding');
+            
             cart = [];
             updateUI();
-            showToast("All Data Cleared Successfully.");
+            showToast("Profile & Addresses Cleared. Your Orders are Safe!");
             setTimeout(() => {
                 window.location.hash = '';
                 location.reload(); 
-            }, 1000);
+            }, 1200);
         });
     }
 
-    // --- ADDRESS LOGIC ---
+    // --- ADDRESS MANAGEMENT ---
     function migrateAddressData() {
         const oldAddr = JSON.parse(localStorage.getItem('sb_address') || 'null');
         if(oldAddr && !oldAddr.length) { 
@@ -1138,7 +1188,7 @@
         }
 
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
-        showToast("Address Saved Successfully!");
+        showToast("Address Saved Securely!");
 
         if(sessionStorage.getItem('checkout_chain') === 'step2_address') {
             sessionStorage.removeItem('checkout_chain');
@@ -1151,7 +1201,7 @@
 
     function openAddressEdit(id) {
         document.getElementById('inpAddrId').value = id || '';
-        document.getElementById('addressEditTitle').innerText = id ? 'Edit Address' : 'Add Address';
+        document.getElementById('addressEditTitle').innerText = id ? 'Edit Address' : 'Add New Address';
         if(id) {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
             const a = addresses.find(x => x.id == id);
@@ -1174,13 +1224,13 @@
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const container = document.getElementById('addressDisplayList');
         if(addresses.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding: 20px; opacity:0.5;">No saved address found.</div>';
+            container.innerHTML = '<div style="text-align:center; padding: 20px; opacity:0.5; font-weight:600;">No saved addresses found.</div>';
             return;
         }
         
         container.innerHTML = addresses.map((a, index) => {
             let fullAddr = '';
-            if(a.house) fullAddr += `<b>${a.house}</b>, `;
+            if(a.house) fullAddr += `<b style="color:var(--text);">${a.house}</b>, `;
             fullAddr += `${a.street}`;
             if(a.landmark) fullAddr += `<br>Landmark: ${a.landmark}`;
             if(a.ward) fullAddr += `<br>Ward No: ${a.ward}`;
@@ -1195,8 +1245,8 @@
                 </div>
                 <div class="addr-3dots" onclick="event.stopPropagation(); toggleDotMenu(${a.id})">⋮</div>
                 <div class="dot-menu" id="addrDotMenu-${a.id}">
-                    <div onclick="event.stopPropagation(); openAddressEdit(${a.id})">Edit</div>
-                    <div onclick="event.stopPropagation(); deleteAddress(${a.id})">Remove</div>
+                    <div onclick="event.stopPropagation(); openAddressEdit(${a.id})">Edit Address</div>
+                    <div onclick="event.stopPropagation(); deleteAddress(${a.id})">Remove Address</div>
                 </div>
             </div>`;
         }).join('');
@@ -1220,7 +1270,7 @@
     function deleteAddress(id) {
         openCustomConfirm(
             "Remove Address?", 
-            "Are you sure you want to remove this saved address?", 
+            "Are you sure you want to remove this saved address securely?", 
             function() {
                 let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
                 addresses = addresses.filter(a => a.id !== id);
@@ -1239,6 +1289,7 @@
         }
     });
 
+    // --- E-COMMERCE ENGINE ---
     const products = [
         { id: 1, name: 'Combine copy page180 M.R.P=42', price: 21 },
         { id: 2, name: 'Combine copy page180 M.R.P=50', price: 25 },
@@ -1298,15 +1349,15 @@
         const alertBox = document.getElementById('minAlert');
 
         if(cart.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:15px; opacity:0.5; font-size: 13px;">🛒 Cart is empty</div>`;
+            container.innerHTML = `<div style="text-align:center; padding:20px; opacity:0.5; font-size: 14px; font-weight:600;">🛒 Your cart is empty</div>`;
             summary.style.display = 'none';
             alertBox.style.display = 'none';
             btn.disabled = true;
         } else {
             container.innerHTML = cart.map(c => `
                 <div class="cart-item-row">
-                    <span style="width:75%; font-weight:600;">${c.qty}x ${c.name}</span>
-                    <span style="font-weight:700; color:var(--primary);">₹${c.price * c.qty}</span>
+                    <span style="width:75%; font-weight:700;">${c.qty}x ${c.name}</span>
+                    <span style="font-weight:800; color:var(--primary);">₹${c.price * c.qty}</span>
                 </div>`
             ).join("");
             
@@ -1357,20 +1408,16 @@
             msgItems += `▪️ *${i.name}*\n   Qty: ${i.qty}  |  Price: ₹${priceDisp}  |  Total: ₹${lineTotal}\n\n`;
         });
         
-        const msg = `*🛍️ ORDER DETAILS (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* COD`;
+        const msg = `*🛍️ NEW SECURE ORDER (safeblue)*\n\n*👤 Customer Profile:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Destination:*\n${finalAddr}\n\n*📦 Cart Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
         
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
         
         sessionStorage.setItem('waitingForWaReturn', 'true');
 
-        const waLink = `https://wa.me/916263839343?text=${encodeURIComponent(msg)}`;
-        const link = document.createElement('a');
-        link.href = waLink;
-        link.target = "_blank"; // Opens gracefully 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // ULTRA FAST NATIVE DEEP LINK FOR INSTANT OPENING
+        const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(msg)}`;
+        window.location.href = waLink;
     });
 
     document.addEventListener("visibilitychange", function() {
@@ -1401,7 +1448,7 @@
     function waConfirmNo() {
         document.getElementById('waConfirmOverlay').style.display = 'none';
         pendingOrderData = null; 
-        showToast("No problem, your order was not saved.");
+        showToast("Action cancelled. Your order was not saved.");
     }
 
     function closeSuccessPopup() {
@@ -1423,17 +1470,17 @@
             const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
             const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
             return `
-            <div style="padding: 15px; background: var(--card); border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.01);">
-                <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--text);">📘 ${i.name}</div>
+            <div style="padding: 18px; background: var(--solid-card); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div style="font-weight: 800; font-size: 14px; margin-bottom: 10px; color: var(--text);">📘 ${i.name}</div>
                 <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); align-items: center;">
-                    <span style="background: var(--bg); padding: 4px 8px; border-radius: 6px;">Qty: <b>${i.qty}</b> × ₹${priceDisp}</span>
-                    <span style="font-weight: 800; font-size: 16px; color: var(--primary);">₹${lineTotal}</span>
+                    <span style="background: var(--input-bg); padding: 6px 10px; border-radius: 8px; font-weight: 600;">Qty: <b style="color:var(--text);">${i.qty}</b> × ₹${priceDisp}</span>
+                    <span style="font-weight: 800; font-size: 18px; color: var(--primary);">₹${lineTotal}</span>
                 </div>
             </div>`;
         }).join('');
 
         document.getElementById('singleOrderDetailsContainer').innerHTML = `
-            <div class="profile-info-box" style="margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+            <div class="profile-info-box" style="margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.03);">
                 <div class="info-row">
                     <span class="info-label">Order Number</span>
                     <span class="info-value">#${o.id}</span>
@@ -1444,19 +1491,19 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">Current Status</span>
-                    <span class="info-value" style="color: var(--success); display: flex; align-items: center; gap: 6px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        Order Sent to WhatsApp
+                    <span class="info-value" style="color: var(--success); display: flex; align-items: center; gap: 8px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Securely Sent to WhatsApp
                     </span>
                 </div>
             </div>
             
-            <h3 style="font-size: 16px; margin-bottom: 15px; padding-left: 5px; color: var(--text);">Items Ordered</h3>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 18px; padding-left: 5px; color: var(--text);">Items Ordered</h3>
             ${itemsHtml}
             
-            <div class="profile-info-box" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg); border: 2px dashed var(--border);">
-                <span style="font-weight: 700; color: var(--muted); font-size: 14px;">Grand Total</span>
-                <span style="font-size: 22px; font-weight: 800; color: var(--text);">₹${o.total}</span>
+            <div class="profile-info-box" style="margin-top: 25px; display: flex; justify-content: space-between; align-items: center; background: var(--primary-glow); border: 2px dashed var(--primary);">
+                <span style="font-weight: 800; color: var(--primary); font-size: 16px;">Grand Total</span>
+                <span style="font-size: 24px; font-weight: 800; color: var(--text);">₹${o.total}</span>
             </div>
         `;
     }
@@ -1466,7 +1513,7 @@
         const container = document.getElementById('fullOrderHistoryList');
         
         if(orders.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:50px 20px; opacity:0.6;"><div style="font-size:40px; margin-bottom:10px;">📦</div><div style="font-size:16px; font-weight:700;">No Orders Yet</div><button onclick="navTo(\'home\', true)" class="add-btn" style="width:auto; padding:10px 20px; margin-top:20px;">Start Shopping</button></div>';
+            container.innerHTML = '<div style="text-align:center; padding:60px 20px; opacity:0.6;"><div style="font-size:50px; margin-bottom:15px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">📦</div><div style="font-size:18px; font-weight:800;">No Orders Yet</div><p style="font-size: 14px; margin-top: 5px;">Your secure orders will appear here.</p><button onclick="navTo(\'home\', true)" class="add-btn" style="width:auto; padding:14px 25px; margin-top:25px; border-radius: 12px; box-shadow: 0 8px 20px var(--primary-glow);">Start Shopping</button></div>';
             return;
         }
 
@@ -1476,27 +1523,27 @@
 
             return `
             <div class="order-card" style="padding: 0;">
-                <div style="padding: 12px 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
                     <div>
-                        <div style="font-size: 15px; font-weight: 700; color: var(--text);">Order #${o.id}</div>
-                        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">${o.date}</div>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--text);">Order #${o.id}</div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 5px;">${o.date}</div>
                     </div>
                     <span class="order-status-pill">Confirmed</span>
                 </div>
                 
-                <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; background: var(--bg);">
-                    <div style="font-size: 13px; color: var(--muted);">
-                        <div style="font-weight: 700; color: var(--text); margin-bottom: 3px;">${totalItems} Items</div>
-                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;">${itemSummary}</div>
+                <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg);">
+                    <div style="font-size: 14px; color: var(--muted);">
+                        <div style="font-weight: 800; color: var(--text); margin-bottom: 4px;">${totalItems} Items</div>
+                        <div style="white-space: nowrap; font-weight: 500; overflow: hidden; text-overflow: ellipsis; max-width: 170px;">${itemSummary}</div>
                     </div>
                     <div style="text-align: right;">
-                        <div style="font-size: 11px; color: var(--muted);">Total Amount</div>
-                        <div style="font-size: 16px; font-weight: 800; color: var(--text);">₹${o.total}</div>
+                        <div style="font-size: 12px; font-weight: 700; color: var(--muted);">Total Amount</div>
+                        <div style="font-size: 18px; font-weight: 800; color: var(--text);">₹${o.total}</div>
                     </div>
                 </div>
                 
-                <div style="padding: 10px 15px 15px;">
-                    <div class="view-details-btn" style="margin-top: 0; padding: 10px;" onclick="openOrderDetails(${o.id})">
+                <div style="padding: 12px 20px 20px;">
+                    <div class="view-details-btn" style="margin-top: 0;" onclick="openOrderDetails(${o.id})">
                         View Order Details ➔
                     </div>
                 </div>
