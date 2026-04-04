@@ -8,7 +8,6 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="school-bag.png" as="image">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
@@ -19,7 +18,7 @@
         
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: background-color 0.4s ease, color 0.4s ease; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         
-        /* --- Lightning Fast Splash Screen Styles --- */
+        /* --- 100% Guaranteed Splash Screen (SVG Code Inside) --- */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -36,16 +35,17 @@
             will-change: opacity;
         }
         .splash-logo {
-            width: 120px;
-            height: 120px;
-            background-image: url('school-bag.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            width: 90px;
+            height: 90px;
             animation: pulseLogo 1.2s infinite alternate ease-in-out;
             margin-bottom: 15px;
-            filter: drop-shadow(0px 10px 15px rgba(0, 82, 204, 0.2));
             will-change: transform;
+        }
+        /* SVG styling for premium look */
+        .splash-logo svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0px 10px 15px rgba(0, 82, 204, 0.25));
         }
         .splash-brand {
             font-weight: 800;
@@ -67,7 +67,8 @@
             0% { transform: scale(0.95) translateY(0); }
             100% { transform: scale(1.05) translateY(-5px); }
         }
-        /* --------------------------------- */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* -------------------------------------------------------- */
 
         nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; transition: 0.3s; }
         .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; text-transform: lowercase; }
@@ -127,7 +128,6 @@
         .confirm-btn:disabled { background: var(--border); color: #888; cursor: not-allowed; box-shadow: none; }
         
         .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #successOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .success-card { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; max-width: 320px; width: 90%; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -161,7 +161,14 @@
 <body data-theme="light">
 
 <div id="splashScreen" class="splash-screen">
-    <div class="splash-logo"></div>
+    <div class="splash-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="rgba(0, 82, 204, 0.1)"></path>
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"></path>
+            <path d="M4 15h16"></path>
+        </svg>
+    </div>
     <div class="splash-brand">safeblue</div>
     <div class="splash-spinner"></div>
 </div>
@@ -268,19 +275,19 @@
         history.scrollRestoration = 'manual';
     }
 
-    // --- 2. Lightning Fast Splash Screen Removal & Scroll to Top ---
+    // --- 2. Splash Screen Removal & Scroll to Top ---
     document.addEventListener("DOMContentLoaded", function() {
-        // Force scroll to top immediately on load
+        // Force scroll to top instantly
         window.scrollTo(0, 0); 
 
         const splashScreen = document.getElementById('splashScreen');
         
-        // Timer reduced from 1500ms to 400ms for a snappy, app-like feel
+        // 400ms for a snappy, app-like feel
         setTimeout(() => {
-            splashScreen.style.opacity = '0'; // Fast fade out
+            splashScreen.style.opacity = '0';
             setTimeout(() => {
-                splashScreen.style.display = 'none'; // DOM removal
-            }, 300); // Matches CSS transition time
+                splashScreen.style.display = 'none';
+            }, 300);
         }, 400); 
     });
     // ---------------------------------------------
