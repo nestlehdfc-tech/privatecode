@@ -1427,37 +1427,35 @@
         }
 
         const name = `${p.fName} ${p.lName||''}`.trim();
-        const finalAddr = `${defaultAddr.house ? defaultAddr.house + ', ' : ''}${defaultAddr.street}\nWard: ${defaultAddr.ward||'NA'}\nLandmark: ${defaultAddr.landmark||'NA'}\nPin: 491995`;
+        
+        const houseNo = defaultAddr.house ? defaultAddr.house.trim() : 'NA';
+        const streetStr = defaultAddr.street ? defaultAddr.street.trim() : 'NA';
+        const wardStr = defaultAddr.ward ? defaultAddr.ward.trim() : 'NA';
+        const landmarkStr = defaultAddr.landmark ? defaultAddr.landmark.trim() : 'NA';
+
+        const finalAddr = `${houseNo}, ${streetStr}\nWard: ${wardStr}\nLandmark: ${landmarkStr}\nPin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
         // PROFESSIONAL WHATSAPP INVOICE FORMATTING
         let msgItems = "";
-        cart.forEach((i, index) => {
+        cart.forEach((i) => {
             const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
             const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
-            msgItems += `▪️ *${i.name}*\n   ${i.qty} Unit(s) × ₹${priceDisp} = *₹${lineTotal}*\n`;
+            msgItems += `▫️ *${i.name}*\nQty: ${i.qty} | Price: ₹${priceDisp} | Total: ₹${lineTotal}\n\n`;
         });
+        msgItems = msgItems.trim(); // removes the trailing empty line
         
-        const timestamp = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
-        
-        const msg = `🧾 *SAFEBLUE STATIONERY | NEW ORDER* 🧾\n\n` +
-                    `*👤 CUSTOMER DETAILS*\n` +
-                    `---------------------------------\n` +
-                    `*Name:* ${name}\n` +
-                    `*Phone:* ${p.phone}\n\n` +
-                    `*📍 DELIVERY ADDRESS*\n` +
+        const msg = `🛍️ *ORDER DETAILS*\n\n` +
+                    `👤 *Customer:*\n` +
+                    `Name: ${name}\n` +
+                    `Phone: ${p.phone}\n\n` +
+                    `📍 *DELIVERY ADDRESS*\n` +
                     `---------------------------------\n` +
                     `${finalAddr}\n\n` +
-                    `*🛍️ ORDER ITEMS*\n` +
-                    `---------------------------------\n` +
-                    `${msgItems}\n` +
-                    `*💰 BILLING SUMMARY*\n` +
-                    `---------------------------------\n` +
-                    `Subtotal: ₹${total}\n` +
-                    `Delivery Fee: FREE\n` +
-                    `*Grand Total: ₹${total}*\n\n` +
-                    `*💳 Payment Mode:* Cash on Delivery (COD)\n` +
-                    `🕒 *Date & Time:* ${timestamp}`;
+                    `📦 *Items:*\n` +
+                    `${msgItems}\n\n` +
+                    `💰 *Grand Total: ₹${total}*\n` +
+                    `Payment Mode: COD`;
         
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
