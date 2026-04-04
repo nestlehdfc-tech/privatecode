@@ -14,6 +14,54 @@
         
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: background-color 0.4s ease, color 0.4s ease; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
         
+        /* --- NEW: Splash Screen Styles --- */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999999; /* Highest priority to cover everything */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s cubic-bezier(0.8, 0, 0.2, 1), visibility 0.6s;
+        }
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .splash-logo {
+            width: 120px;
+            height: auto;
+            animation: pulseLogo 1.5s infinite alternate ease-in-out;
+            margin-bottom: 15px;
+            filter: drop-shadow(0px 10px 15px rgba(0, 82, 204, 0.2));
+        }
+        .splash-brand {
+            font-weight: 800;
+            font-size: 26px;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            text-transform: lowercase;
+            margin: 0 0 25px 0;
+        }
+        .splash-spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes pulseLogo {
+            0% { transform: scale(0.95) translateY(0); }
+            100% { transform: scale(1.05) translateY(-5px); }
+        }
+        /* --------------------------------- */
+
         nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; transition: 0.3s; }
         .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; text-transform: lowercase; }
         .nav-actions { display: flex; gap: 8px; align-items: center; }
@@ -109,6 +157,11 @@
 </head>
 <body data-theme="light">
 
+<div id="splashScreen" class="splash-screen">
+    <img src="school-bag.png" alt="safeblue logo" class="splash-logo">
+    <div class="splash-brand">safeblue</div>
+    <div class="splash-spinner"></div>
+</div>
 <div id="successOverlay">
     <div class="success-card">
         <div class="success-icon">✅</div>
@@ -206,6 +259,19 @@
 </div>
 
 <script>
+    // --- NEW: Splash Screen Logic ---
+    window.addEventListener('load', function() {
+        const splashScreen = document.getElementById('splashScreen');
+        // 1.5 seconds loading time looks very professional
+        setTimeout(() => {
+            splashScreen.classList.add('hidden'); // Starts fade out
+            setTimeout(() => {
+                splashScreen.style.display = 'none'; // Removes from DOM completely
+            }, 600); // Matches the 0.6s CSS transition time
+        }, 1500); 
+    });
+    // --------------------------------
+
     // --- WebIntoApp Ad Blocker ---
     (function blockInjectedAds() {
         const removeAds = () => {
