@@ -258,22 +258,15 @@
     </div>
 </div>
 
-<div id="welcomePopup" class="overlay">
-    <div class="modal-card" style="padding-top: 25px;">
-        <h2 style="font-size: 22px;">Welcome to safeblue!</h2>
-        <p>Let's get started. Please enter your name below.</p>
-        
-        <div class="material-input" style="margin-bottom: 15px; text-align: left;">
-            <label style="background: var(--card);">First Name</label>
-            <input type="text" id="welcomeFName" placeholder="e.g. John">
+<div id="waConfirmOverlay" class="overlay">
+    <div class="modal-card" style="padding: 25px;">
+        <div class="modal-icon" style="color: var(--whatsapp); font-size: 45px; margin-bottom: 15px;">📱</div>
+        <h2 style="font-size: 20px; margin-bottom: 8px;">Message Sent?</h2>
+        <p style="margin-bottom: 25px;">Did you successfully send the order message on WhatsApp?</p>
+        <div style="display: flex; gap: 10px;">
+            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0; padding: 12px 5px;" onclick="waConfirmNo()">No, Cancel</button>
+            <button class="modal-btn" style="background: var(--whatsapp); flex: 1.2; padding: 12px 5px;" onclick="waConfirmYes()">Yes, Sent ✅</button>
         </div>
-        <div class="material-input" style="margin-bottom: 25px; text-align: left;">
-            <label style="background: var(--card);">Last Name (Optional)</label>
-            <input type="text" id="welcomeLName" placeholder="e.g. Doe">
-        </div>
-
-        <button class="modal-btn" onclick="saveWelcomeData()">Continue</button>
-        <button class="text-btn" onclick="closeWelcomePopup()">Skip for now</button>
     </div>
 </div>
 
@@ -281,7 +274,7 @@
     <div class="modal-card">
         <div class="modal-icon">✅</div>
         <h2>Order Confirmed!</h2>
-        <p>Your order details have been successfully sent. We will contact you shortly.</p>
+        <p>Your order details have been successfully recorded in My Orders.</p>
         <button class="modal-btn" onclick="closeSuccessPopup()">Okay</button>
     </div>
 </div>
@@ -298,7 +291,78 @@
     </div>
 </nav>
 
-<div id="view-home" class="view-section active">
+<div id="view-onboarding-profile" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingProfile)">
+    <div class="page-wrapper" style="margin-top: 20px; padding-bottom: 100px;">
+        <h2 style="font-size: 26px; margin-bottom: 10px; color: var(--text);">Welcome to safeblue! 👋</h2>
+        <p style="color: var(--muted); margin-bottom: 30px; font-size: 15px; line-height: 1.5;">Let's get your account set up. Please enter your details below.</p>
+        
+        <div class="material-input">
+            <label>First Name</label>
+            <input type="text" id="obFName" autocomplete="given-name" placeholder="e.g. John">
+        </div>
+        <div class="material-input">
+            <label>Last Name</label>
+            <input type="text" id="obLName" autocomplete="family-name" placeholder="e.g. Doe">
+        </div>
+        <div class="material-input">
+            <label>Mobile Number</label>
+            <input type="tel" id="obPhone" autocomplete="tel" placeholder="e.g. +91 98XXXXXXXX">
+        </div>
+        <div class="material-input">
+            <label>Email Address</label>
+            <input type="email" id="obEmail" autocomplete="email" placeholder="john.doe@example.com">
+        </div>
+        <div class="material-input">
+            <label>Your Age</label>
+            <input type="number" id="obAge" autocomplete="bday-year" placeholder="e.g. 20" min="1">
+        </div>
+        
+        <div>
+            <label style="font-weight: 700; font-size: 15px;">Gender</label>
+            <div class="gender-options">
+                <label><input type="radio" name="obGender" value="Male"> Male</label>
+                <label><input type="radio" name="obGender" value="Female"> Female</label>
+                <label><input type="radio" name="obGender" value="Other"> Other</label>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <button class="large-save-btn" onclick="saveOnboardingProfile()">Continue</button>
+            <button class="text-btn" onclick="skipOnboardingProfile()">Skip for now</button>
+        </div>
+    </div>
+</div>
+
+<div id="view-onboarding-address" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingAddress)">
+    <div class="page-wrapper" style="margin-top: 20px; padding-bottom: 100px;">
+        <h2 style="font-size: 26px; margin-bottom: 10px; color: var(--text);">Where to deliver? 📍</h2>
+        <p style="color: var(--muted); margin-bottom: 30px; font-size: 15px; line-height: 1.5;">Add your delivery address to get your stationery delivered quickly.</p>
+        
+        <div class="material-input">
+            <label>House No. / Flat / Building</label>
+            <input type="text" id="obHouse" placeholder="e.g. House No 42, Om Residency">
+        </div>
+        <div class="material-input">
+            <label>Area / Street / Colony</label>
+            <textarea id="obStreet" rows="3" autocomplete="street-address" placeholder="e.g. Anand Vihar Colony..."></textarea>
+        </div>
+        <div class="material-input">
+            <label>Landmark</label>
+            <input type="text" id="obLandmark" placeholder="e.g. Near Shiv Mandir">
+        </div>
+        <div class="material-input">
+            <label>Ward No. (Optional)</label>
+            <input type="text" id="obWard" autocomplete="address-level4" placeholder="e.g. Ward 12">
+        </div>
+
+        <div style="margin-top: 40px;">
+            <button class="large-save-btn" onclick="saveOnboardingAddress()">Save Address & Start Shopping</button>
+            <button class="text-btn" onclick="skipOnboardingAddress()">Skip for now</button>
+        </div>
+    </div>
+</div>
+
+<div id="view-home" class="view-section">
     <header>
         <h1>safeblue stationery</h1>
         <p>Kawardha (491995) | Free Delivery</p>
@@ -425,7 +489,7 @@
     </div>
 </div>
 
-<div id="view-profile-edit" class="view-section">
+<div id="view-profile-edit" class="view-section" onkeydown="handleEnterKey(event, saveProfileData)">
     <div class="sub-header">
         <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Edit Details
@@ -433,23 +497,23 @@
     <div class="page-wrapper" style="padding-bottom: 150px;">
         <div class="material-input">
             <label>First Name</label>
-            <input type="text" id="accFName" placeholder="e.g. John">
+            <input type="text" id="accFName" autocomplete="given-name" placeholder="e.g. John">
         </div>
         <div class="material-input">
             <label>Last Name</label>
-            <input type="text" id="accLName" placeholder="e.g. Doe">
+            <input type="text" id="accLName" autocomplete="family-name" placeholder="e.g. Doe">
         </div>
         <div class="material-input">
             <label>Mobile Number</label>
-            <input type="tel" id="accPhone" placeholder="e.g. 98XXXXXXXX or 9198XXXXXXXX" maxlength="12">
+            <input type="tel" id="accPhone" autocomplete="tel" placeholder="e.g. 98XXXXXXXX">
         </div>
         <div class="material-input">
             <label>Email Address</label>
-            <input type="email" id="accEmail" placeholder="john.doe@example.com">
+            <input type="email" id="accEmail" autocomplete="email" placeholder="john.doe@example.com">
         </div>
         <div class="material-input">
             <label>Your Age</label>
-            <input type="number" id="accAge" placeholder="e.g. 25" min="1">
+            <input type="number" id="accAge" autocomplete="bday-year" placeholder="e.g. 25" min="1">
         </div>
         
         <div>
@@ -485,28 +549,29 @@
     </div>
 </div>
 
-<div id="view-address-edit" class="view-section">
+<div id="view-address-edit" class="view-section" onkeydown="handleEnterKey(event, saveAddressData)">
     <div class="sub-header">
         <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         <span id="addressEditTitle">Add Address</span>
     </div>
     <div class="page-wrapper" style="padding-bottom: 80px;">
         <input type="hidden" id="inpAddrId" value="">
+        
         <div class="material-input">
-            <label>Full Address / Area / Colony</label>
-            <textarea id="inpStreet" rows="3" placeholder="e.g. House No. 12, Main Market Road..."></textarea>
+            <label>House No. / Flat / Building</label>
+            <input type="text" id="inpHouse" placeholder="e.g. House No 42, Om Residency">
+        </div>
+        <div class="material-input">
+            <label>Area / Street / Colony</label>
+            <textarea id="inpStreet" rows="3" autocomplete="street-address" placeholder="e.g. Anand Vihar Colony..."></textarea>
+        </div>
+        <div class="material-input">
+            <label>Landmark</label>
+            <input type="text" id="inpLandmark" placeholder="e.g. Near Shiv Mandir">
         </div>
         <div class="material-input">
             <label>Ward No. (Optional)</label>
-            <input type="text" id="inpWard">
-        </div>
-        <div class="material-input">
-            <label>House No. (Optional)</label>
-            <input type="text" id="inpHouse">
-        </div>
-        <div class="material-input">
-            <label>Landmark (Optional)</label>
-            <input type="text" id="inpLandmark" placeholder="Near Tiwari Shop...">
+            <input type="text" id="inpWard" autocomplete="address-level4" placeholder="e.g. Ward 12">
         </div>
     </div>
     <div class="fixed-bottom-btn" style="flex-direction: row;">
@@ -540,6 +605,18 @@
 </div>
 
 <script>
+    // --- GLOBAL ENTER KEY HANDLER FOR PC (DESKTOP SUPPORT) ---
+    function handleEnterKey(event, actionFunction) {
+        if (event.key === 'Enter') {
+            const tagName = event.target.tagName.toLowerCase();
+            // Allow 'Enter' to insert new line only in Textarea, else trigger save function
+            if (tagName !== 'textarea' && tagName !== 'button') {
+                event.preventDefault();
+                actionFunction();
+            }
+        }
+    }
+
     // --- CUSTOM CONFIRM MODAL LOGIC (SECURE) ---
     let confirmActionCallback = null;
 
@@ -589,9 +666,12 @@
         closeAdvancedConfirm();
     });
 
-
     // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
+    const validSections = ['home', 'orders', 'order-details', 'account', 'profile-view', 'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 'onboarding-address'];
+
     function navTo(section, isTabClick = false, isPopState = false) {
+        if (!validSections.includes(section)) section = 'home';
+
         if (!isPopState) {
             if (section === 'home' && isTabClick) {
                 history.replaceState({ section: section }, '', '#' + section);
@@ -605,11 +685,11 @@
         if(newSection) newSection.classList.add('active');
         window.scrollTo(0, 0);
 
-        // Hide Bottom Nav strictly for inner details page
         const isRootTab = ['home', 'account', 'orders'].includes(section);
+        const isOnboarding = ['onboarding-profile', 'onboarding-address'].includes(section);
 
         document.getElementById('topNav').style.display = (section === 'home') ? 'flex' : 'none';
-        document.getElementById('mainBottomNav').style.display = isRootTab ? 'flex' : 'none';
+        document.getElementById('mainBottomNav').style.display = (isRootTab && !isOnboarding) ? 'flex' : 'none';
 
         if (isRootTab) {
             document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
@@ -645,22 +725,37 @@
             navTo(event.state.section, false, true); 
         } else {
             const hash = window.location.hash.replace('#', '');
-            if (hash) navTo(hash, false, true);
-            else navTo('home', false, true);
+            navTo(hash || 'home', false, true);
         }
     });
 
-    // --- INIT ---
+    // --- INIT APP & ONBOARDING LOGIC ---
+    function bootApp() {
+        const hash = window.location.hash.replace('#', '');
+        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        const skipped = localStorage.getItem('sb_skip_onboarding');
+
+        if ((!p.fName || !p.phone) && !skipped) {
+            history.replaceState({ section: 'onboarding-profile' }, '', '#onboarding-profile');
+            navTo('onboarding-profile', false, true);
+        } else if (hash && validSections.includes(hash)) {
+            navTo(hash, false, true);
+        } else {
+            history.replaceState({ section: 'home' }, '', '#home');
+            navTo('home', false, true);
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        history.replaceState({ section: 'home' }, '', '#home');
+        bootApp();
 
         setTimeout(() => {
             document.getElementById('splashScreen').style.opacity = '0';
             setTimeout(() => { 
                 document.getElementById('splashScreen').style.display = 'none'; 
-                checkFirstTimeUser(); 
             }, 400);
         }, 500);
+        
         checkThemePreference();
         migrateAddressData(); 
         renderAddressList();
@@ -689,39 +784,89 @@
         document.getElementById('themeCheckbox').checked = (saved === 'dark');
     }
 
-    // --- FIRST TIME USER LOGIC ---
-    function checkFirstTimeUser() {
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        if (!p.fName) {
-            document.getElementById('welcomePopup').style.display = 'flex';
+    // --- NUMBER VALIDATOR UTILITY ---
+    function isPhoneNumberValid(phone) {
+        const digitsOnly = phone.replace(/[^0-9]/g, ''); 
+        if(digitsOnly.length < 10) {
+            showToast("Please enter a valid phone number (at least 10 digits).");
+            return false;
         }
-    }
-    
-    function closeWelcomePopup() {
-        document.getElementById('welcomePopup').style.display = 'none';
+        if(digitsOnly.length > 15) {
+            showToast("Phone number is too long, please check again.");
+            return false;
+        }
+        return true;
     }
 
-    function saveWelcomeData() {
-        const fName = document.getElementById('welcomeFName').value.trim();
-        const lName = document.getElementById('welcomeLName').value.trim();
-        if(!fName) {
-            showToast("First Name is required to continue.");
+    // --- FULL PAGE ONBOARDING LOGIC ---
+    function skipOnboardingProfile() {
+        localStorage.setItem('sb_skip_onboarding', 'true');
+        navTo('home', false, false);
+    }
+
+    function saveOnboardingProfile() {
+        const fName = document.getElementById('obFName').value.trim();
+        const phone = document.getElementById('obPhone').value.trim();
+        const lName = document.getElementById('obLName').value.trim();
+        const email = document.getElementById('obEmail').value.trim();
+        const age = document.getElementById('obAge').value.trim();
+        
+        if(!fName || !phone) {
+            showToast("First Name and Mobile Number are required.");
             return;
         }
+
+        if(!isPhoneNumberValid(phone)) return;
+
+        if(age !== "" && parseInt(age) <= 0) {
+            showToast("Age cannot be 0 or less.");
+            return;
+        }
+
+        const genderEl = document.querySelector('input[name="obGender"]:checked');
         
-        let p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        p.fName = fName;
-        p.lName = lName;
-        localStorage.setItem('sb_profile', JSON.stringify(p));
+        const profile = {
+            fName: fName, lName: lName, email: email, 
+            phone: phone, age: age, gender: genderEl ? genderEl.value : ''
+        };
+        localStorage.setItem('sb_profile', JSON.stringify(profile));
+        localStorage.removeItem('sb_skip_onboarding'); 
         
-        closeWelcomePopup();
-        showToast(`Welcome to safeblue, ${fName}!`);
+        showToast(`Profile Saved!`);
+        navTo('onboarding-address', false, false);
     }
 
-    // --- SMART PROFILE LOGIC ---
+    function skipOnboardingAddress() {
+        navTo('home', false, false);
+    }
+
+    function saveOnboardingAddress() {
+        const street = document.getElementById('obStreet').value.trim();
+        if(!street) {
+            showToast("Please enter your Area/Street address.");
+            return;
+        }
+
+        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+        addresses.push({
+            id: Date.now(),
+            street: street, 
+            ward: document.getElementById('obWard').value.trim(), 
+            house: document.getElementById('obHouse').value.trim(), 
+            landmark: document.getElementById('obLandmark').value.trim(),
+            isDefault: true
+        });
+        localStorage.setItem('sb_addresses', JSON.stringify(addresses));
+        
+        showToast("Address saved successfully!");
+        navTo('home', false, false);
+    }
+
+
+    // --- SMART PROFILE LOGIC (MANAGE ACCOUNT SECTION) ---
     function handleProfileClick() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        if (!p.fName && !p.phone) {
+        if (!p.fName || !p.phone) {
             navTo('profile-edit');
         } else {
             navTo('profile-view');
@@ -760,14 +905,8 @@
             return; 
         }
 
-        // New Professional Phone Number Validation (10 to 12 digits for country code support)
-        const cleanPhone = phone.replace(/[^0-9]/g, ''); // Extract only digits to handle autofill safely
-        if(cleanPhone.length < 10 || cleanPhone.length > 12) {
-            showToast("Please enter a valid mobile number (10 to 12 digits).");
-            return;
-        }
+        if(!isPhoneNumberValid(phone)) return;
 
-        // Age Validation
         if(age !== "" && parseInt(age) <= 0) {
             showToast("Age cannot be 0 or less.");
             return;
@@ -783,9 +922,17 @@
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         showToast("Profile Saved Successfully!");
         
-        if(sessionStorage.getItem('resumeOrder') === 'true') {
-            sessionStorage.removeItem('resumeOrder');
-            navTo('home', false, false); 
+        // --- STRICT CHAIN LOGIC: CHECKOUT FORCE FILL (STEP 1 DONE) ---
+        if(sessionStorage.getItem('checkout_chain') === 'step1_profile') {
+            const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+            if (addresses.length === 0) {
+                sessionStorage.setItem('checkout_chain', 'step2_address');
+                navTo('address-edit'); 
+            } else {
+                sessionStorage.removeItem('checkout_chain');
+                navTo('home'); 
+                setTimeout(() => { document.getElementById('submitOrderBtn').click(); }, 400);
+            }
         } else {
             goBack(); 
         }
@@ -793,13 +940,14 @@
 
     function clearAllData() {
         openAdvancedConfirm(function() {
-            localStorage.removeItem('sb_profile');
-            localStorage.removeItem('sb_addresses');
-            localStorage.removeItem('sb_orders');
+            localStorage.clear(); 
             cart = [];
             updateUI();
             showToast("All Data Cleared Successfully.");
-            navTo('home', true, false);
+            setTimeout(() => {
+                window.location.hash = '';
+                location.reload(); 
+            }, 1000);
         });
     }
 
@@ -815,15 +963,17 @@
 
     function saveAddressData() {
         const street = document.getElementById('inpStreet').value.trim();
-        if(!street) { showToast("Please enter Delivery Address."); return; }
+        if(!street) { showToast("Please enter your Area/Street Address."); return; }
 
         let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const editId = document.getElementById('inpAddrId').value;
         
         const newAddrObj = {
             id: editId ? parseInt(editId) : Date.now(),
-            street: street, ward: document.getElementById('inpWard').value.trim(),
-            house: document.getElementById('inpHouse').value.trim(), landmark: document.getElementById('inpLandmark').value.trim(),
+            street: street, 
+            ward: document.getElementById('inpWard').value.trim(),
+            house: document.getElementById('inpHouse').value.trim(), 
+            landmark: document.getElementById('inpLandmark').value.trim(),
             isDefault: addresses.length === 0
         };
 
@@ -840,9 +990,11 @@
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         showToast("Address Saved Successfully!");
 
-        if(sessionStorage.getItem('resumeOrder') === 'true') {
-            sessionStorage.removeItem('resumeOrder');
-            navTo('home', false, false); 
+        // --- STRICT CHAIN LOGIC: CHECKOUT FORCE FILL (STEP 2 DONE) ---
+        if(sessionStorage.getItem('checkout_chain') === 'step2_address') {
+            sessionStorage.removeItem('checkout_chain');
+            navTo('home'); 
+            setTimeout(() => { document.getElementById('submitOrderBtn').click(); }, 400);
         } else {
             goBack();
         }
@@ -878,10 +1030,11 @@
         }
         
         container.innerHTML = addresses.map((a, index) => {
-            let fullAddr = `${a.street}`;
-            if(a.house) fullAddr += `, House No: ${a.house}`;
-            if(a.ward) fullAddr += `, Ward: ${a.ward}`;
+            let fullAddr = '';
+            if(a.house) fullAddr += `<b>${a.house}</b>, `;
+            fullAddr += `${a.street}`;
             if(a.landmark) fullAddr += `<br>Landmark: ${a.landmark}`;
+            if(a.ward) fullAddr += `<br>Ward No: ${a.ward}`;
             fullAddr += `<br>KABIRDHAM DISTRICT, CHHATTISGARH.`;
 
             return `
@@ -1023,28 +1176,34 @@
         }
     }
 
-    // --- CHECKOUT LOGIC WITH PROFESSIONAL WHATSAPP FORMATTING ---
+    // --- CHECKOUT LOGIC WITH FORCED CHAIN (PROFILE -> ADDRESS -> WHATSAPP) ---
+    // Temporary storage for order pending WA confirmation
+    let pendingOrderData = null;
+
     document.getElementById('submitOrderBtn').addEventListener('click', function() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
+        // 1. Check Profile (Step 1)
         if(!p.fName || !p.phone) {
             showToast("Please complete your profile to place the order.");
-            sessionStorage.setItem('resumeOrder', 'true');
+            sessionStorage.setItem('checkout_chain', 'step1_profile'); 
             navTo('profile-edit');
             return;
         }
         
+        // 2. Check Address (Step 2)
         if(!defaultAddr || !defaultAddr.street) {
-            showToast("Please add your delivery address.");
-            sessionStorage.setItem('resumeOrder', 'true');
+            showToast("Please add your delivery address to proceed.");
+            sessionStorage.setItem('checkout_chain', 'step2_address'); 
             openAddressEdit(null);
             return;
         }
 
+        // 3. Final Step: Everything is filled, Proceed to WhatsApp
         const name = `${p.fName} ${p.lName||''}`.trim();
-        const finalAddr = `${defaultAddr.street}, Ward: ${defaultAddr.ward||'NA'}, House: ${defaultAddr.house||'NA'}, Landmark: ${defaultAddr.landmark||'NA'}, Pin: 491995`;
+        const finalAddr = `${defaultAddr.house ? defaultAddr.house + ', ' : ''}${defaultAddr.street}, Ward: ${defaultAddr.ward||'NA'}, Landmark: ${defaultAddr.landmark||'NA'}, Pin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
         let msgItems = "";
@@ -1056,12 +1215,10 @@
         
         const msg = `*🛍️ ORDER DETAILS (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* COD`;
         
-        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
-        const orderId = orders.length + 1; 
+        // Save pending order temporarily
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-        orders.push({ id: orderId, date: dateStr, items: cart.slice(), total: total, name: name });
-        localStorage.setItem('sb_orders', JSON.stringify(orders));
-
+        pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
+        
         sessionStorage.setItem('waitingForWaReturn', 'true');
 
         const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(msg)}`;
@@ -1072,23 +1229,47 @@
         document.body.removeChild(link);
     });
 
+    // WHEN USER RETURNS FROM WHATSAPP APP
     document.addEventListener("visibilitychange", function() {
         if (document.visibilityState === 'visible') {
             if (sessionStorage.getItem('waitingForWaReturn') === 'true') {
                 sessionStorage.removeItem('waitingForWaReturn');
-                document.getElementById('successOverlay').style.display = 'flex';
-                cart = [];
-                updateUI();
+                // Open confirmation dialog instead of saving immediately
+                document.getElementById('waConfirmOverlay').style.display = 'flex';
             }
         }
     });
 
-    function closeSuccessPopup() {
-        document.getElementById('successOverlay').style.display = 'none';
-        navTo('orders');
+    // YES, SENT
+    function waConfirmYes() {
+        document.getElementById('waConfirmOverlay').style.display = 'none';
+        if (pendingOrderData) {
+            const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
+            const orderId = orders.length > 0 ? orders[orders.length - 1].id + 1 : 1;
+            pendingOrderData.id = orderId;
+            orders.push(pendingOrderData);
+            localStorage.setItem('sb_orders', JSON.stringify(orders));
+            pendingOrderData = null; // Clear pending
+
+            cart = [];
+            updateUI();
+            document.getElementById('successOverlay').style.display = 'flex';
+        }
     }
 
-    // --- NEW: MY ORDERS LOGIC WITH DEEP DIVE DETAILS PAGE ---
+    // NO, CANCELLED
+    function waConfirmNo() {
+        document.getElementById('waConfirmOverlay').style.display = 'none';
+        pendingOrderData = null; // Clear pending
+        showToast("No problem, your order was not saved.");
+    }
+
+    function closeSuccessPopup() {
+        document.getElementById('successOverlay').style.display = 'none';
+        navTo('home'); // Redirects to Home page instead of Orders page
+    }
+
+    // --- MY ORDERS LOGIC ---
     window.openOrderDetails = function(id) {
         navTo('order-details');
         renderSingleOrderDetails(id);
@@ -1126,7 +1307,7 @@
                     <span class="info-label">Current Status</span>
                     <span class="info-value" style="color: var(--success); display: flex; align-items: center; gap: 6px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                        Order Confirmed
+                        Order Sent to WhatsApp
                     </span>
                 </div>
             </div>
