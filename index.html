@@ -159,7 +159,7 @@
         .order-num { font-weight: 700; font-size: 16px; color: var(--text); }
         .order-date-text { color: var(--muted); font-size: 13px; }
         .order-status-wrap { padding: 0 15px 10px; }
-        .order-status-pill { display: inline-block; background: rgba(16, 185, 129, 0.1); color: #10b981; font-weight: 600; font-size: 12px; padding: 6px 12px; border-radius: 20px; }
+        .order-status-pill { display: inline-block; font-weight: 600; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .order-items-box { background: var(--bg); padding: 15px; font-size: 14px; line-height: 1.6; border-radius: 8px; margin: 0 15px 15px; color: var(--text); border: 1px solid var(--border); }
         .order-footer { display: flex; justify-content: space-between; align-items: flex-end; padding: 15px; border-top: 1px solid var(--border); background: var(--bg); }
         .order-total-block { font-size: 13px; color: var(--muted); }
@@ -167,12 +167,15 @@
         .order-for-text { font-size: 12px; color: var(--muted); font-weight: 500; }
 
         /* Order Details Toggle Style */
-        .order-item-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+        .order-item-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px dashed var(--border); padding-bottom:8px; }
         .order-item-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
         .item-info-left { flex:1; }
         .item-title-name { font-weight:600; font-size:14px; display:flex; align-items:flex-start; gap:6px; color:var(--text); }
         .item-price-calc { color:var(--muted); font-size:12px; margin-left:24px; margin-top:4px; font-weight:500; }
-        .item-info-right { font-weight:800; font-size:15px; color:var(--primary); text-align:right; }
+        .item-info-right { font-weight:800; font-size:15px; color:var(--text); text-align:right; }
+
+        .view-details-btn { display: block; width: 100%; text-align: center; background: rgba(26,92,255,0.08); color: var(--primary); font-weight: 700; padding: 12px; border-radius: 10px; margin-top: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .view-details-btn:active { background: rgba(26,92,255,0.15); }
 
         /* Theme Switch */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
@@ -235,6 +238,22 @@
         <div style="display: flex; gap: 10px;">
             <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeCustomConfirm()">Cancel</button>
             <button class="modal-btn" style="background: var(--danger); flex: 1; padding: 12px;" id="confirmActionBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div id="advancedConfirmOverlay" class="overlay">
+    <div class="modal-card" style="padding: 25px;">
+        <h2 style="font-size: 20px; margin-bottom: 8px; color: var(--danger);">Clear All Data</h2>
+        <p style="margin-bottom: 15px; font-size: 13px; line-height: 1.5;">This action cannot be undone. To proceed, please type <b>clear all data</b> below.</p>
+        
+        <div class="material-input" style="margin-bottom: 20px; text-align: left;">
+            <input type="text" id="advancedConfirmInput" placeholder="Type here..." oninput="checkAdvancedConfirm()" style="text-align: center; font-weight: bold; color: var(--danger);">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeAdvancedConfirm()">Cancel</button>
+            <button class="modal-btn" style="background: var(--danger); flex: 1; padding: 12px; opacity: 0.4; cursor: not-allowed; transition: 0.3s;" id="advancedConfirmBtn" disabled>Okay</button>
         </div>
     </div>
 </div>
@@ -317,6 +336,15 @@
     </div>
     <div class="page-wrapper" id="fullOrderHistoryList">
     </div>
+</div>
+
+<div id="view-order-details" class="view-section">
+    <div class="sub-header">
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Order Details
+    </div>
+    <div class="page-wrapper" id="singleOrderDetailsContainer" style="padding-bottom: 85px;">
+        </div>
 </div>
 
 <div id="view-account" class="view-section">
@@ -413,7 +441,7 @@
         </div>
         <div class="material-input">
             <label>Mobile Number</label>
-            <input type="tel" id="accPhone" placeholder="+91 98XXX-XXXXX">
+            <input type="tel" id="accPhone" placeholder="e.g. 98XXXXXXXX or 9198XXXXXXXX" maxlength="12">
         </div>
         <div class="material-input">
             <label>Email Address</label>
@@ -421,7 +449,7 @@
         </div>
         <div class="material-input">
             <label>Your Age</label>
-            <input type="number" id="accAge" placeholder="e.g. 25">
+            <input type="number" id="accAge" placeholder="e.g. 25" min="1">
         </div>
         
         <div>
@@ -521,16 +549,46 @@
         confirmActionCallback = callback;
         document.getElementById('customConfirmOverlay').style.display = 'flex';
     }
-
     function closeCustomConfirm() {
         document.getElementById('customConfirmOverlay').style.display = 'none';
         confirmActionCallback = null;
     }
-
     document.getElementById('confirmActionBtn').addEventListener('click', function() {
         if (confirmActionCallback) confirmActionCallback();
         closeCustomConfirm();
     });
+
+    // --- ADVANCED CONFIRM LOGIC (For Clear All Data) ---
+    let advancedConfirmCallback = null;
+
+    function openAdvancedConfirm(callback) {
+        document.getElementById('advancedConfirmInput').value = '';
+        checkAdvancedConfirm(); 
+        advancedConfirmCallback = callback;
+        document.getElementById('advancedConfirmOverlay').style.display = 'flex';
+    }
+    function closeAdvancedConfirm() {
+        document.getElementById('advancedConfirmOverlay').style.display = 'none';
+        advancedConfirmCallback = null;
+    }
+    function checkAdvancedConfirm() {
+        const val = document.getElementById('advancedConfirmInput').value.trim().toLowerCase();
+        const btn = document.getElementById('advancedConfirmBtn');
+        if (val === 'clear all data') {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        } else {
+            btn.disabled = true;
+            btn.style.opacity = '0.4';
+            btn.style.cursor = 'not-allowed';
+        }
+    }
+    document.getElementById('advancedConfirmBtn').addEventListener('click', function() {
+        if (advancedConfirmCallback && !this.disabled) advancedConfirmCallback();
+        closeAdvancedConfirm();
+    });
+
 
     // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
     function navTo(section, isTabClick = false, isPopState = false) {
@@ -547,6 +605,7 @@
         if(newSection) newSection.classList.add('active');
         window.scrollTo(0, 0);
 
+        // Hide Bottom Nav strictly for inner details page
         const isRootTab = ['home', 'account', 'orders'].includes(section);
 
         document.getElementById('topNav').style.display = (section === 'home') ? 'flex' : 'none';
@@ -694,14 +753,32 @@
     function saveProfileData() {
         const fName = document.getElementById('accFName').value.trim();
         const phone = document.getElementById('accPhone').value.trim();
-        if(!fName || !phone) { showToast("First Name and Mobile Number are required."); return; }
+        const age = document.getElementById('accAge').value.trim();
+
+        if(!fName || !phone) { 
+            showToast("First Name and Mobile Number are required."); 
+            return; 
+        }
+
+        // New Professional Phone Number Validation (10 to 12 digits for country code support)
+        const cleanPhone = phone.replace(/[^0-9]/g, ''); // Extract only digits to handle autofill safely
+        if(cleanPhone.length < 10 || cleanPhone.length > 12) {
+            showToast("Please enter a valid mobile number (10 to 12 digits).");
+            return;
+        }
+
+        // Age Validation
+        if(age !== "" && parseInt(age) <= 0) {
+            showToast("Age cannot be 0 or less.");
+            return;
+        }
 
         const genderEl = document.querySelector('input[name="accGender"]:checked');
         
         const profile = {
             fName: fName, lName: document.getElementById('accLName').value.trim(),
             email: document.getElementById('accEmail').value.trim(), phone: phone,
-            age: document.getElementById('accAge').value.trim(), gender: genderEl ? genderEl.value : ''
+            age: age, gender: genderEl ? genderEl.value : ''
         };
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         showToast("Profile Saved Successfully!");
@@ -715,19 +792,15 @@
     }
 
     function clearAllData() {
-        openCustomConfirm(
-            "Clear All Data?", 
-            "Are you sure you want to clear all your data? This action cannot be undone.", 
-            function() {
-                localStorage.removeItem('sb_profile');
-                localStorage.removeItem('sb_addresses');
-                localStorage.removeItem('sb_orders');
-                cart = [];
-                updateUI();
-                showToast("All data cleared successfully.");
-                navTo('home', true, false);
-            }
-        );
+        openAdvancedConfirm(function() {
+            localStorage.removeItem('sb_profile');
+            localStorage.removeItem('sb_addresses');
+            localStorage.removeItem('sb_orders');
+            cart = [];
+            updateUI();
+            showToast("All Data Cleared Successfully.");
+            navTo('home', true, false);
+        });
     }
 
     // --- ADDRESS LOGIC ---
@@ -978,11 +1051,9 @@
         cart.forEach(i => {
             const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
             const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
-            // Formatted clearly with Price and Unit Total
             msgItems += `▪️ *${i.name}*\n   Qty: ${i.qty}  |  Price: ₹${priceDisp}  |  Total: ₹${lineTotal}\n\n`;
         });
         
-        // Changed "NEW ORDER" to "ORDER DETAILS"
         const msg = `*🛍️ ORDER DETAILS (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* COD`;
         
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
@@ -1017,18 +1088,58 @@
         navTo('orders');
     }
 
-    // --- MY ORDERS LOGIC WITH EXPANDABLE DETAILS ---
-    window.toggleOrderItems = function(id) {
-        const hiddenDiv = document.getElementById('hidden-items-' + id);
-        const btn = document.getElementById('toggle-btn-' + id);
-        if (hiddenDiv.style.display === 'none') {
-            hiddenDiv.style.display = 'block';
-            btn.innerHTML = 'Show Less ▲';
-        } else {
-            hiddenDiv.style.display = 'none';
-            btn.innerHTML = '+' + btn.getAttribute('data-count') + ' more items ▼';
-        }
+    // --- NEW: MY ORDERS LOGIC WITH DEEP DIVE DETAILS PAGE ---
+    window.openOrderDetails = function(id) {
+        navTo('order-details');
+        renderSingleOrderDetails(id);
     };
+
+    function renderSingleOrderDetails(id) {
+        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
+        const o = orders.find(x => x.id === id);
+        if(!o) return;
+
+        let itemsHtml = o.items.map(i => {
+            const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
+            const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
+            return `
+            <div style="padding: 15px; background: var(--card); border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); box-shadow: 0 2px 5px rgba(0,0,0,0.01);">
+                <div style="font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--text);">📘 ${i.name}</div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); align-items: center;">
+                    <span style="background: var(--bg); padding: 4px 8px; border-radius: 6px;">Qty: <b>${i.qty}</b> × ₹${priceDisp}</span>
+                    <span style="font-weight: 800; font-size: 16px; color: var(--primary);">₹${lineTotal}</span>
+                </div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('singleOrderDetailsContainer').innerHTML = `
+            <div class="profile-info-box" style="margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div class="info-row">
+                    <span class="info-label">Order Number</span>
+                    <span class="info-value">#${o.id}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Order Date</span>
+                    <span class="info-value">${o.date}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Current Status</span>
+                    <span class="info-value" style="color: var(--success); display: flex; align-items: center; gap: 6px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Order Confirmed
+                    </span>
+                </div>
+            </div>
+            
+            <h3 style="font-size: 16px; margin-bottom: 15px; padding-left: 5px; color: var(--text);">Items Ordered</h3>
+            ${itemsHtml}
+            
+            <div class="profile-info-box" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg); border: 2px dashed var(--border);">
+                <span style="font-weight: 700; color: var(--muted); font-size: 14px;">Grand Total</span>
+                <span style="font-size: 22px; font-weight: 800; color: var(--text);">₹${o.total}</span>
+            </div>
+        `;
+    }
 
     function loadOrderHistory() {
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
@@ -1041,38 +1152,32 @@
 
         container.innerHTML = orders.slice().reverse().map(o => {
             let visibleHtml = '';
-            let hiddenHtml = '';
             const maxShow = 2;
 
-            o.items.forEach((item, index) => {
+            o.items.slice(0, maxShow).forEach((item) => {
                 const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
                 const lineTotal = (item.price * item.qty) % 1 === 0 ? (item.price * item.qty) : (item.price * item.qty).toFixed(2);
 
-                const itemRow = `
+                visibleHtml += `
                 <div class="order-item-row">
                     <div class="item-info-left">
                         <div class="item-title-name"><span>📘</span><span>${item.name}</span></div>
-                        <div class="item-price-calc">Price: ₹${priceDisp} &times; ${item.qty} Qty</div>
+                        <div class="item-price-calc">₹${priceDisp} &times; ${item.qty} Qty</div>
                     </div>
                     <div class="item-info-right">₹${lineTotal}</div>
                 </div>`;
-
-                if (index < maxShow) {
-                    visibleHtml += itemRow;
-                } else {
-                    hiddenHtml += itemRow;
-                }
             });
 
-            let toggleBtnHtml = '';
+            let viewDetailsBtnHtml = '';
             if (o.items.length > maxShow) {
-                const moreCount = o.items.length - maxShow;
-                toggleBtnHtml = `
-                <div id="hidden-items-${o.id}" style="display:none; padding-top:8px;">
-                    ${hiddenHtml}
-                </div>
-                <div id="toggle-btn-${o.id}" data-count="${moreCount}" onclick="toggleOrderItems(${o.id})" style="color:var(--primary); font-weight:700; font-size:13px; margin-top:10px; cursor:pointer; text-align:center; padding: 10px; background: rgba(26,92,255,0.06); border-radius: 8px; transition:0.2s;">
-                    +${moreCount} more items ▼
+                viewDetailsBtnHtml = `
+                <div class="view-details-btn" onclick="openOrderDetails(${o.id})">
+                    +${o.items.length - maxShow} more items... View Full Details ➔
+                </div>`;
+            } else {
+                viewDetailsBtnHtml = `
+                <div class="view-details-btn" onclick="openOrderDetails(${o.id})">
+                    View Full Order Details ➔
                 </div>`;
             }
 
@@ -1083,11 +1188,11 @@
                     <span class="order-date-text">On ${o.date}</span>
                 </div>
                 <div class="order-status-wrap">
-                    <span class="order-status-pill">Order Placed</span>
+                    <span class="order-status-pill">Order Confirmed</span>
                 </div>
                 <div class="order-items-box">
                     ${visibleHtml}
-                    ${toggleBtnHtml}
+                    ${viewDetailsBtnHtml}
                 </div>
                 <div class="order-footer">
                     <div class="order-total-block">Total <span class="order-total-amt">₹${o.total}</span></div>
