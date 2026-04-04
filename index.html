@@ -11,124 +11,196 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --primary: #0052cc; --border: #e2e8f0; --input: #ffffff; }
-        [data-theme="dark"] { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --primary: #3b82f6; --border: #334155; --input: #0f172a; }
+        :root { 
+            --bg: #f8fafc; 
+            --card: #ffffff; 
+            --text: #1e293b; 
+            --primary: #0052cc; 
+            --border: #e2e8f0; 
+            --input: #ffffff; 
+            --danger: #ef4444; 
+            --whatsapp: #25D366; 
+            --success: #10b981;
+        }
+        [data-theme="dark"] { 
+            --bg: #0f172a; 
+            --card: #1e293b; 
+            --text: #f1f5f9; 
+            --primary: #3b82f6; 
+            --border: #334155; 
+            --input: #0f172a; 
+            --danger: #f87171; 
+            --success: #34d399;
+        }
         
         * { box-sizing: border-box; } 
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: background-color 0.4s ease, color 0.4s ease; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; 
+            background: var(--bg); 
+            color: var(--text); 
+            transition: background-color 0.4s ease, color 0.4s ease; 
+            -webkit-tap-highlight-color: transparent; 
+            scroll-behavior: smooth; 
+        }
         
+        /* Smooth View Router Setup */
+        .view-section { 
+            display: none; 
+            padding-bottom: 85px; 
+            animation: appFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+            will-change: opacity, transform;
+            opacity: 0;
+        }
+        .view-section.active { display: block; }
+        @keyframes appFadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
         /* --- Splash Screen --- */
         .splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.3s ease-out; will-change: opacity;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.4s ease-out; will-change: opacity;
         }
-        .splash-logo { width: 90px; height: 90px; animation: pulseLogo 1.2s infinite alternate ease-in-out; margin-bottom: 15px; will-change: transform; }
+        .splash-logo { width: 90px; height: 90px; animation: pulseLogo 1.2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 15px; will-change: transform; }
         .splash-logo svg { width: 100%; height: 100%; filter: drop-shadow(0px 10px 15px rgba(0, 82, 204, 0.25)); }
         .splash-brand { font-weight: 800; font-size: 26px; color: var(--primary); letter-spacing: -0.5px; text-transform: lowercase; margin: 0 0 25px 0; }
         .splash-spinner { width: 35px; height: 35px; border: 4px solid var(--border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.6s linear infinite; }
         @keyframes pulseLogo { 0% { transform: scale(0.95) translateY(0); } 100% { transform: scale(1.05) translateY(-5px); } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; transition: 0.3s; }
+        /* Navigation */
+        nav { background: var(--card); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; transition: 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
         .brand { font-weight: 800; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; text-transform: lowercase; }
         .nav-actions { display: flex; gap: 8px; align-items: center; }
         
-        .theme-btn, .account-nav-btn { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; transition: 0.2s; }
-        .theme-btn:active, .account-nav-btn:active { transform: scale(0.95); }
-        .account-nav-btn { background: #3b82f6; display: flex; align-items: center; gap: 5px; }
-
-        .support-btn { background: #10b981; color: white; text-decoration: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
-        .support-btn:active { transform: scale(0.95); }
+        /* Updated Support Button */
+        .support-btn { 
+            background: var(--success); /* Green Background */
+            color: white; 
+            text-decoration: none; 
+            padding: 8px 14px; 
+            border-radius: 10px; 
+            font-weight: 800; 
+            font-size: 13px; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+        }
+        .support-btn:active { transform: scale(0.92); box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2); }
+        /* Red Phone Icon */
+        .support-btn svg {
+            stroke: var(--danger); 
+            transition: stroke 0.3s ease;
+        }
 
         header { background: var(--primary); color: white; padding: 30px 15px 50px; text-align: center; }
         header h1 { margin: 0 0 5px 0; font-size: 24px; text-transform: lowercase; letter-spacing: -0.5px; }
         header p { margin: 0; font-size: 13px; opacity: 0.9; }
 
-        .container { display: flex; max-width: 1200px; margin: -30px auto 60px; gap: 20px; padding: 0 15px; flex-wrap: wrap; }
+        /* Store Layout */
+        .container { display: flex; max-width: 1200px; margin: -30px auto 20px; gap: 20px; padding: 0 15px; flex-wrap: wrap; }
         .catalog { flex: 2; width: 100%; min-width: 300px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; align-items: stretch; }
-        .card { background: var(--card); border-radius: 16px; padding: 15px; border: 1px solid var(--border); text-align: center; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 100%; }
-        .card:active { transform: scale(0.97); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card { background: var(--card); border-radius: 16px; padding: 15px; border: 1px solid var(--border); text-align: center; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; height: 100%; }
+        .card:active { transform: scale(0.96); }
         .card h3 { margin: 0 0 12px 0; font-size: 13px; line-height: 1.4; flex-grow: 1; display: flex; align-items: center; justify-content: center; word-wrap: break-word; }
         .price { font-size: 20px; font-weight: 800; color: var(--primary); margin: 0 0 12px 0; }
         
-        .btn-container { height: 40px; width: 100%; margin-top: auto; }
-        .add-btn { background: var(--primary); color: white; border: none; width: 100%; height: 100%; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s; }
-        .add-btn:active { background: #0042a3; }
+        .btn-container { height: 42px; width: 100%; margin-top: auto; }
+        .add-btn { background: var(--primary); color: white; border: none; width: 100%; height: 100%; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .add-btn:active { transform: scale(0.96); }
         .cart-qty-toggle { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: white; width: 100%; height: 100%; padding: 0 5px; border-radius: 10px; font-weight: 800; }
-        .toggle-btn { background: white; color: var(--primary); border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 0; transition: 0.1s; }
-        .toggle-btn:active { background: #e2e8f0; transform: scale(0.9); }
+        .toggle-btn { background: white; color: var(--primary); border: none; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 0; transition: 0.1s; }
+        .toggle-btn:active { background: #e2e8f0; transform: scale(0.85); }
 
         .sidebar { flex: 1; min-width: 320px; background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); height: fit-content; width: 100%; position: sticky; top: 80px; border: 1px solid var(--border); transition: 0.3s; }
-        .cart-receipt { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin: 15px 0; transition: 0.3s; }
-        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; color: var(--text); animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .cart-receipt { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin: 15px 0; }
+        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 12px; color: var(--text); }
         .cart-item-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .cart-item-name { font-weight: 600; width: 70%; line-height: 1.3; }
+        .cart-item-name { font-weight: 600; width: 70%; line-height: 1.4; }
         .cart-item-price { font-weight: 800; color: var(--primary); text-align: right; }
         
         .receipt-summary { margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border); }
-        .summary-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text); opacity: 0.8; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text); opacity: 0.8; }
         .grand-total { font-size: 18px; font-weight: 800; color: var(--text); opacity: 1; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
-        .grand-total span:last-child { color: var(--primary); transition: color 0.3s; }
+        .grand-total span:last-child { color: var(--primary); }
         
-        #minAlert { background: #fee2e2; color: #ef4444; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; text-align: center; margin-top: 15px; display: none; animation: popIn 0.3s ease; }
+        #minAlert { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 800; text-align: center; margin-top: 15px; display: none; border: 1px solid rgba(239, 68, 68, 0.2); }
 
-        input, textarea { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; background: var(--input); color: var(--text); font-size: 14px; outline: none; transition: all 0.2s; }
-        input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,82,204,0.1); }
-        input[readonly] { background: var(--bg); cursor: not-allowed; color: var(--primary); font-weight: 700; text-align: center; border-style: dashed; }
-        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input, textarea, select { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; background: var(--input); color: var(--text); font-size: 14px; outline: none; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0,82,204,0.1); transform: translateY(-2px); }
+        .input-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .confirm-btn { background: #25D366; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
-        .confirm-btn:active:not(:disabled) { transform: scale(0.98); box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2); }
+        .confirm-btn { background: var(--whatsapp); color: white; border: none; width: 100%; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25); }
+        .confirm-btn:active:not(:disabled) { transform: scale(0.96); box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); }
         .confirm-btn:disabled { background: var(--border); color: #888; cursor: not-allowed; box-shadow: none; }
-        .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 16px; height: 16px; animation: spin 1s linear infinite; display: none; }
+        .loader { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white; width: 18px; height: 18px; animation: spin 1s linear infinite; display: none; }
 
-        /* --- Account Modal Styles --- */
-        #accountOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .account-card { background: var(--card); border-radius: 20px; width: 90%; max-width: 400px; max-height: 85vh; display: flex; flex-direction: column; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        .account-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .account-header h2 { margin: 0; font-size: 18px; color: var(--text); }
-        .close-account-btn { background: var(--border); border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 16px; font-weight: bold; color: var(--text); cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
-        .close-account-btn:active { transform: scale(0.9); }
-        .account-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
-        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: transparent; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--text); opacity: 0.6; transition: 0.2s; border-bottom: 3px solid transparent; font-family: inherit; }
-        .tab-btn.active { opacity: 1; color: var(--primary); border-bottom-color: var(--primary); background: var(--card); }
-        .tab-content-area { padding: 20px; overflow-y: auto; flex: 1; }
-        .tab-pane { display: none; animation: fadeIn 0.3s ease; }
-        .tab-pane.active { display: block; }
-        .order-history-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px; background: var(--bg); }
-        .order-date { font-size: 11px; font-weight: 600; opacity: 0.7; margin-bottom: 8px; color: var(--text); }
-        .order-items { font-size: 13px; line-height: 1.4; color: var(--text); }
-        .order-total { font-size: 15px; font-weight: 800; color: var(--primary); margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 8px; }
+        /* Custom Page Styling (Orders & Account) */
+        .page-wrapper { max-width: 800px; margin: 0 auto; padding: 20px 15px; }
+        .page-title { font-size: 26px; font-weight: 800; color: var(--text); margin-bottom: 25px; text-transform: capitalize; border-bottom: 2px solid var(--border); padding-bottom: 12px; }
+        
+        .section-card { background: var(--card); border-radius: 18px; padding: 22px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.03); transition: 0.3s; }
+        .section-card h3 { margin: 0 0 18px 0; font-size: 16px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        .form-label { font-size: 12px; font-weight: 800; opacity: 0.8; margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+        .required-mark { color: var(--danger); font-size: 14px; font-weight: bold; margin-left: 2px; }
+        
+        .action-row { display: flex; gap: 12px; margin-top: 15px; }
+        .danger-btn { background: transparent; color: var(--danger); border: 2px solid var(--danger); padding: 15px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.2s; flex: 1; }
+        .danger-btn:active { background: var(--danger); color: white; transform: scale(0.96); }
+        
+        .save-btn { flex: 2; padding: 15px; border-radius: 12px; font-size: 14px; }
+        .link-btn { background: var(--bg); color: var(--text); border: 1px solid var(--border); width: 100%; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; margin-bottom: 20px; }
+        .link-btn:active { background: var(--border); transform: scale(0.98); }
 
-        /* Overlays */
-        #successOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 3000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .success-card { background: var(--card); padding: 30px; border-radius: 20px; text-align: center; max-width: 320px; width: 90%; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .success-icon { font-size: 50px; color: #10b981; margin-bottom: 15px; }
-        .success-card h2 { margin: 0 0 10px; color: var(--text); font-size: 22px; }
-        .success-card p { font-size: 14px; color: var(--text); opacity: 0.8; margin-bottom: 20px; line-height: 1.5; }
-        .success-btn { background: var(--primary); color: white; border: none; padding: 14px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; }
-        .success-btn:active { transform: scale(0.95); }
+        .order-history-card { border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 15px; background: var(--card); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .order-date { font-size: 12px; font-weight: 800; opacity: 0.8; margin-bottom: 12px; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
+        .order-status { color: #10b981; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .order-items { font-size: 14px; line-height: 1.6; color: var(--text); padding-bottom: 12px; }
+        .order-total { font-size: 17px; font-weight: 800; color: var(--primary); margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 12px; text-align: right; }
 
-        #offlineOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 999999; justify-content: center; align-items: center; text-align: center; backdrop-filter: blur(8px); }
-        .offline-card { background: var(--card); padding: 30px 20px; border-radius: 16px; width: 90%; max-width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--border); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        /* Settings Toggle */
+        .theme-toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 18px; background: var(--bg); border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; font-weight: 800; }
+        .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Overlays / Modals - Smooth blur */
+        #successOverlay, #offlineOverlay, #validationOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 3000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .modal-card { background: var(--card); padding: 35px 25px; border-radius: 24px; text-align: center; max-width: 340px; width: 90%; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-icon { font-size: 55px; margin-bottom: 15px; }
+        .modal-card h2 { margin: 0 0 12px; color: var(--text); font-size: 22px; font-weight: 800; }
+        .modal-card p { font-size: 14px; color: var(--text); opacity: 0.8; margin-bottom: 25px; line-height: 1.6; }
+        .modal-btn { background: var(--primary); color: white; border: none; padding: 16px 25px; border-radius: 14px; font-weight: 800; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; }
+        .modal-btn:active { transform: scale(0.96); }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .offline-icon { font-size: 50px; margin-bottom: 10px; }
-        .offline-card h2 { margin: 0 0 10px 0; color: #ef4444; font-size: 20px; }
-        .offline-card p { font-size: 14px; opacity: 0.8; margin-bottom: 20px; line-height: 1.5; color: var(--text); }
-        .offline-btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 800; width: 100%; cursor: pointer; font-size: 15px; transition: 0.2s; }
-        .offline-btn:active { transform: scale(0.95); }
+
+        /* --- BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; z-index: 2500; box-shadow: 0 -8px 20px rgba(0,0,0,0.04); padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+        .bottom-nav-item {
+            display: flex; flex-direction: column; align-items: center; color: var(--text); opacity: 0.4; text-decoration: none; font-size: 11px; font-weight: 800; gap: 6px; background: none; border: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit;
+        }
+        .bottom-nav-item.active { opacity: 1; color: var(--primary); transform: translateY(-2px); }
+        .bottom-nav-item svg { width: 24px; height: 24px; stroke: currentColor; fill: none; transition: 0.3s; }
+        .bottom-nav-item.active svg { stroke-width: 2.5px; }
 
         @media (max-width: 900px) {
-            nav { padding: 12px 15px; }
+            nav { padding: 15px 20px; }
             .brand { font-size: 20px; }
-            .nav-actions { gap: 6px; }
-            .theme-btn, .support-btn, .account-nav-btn { padding: 8px 10px; font-size: 11px; }
-            .container { flex-direction: column; padding: 0 10px; margin-top: -20px; }
+            .support-btn { padding: 8px 12px; font-size: 12px; border-radius: 8px; }
+            .container { flex-direction: column; padding: 0 12px; margin-top: -20px; }
             .catalog { flex: none; width: 100%; }
-            .sidebar { flex: none; width: 100%; position: static; padding: 15px; margin-top: 10px; min-width: auto; }
-            .input-group { grid-template-columns: 1fr; gap: 0; }
+            .sidebar { flex: none; width: 100%; position: static; padding: 20px; margin-top: 15px; min-width: auto; }
         }
     </style>
 </head>
@@ -148,253 +220,375 @@
 </div>
 
 <div id="successOverlay">
-    <div class="success-card">
-        <div class="success-icon">✅</div>
+    <div class="modal-card">
+        <div class="modal-icon" style="color: var(--success);">✅</div>
         <h2>Order Confirmed!</h2>
         <p>Your order details have been sent to WhatsApp. We will contact you shortly.</p>
-        <button class="success-btn" onclick="refreshPage()">OK</button>
+        <button class="modal-btn" onclick="refreshPage()">Return to Home</button>
     </div>
 </div>
 
 <div id="offlineOverlay">
-    <div class="offline-card">
-        <div class="offline-icon">📶❌</div>
-        <h2>No Internet Connection</h2>
-        <p>Please swipe down from the top of your screen to turn on your Mobile Data or Wi-Fi, then click the button below.</p>
-        <button class="offline-btn" onclick="userManualRefreshCheck()">I've Turned It On, Continue</button>
+    <div class="modal-card">
+        <div class="modal-icon">📶❌</div>
+        <h2 style="color: var(--danger);">No Internet Connection</h2>
+        <p>Please swipe down from the top of your screen to turn on your Mobile Data or Wi-Fi, then click below.</p>
+        <button class="modal-btn" onclick="userManualRefreshCheck()">I've Turned It On</button>
     </div>
 </div>
 
-<div id="accountOverlay">
-    <div class="account-card">
-        <div class="account-header">
-            <h2>My Account</h2>
-            <button class="close-account-btn" onclick="closeAccount()">✕</button>
-        </div>
-        
-        <div class="account-tabs">
-            <button class="tab-btn active" onclick="switchTab('profile', this)">Profile</button>
-            <button class="tab-btn" onclick="switchTab('orders', this)">My Orders</button>
-            <button class="tab-btn" onclick="switchTab('address', this)">My Address</button>
-        </div>
-        
-        <div class="tab-content-area">
-            <div id="tab-profile" class="tab-pane active">
-                <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">Full Name</label>
-                <input type="text" id="accName" placeholder="Enter your name">
-                
-                <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">Mobile Number</label>
-                <input type="tel" id="accPhone" placeholder="10-digit mobile number">
-                
-                <button onclick="saveProfileData()" class="add-btn" style="padding: 14px; margin-top: 10px; border-radius: 10px;">Save Profile Details</button>
-            </div>
-            
-            <div id="tab-orders" class="tab-pane">
-                <div id="orderHistoryList">
-                    </div>
-            </div>
-            
-            <div id="tab-address" class="tab-pane">
-                <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">Delivery Address</label>
-                <textarea id="accAddr" rows="2" placeholder="Street / Colony details"></textarea>
-                
-                <div class="input-group">
-                    <div>
-                        <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">Ward No.</label>
-                        <input type="text" id="accWard" placeholder="Optional">
-                    </div>
-                    <div>
-                        <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">House No.</label>
-                        <input type="text" id="accHouse" placeholder="Optional">
-                    </div>
-                </div>
-                
-                <label style="font-size: 12px; font-weight: bold; opacity: 0.8; margin-bottom: 5px; display: block;">Landmark</label>
-                <input type="text" id="accLandmark" placeholder="Near by landmark (Optional)">
-                
-                <button onclick="saveAddressData()" class="add-btn" style="padding: 14px; margin-top: 5px; border-radius: 10px;">Save Delivery Address</button>
-            </div>
-        </div>
+<div id="validationOverlay">
+    <div class="modal-card">
+        <div class="modal-icon">⚠️</div>
+        <h2>Details Missing!</h2>
+        <p>Please fill in your mandatory details (First Name, Mobile Number, and Delivery Address) before placing an order.</p>
+        <button class="modal-btn" onclick="closeValidationAndGoToAccount()">Fill Details Now</button>
     </div>
 </div>
+
 <nav>
     <div class="brand">safeblue</div>
     <div class="nav-actions">
-        <button class="account-nav-btn" onclick="openAccount()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            Account
-        </button>
-        
         <a href="tel:+916263839343" class="support-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
             Support
         </a>
-        <button class="theme-btn" onclick="toggleTheme()" id="tBtn">Dark Mode</button>
     </div>
 </nav>
 
-<header>
-    <h1>safeblue stationery</h1>
-    <p>Kawardha (491995) | Free Delivery</p>
-</header>
+<div id="view-home" class="view-section active">
+    <header>
+        <h1>safeblue stationery</h1>
+        <p>Kawardha (491995) | Free Delivery</p>
+    </header>
 
-<div class="container">
-    <div class="catalog">
-        <div class="grid" id="productGrid"></div>
-    </div>
+    <div class="container">
+        <div class="catalog">
+            <div class="grid" id="productGrid"></div>
+        </div>
 
-    <div class="sidebar">
-        <div id="checkoutForm">
-            <h3 style="margin:0 0 15px 0; font-size: 18px;">Order Summary</h3>
-            
-            <div class="cart-receipt">
-                <div id="cartItemsContainer">
-                    <div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.6; font-size: 13px; font-weight: 600;">🛒 Cart is empty</div>
+        <div class="sidebar">
+            <div id="checkoutForm">
+                <h3 style="margin:0 0 15px 0; font-size: 18px; font-weight: 800;">Order Summary</h3>
+                
+                <div class="cart-receipt">
+                    <div id="cartItemsContainer">
+                        <div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.5; font-size: 13px; font-weight: 700;">🛒 Cart is empty</div>
+                    </div>
+                    
+                    <div id="receiptSummary" class="receipt-summary" style="display:none;">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="subTotal">₹0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery</span>
+                            <span style="color: var(--success);">Free</span>
+                        </div>
+                        <div class="summary-row grand-total">
+                            <span>Grand Total</span>
+                            <span id="grandTotal">₹0</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div id="receiptSummary" class="receipt-summary" style="display:none;">
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <span id="subTotal">₹0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Delivery</span>
-                        <span style="color: #10b981;">Free</span>
-                    </div>
-                    <div class="summary-row grand-total">
-                        <span>Grand Total</span>
-                        <span id="grandTotal">₹0</span>
-                    </div>
+                <div id="minAlert">Minimum ₹100 required for delivery</div>
+
+                <div style="margin-top: 15px;">
+                    <div style="background:rgba(0,82,204,0.06); padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; font-weight:800; color:var(--primary); font-size:12px; border:1px dashed rgba(0,82,204,0.3);">🚚 Cash on Delivery Only</div>
+                    
+                    <button type="button" class="confirm-btn" id="submitOrderBtn" disabled>
+                        <div class="loader" id="btnLoader"></div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        <span id="btnText">Proceed to WhatsApp</span>
+                    </button>
                 </div>
+
             </div>
-            
-            <div id="minAlert">Minimum ₹100 required for delivery</div>
-
-            <form id="orderForm" style="margin-top: 15px;">
-                <input type="text" id="custName" placeholder="Customer Name" autocomplete="name" required>
-                
-                <input type="tel" id="custPhone" placeholder="Mobile Number" autocomplete="tel" required>
-                
-                <textarea id="custAddr" rows="2" placeholder="Full Delivery Address" autocomplete="street-address" required></textarea>
-                
-                <div class="input-group">
-                    <input type="text" id="pincode" value="491995" readonly title="Delivery available only in this pincode">
-                    <input type="text" id="ward" placeholder="Ward No. (Optional)">
-                </div>
-                
-                <div class="input-group">
-                    <input type="text" id="house" placeholder="House No. (Optional)">
-                    <input type="text" id="landmark" placeholder="Landmark (Optional)">
-                </div>
-
-                <div style="background:rgba(0,82,204,0.05); padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-weight:700; color:var(--primary); font-size:12px; border:1px dashed var(--primary);">🚚 Cash on Delivery Only</div>
-                
-                <button type="submit" class="confirm-btn" id="submitBtn" disabled>
-                    <div class="loader" id="btnLoader"></div>
-                    <span id="btnText">Proceed to WhatsApp</span>
-                </button>
-            </form>
         </div>
     </div>
 </div>
 
-<script>
-    // --- 1. Prevent Browser from remembering scroll position ---
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
+<div id="view-orders" class="view-section">
+    <div class="page-wrapper">
+        <h2 class="page-title">My Orders</h2>
+        <div id="fullOrderHistoryList">
+            </div>
+    </div>
+</div>
 
-    // --- 2. Splash Screen & Initialization ---
+<div id="view-account" class="view-section">
+    <div class="page-wrapper">
+        <h2 class="page-title">Account Settings</h2>
+        
+        <div class="theme-toggle-row">
+            <span>Dark Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="section-card">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Personal Information
+            </h3>
+            
+            <div class="input-group">
+                <div>
+                    <label class="form-label">First Name <span class="required-mark">*</span></label>
+                    <input type="text" id="accFName" placeholder="Enter first name" required>
+                </div>
+                <div>
+                    <label class="form-label">Last Name <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+                    <input type="text" id="accLName" placeholder="Enter last name">
+                </div>
+            </div>
+
+            <label class="form-label">Mobile Number <span class="required-mark">*</span></label>
+            <input type="tel" id="accPhoneView" placeholder="10-digit mobile number" required>
+
+            <label class="form-label">Email Address <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+            <input type="email" id="accEmail" placeholder="your.email@example.com">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Age <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+                    <input type="number" id="accAge" placeholder="Your age">
+                </div>
+                <div>
+                    <label class="form-label">Gender <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+                    <select id="accGender">
+                        <option value="">Select...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="action-row">
+                <button onclick="clearProfileData()" class="danger-btn">Clear Data</button>
+                <button onclick="saveProfileData()" class="add-btn save-btn" id="btnSaveProfile">Save Profile</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Manage Address
+            </h3>
+            
+            <label class="form-label">Delivery Address / Street <span class="required-mark">*</span></label>
+            <textarea id="accAddr" rows="2" placeholder="Full Area / Colony details" required></textarea>
+            
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Ward No. <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+                    <input type="text" id="accWard" placeholder="Optional">
+                </div>
+                <div>
+                    <label class="form-label">House No. <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+                    <input type="text" id="accHouse" placeholder="Optional">
+                </div>
+            </div>
+            
+            <label class="form-label">Landmark <span style="font-weight: 600; text-transform: none; opacity: 0.5;">(Optional)</span></label>
+            <input type="text" id="accLandmark" placeholder="Near by landmark (Optional)">
+            
+            <div class="action-row">
+                <button onclick="clearAddressData()" class="danger-btn">Clear Address</button>
+                <button onclick="saveAddressData()" class="add-btn save-btn" id="btnSaveAddress">Save Address</button>
+            </div>
+        </div>
+
+        <button class="link-btn" onclick="navTo('orders')">
+            <span>View My Order History</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <button class="bottom-nav-item active" onclick="navTo('home')" id="nav-home">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Home
+    </button>
+    <button class="bottom-nav-item" onclick="navTo('orders')" id="nav-orders">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        My Orders
+    </button>
+    <button class="bottom-nav-item" onclick="navTo('account')" id="nav-account">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        Account
+    </button>
+</div>
+
+<script>
+    if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+
     document.addEventListener("DOMContentLoaded", function() {
         window.scrollTo(0, 0); 
         const splashScreen = document.getElementById('splashScreen');
         setTimeout(() => {
             splashScreen.style.opacity = '0';
-            setTimeout(() => { splashScreen.style.display = 'none'; }, 300);
-        }, 400); 
+            setTimeout(() => { splashScreen.style.display = 'none'; }, 400);
+        }, 500); 
 
-        // Load Local Storage Data into Checkout fields on startup
-        syncLocalDataToCheckout();
+        loadAccountDataFromStorage();
+        checkThemePreference();
     });
 
-    // --- LOCAL STORAGE ACCOUNT LOGIC --- //
-    
-    function openAccount() {
-        document.getElementById('accountOverlay').style.display = 'flex';
-        loadAccountDataFromStorage();
+    // --- SMOOTH VIEW ROUTER LOGIC --- //
+    function navTo(section) {
+        document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+        document.getElementById('nav-' + section).classList.add('active');
+
+        // Smooth switch animation
+        const currentView = document.querySelector('.view-section.active');
+        if(currentView) {
+            currentView.style.opacity = '0';
+            setTimeout(() => {
+                document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                const newView = document.getElementById('view-' + section);
+                newView.classList.add('active');
+                newView.style.opacity = '1';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }, 150); // slight delay for smooth crossfade feel
+        }
+
+        if (section === 'orders') loadOrderHistory();
+        if (section === 'account') loadAccountDataFromStorage();
     }
 
-    function closeAccount() {
-        document.getElementById('accountOverlay').style.display = 'none';
+    // --- THEME LOGIC --- //
+    function toggleTheme() {
+        const b = document.body;
+        const isLight = b.getAttribute('data-theme') === 'light';
+        const newTheme = isLight ? 'dark' : 'light';
+        b.setAttribute('data-theme', newTheme);
+        document.getElementById('themeCheckbox').checked = !isLight;
+        localStorage.setItem('sb_theme', newTheme);
     }
 
-    function switchTab(tabId, btnElement) {
-        // Hide all panes
-        document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
-        // Remove active class from buttons
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
-        // Activate selected
-        document.getElementById('tab-' + tabId).classList.add('active');
-        btnElement.classList.add('active');
+    function checkThemePreference() {
+        const savedTheme = localStorage.getItem('sb_theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        document.getElementById('themeCheckbox').checked = (savedTheme === 'dark');
     }
 
+    // --- PROFILE & ACCOUNT LOGIC --- //
     function saveProfileData() {
-        const name = document.getElementById('accName').value.trim();
-        const phone = document.getElementById('accPhone').value.trim();
-        localStorage.setItem('sb_profile', JSON.stringify({ name, phone }));
+        const fName = document.getElementById('accFName').value.trim();
+        const phone = document.getElementById('accPhoneView').value.trim();
         
-        const btn = document.querySelector('#tab-profile .add-btn');
-        btn.innerText = "Saved Successfully ✓";
-        btn.style.background = "#10b981";
-        setTimeout(() => { btn.innerText = "Save Profile Details"; btn.style.background = "var(--primary)"; }, 2000);
+        if(!fName || !phone) {
+            alert("Please fill in the mandatory fields: First Name and Mobile Number.");
+            return;
+        }
+
+        const profile = {
+            fName: fName,
+            lName: document.getElementById('accLName').value.trim(),
+            email: document.getElementById('accEmail').value.trim(),
+            phone: phone,
+            age: document.getElementById('accAge').value.trim(),
+            gender: document.getElementById('accGender').value
+        };
+        localStorage.setItem('sb_profile', JSON.stringify(profile));
         
-        syncLocalDataToCheckout();
+        const btn = document.getElementById('btnSaveProfile');
+        btn.innerText = "Saved ✓"; btn.style.background = "var(--success)";
+        setTimeout(() => { btn.innerText = "Save Profile"; btn.style.background = "var(--primary)"; }, 2000);
+    }
+
+    function clearProfileData() {
+        if(confirm("Are you sure you want to clear your personal details?")) {
+            localStorage.removeItem('sb_profile');
+            document.getElementById('accFName').value = '';
+            document.getElementById('accLName').value = '';
+            document.getElementById('accEmail').value = '';
+            document.getElementById('accPhoneView').value = '';
+            document.getElementById('accAge').value = '';
+            document.getElementById('accGender').value = '';
+        }
     }
 
     function saveAddressData() {
+        const street = document.getElementById('accAddr').value.trim();
+        
+        if(!street) {
+            alert("Please fill in the mandatory field: Delivery Address.");
+            return;
+        }
+
         const addr = {
-            street: document.getElementById('accAddr').value.trim(),
+            street: street,
             ward: document.getElementById('accWard').value.trim(),
             house: document.getElementById('accHouse').value.trim(),
             landmark: document.getElementById('accLandmark').value.trim()
         };
         localStorage.setItem('sb_address', JSON.stringify(addr));
         
-        const btn = document.querySelector('#tab-address .add-btn');
-        btn.innerText = "Saved Successfully ✓";
-        btn.style.background = "#10b981";
-        setTimeout(() => { btn.innerText = "Save Delivery Address"; btn.style.background = "var(--primary)"; }, 2000);
+        const btn = document.getElementById('btnSaveAddress');
+        btn.innerText = "Saved ✓"; btn.style.background = "var(--success)";
+        setTimeout(() => { btn.innerText = "Save Address"; btn.style.background = "var(--primary)"; }, 2000);
+    }
 
-        syncLocalDataToCheckout();
+    function clearAddressData() {
+        if(confirm("Are you sure you want to clear your address details?")) {
+            localStorage.removeItem('sb_address');
+            document.getElementById('accAddr').value = '';
+            document.getElementById('accWard').value = '';
+            document.getElementById('accHouse').value = '';
+            document.getElementById('accLandmark').value = '';
+        }
     }
 
     function loadAccountDataFromStorage() {
         const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const addr = JSON.parse(localStorage.getItem('sb_address') || '{}');
-        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
 
-        // Load Profile
-        if(profile.name) document.getElementById('accName').value = profile.name;
-        if(profile.phone) document.getElementById('accPhone').value = profile.phone;
+        if(profile.fName) document.getElementById('accFName').value = profile.fName;
+        if(profile.lName) document.getElementById('accLName').value = profile.lName;
+        if(profile.email) document.getElementById('accEmail').value = profile.email;
+        if(profile.phone) document.getElementById('accPhoneView').value = profile.phone;
+        if(profile.age) document.getElementById('accAge').value = profile.age;
+        if(profile.gender) document.getElementById('accGender').value = profile.gender;
 
-        // Load Address
         if(addr.street) document.getElementById('accAddr').value = addr.street;
         if(addr.ward) document.getElementById('accWard').value = addr.ward;
         if(addr.house) document.getElementById('accHouse').value = addr.house;
         if(addr.landmark) document.getElementById('accLandmark').value = addr.landmark;
+    }
 
-        // Load Orders
-        const orderContainer = document.getElementById('orderHistoryList');
+    function loadOrderHistory() {
+        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
+        const container = document.getElementById('fullOrderHistoryList');
+        
         if(orders.length === 0) {
-            orderContainer.innerHTML = '<div style="text-align:center; padding:30px 10px; opacity:0.5;"><div style="font-size:30px; margin-bottom:10px;">📦</div><div style="font-size:14px; font-weight:bold;">No Past Orders</div><div style="font-size:12px;">Your order history will appear here</div></div>';
+            container.innerHTML = '<div style="text-align:center; padding:60px 20px; opacity:0.6; background:var(--card); border-radius:18px; border:1px dashed var(--border);"><div style="font-size:45px; margin-bottom:15px; filter:grayscale(1);">📦</div><div style="font-size:16px; font-weight:800;">No Past Orders</div><div style="font-size:14px; margin-top:8px;">Your order history will appear here</div><button onclick="navTo(\'home\')" style="margin-top:25px; padding:12px 25px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;">Start Shopping</button></div>';
         } else {
-            // Reverse so newest is on top
-            orderContainer.innerHTML = orders.slice().reverse().map(o => `
+            container.innerHTML = orders.slice().reverse().map(o => `
                 <div class="order-history-card">
-                    <div class="order-date">${o.date}</div>
+                    <div class="order-date">
+                        <span>${o.date}</span>
+                        <span class="order-status">Confirmed</span>
+                    </div>
                     <div class="order-items">${o.items}</div>
                     <div class="order-total">Total: ₹${o.total}</div>
                 </div>
@@ -402,47 +596,40 @@
         }
     }
 
-    function syncLocalDataToCheckout() {
-        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        const addr = JSON.parse(localStorage.getItem('sb_address') || '{}');
-        
-        // Fill main checkout form if data exists
-        if(profile.name) document.getElementById('custName').value = profile.name;
-        if(profile.phone) document.getElementById('custPhone').value = profile.phone;
-        
-        if(addr.street) document.getElementById('custAddr').value = addr.street;
-        if(addr.ward) document.getElementById('ward').value = addr.ward;
-        if(addr.house) document.getElementById('house').value = addr.house;
-        if(addr.landmark) document.getElementById('landmark').value = addr.landmark;
-
-        // Trigger input event to re-validate form buttons
-        document.getElementById('custPhone').dispatchEvent(new Event('input'));
-    }
-
-    // Auto-save form info to local storage on Successful Order Place
     function autoSaveOnOrder(itemsList, totalAmount) {
-        // Save Profile & Address automatically
-        const currentProfile = { name: document.getElementById('custName').value, phone: document.getElementById('custPhone').value };
-        const currentAddr = {
-            street: document.getElementById('custAddr').value, ward: document.getElementById('ward').value,
-            house: document.getElementById('house').value, landmark: document.getElementById('landmark').value
-        };
-        localStorage.setItem('sb_profile', JSON.stringify(currentProfile));
-        localStorage.setItem('sb_address', JSON.stringify(currentAddr));
-
-        // Save Order to History
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
-        // Formatting date
         const dateOptions = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' };
         orders.push({
             date: new Date().toLocaleDateString('en-IN', dateOptions),
-            items: itemsList.replace(/\n/g, '<br>'), // convert newlines to br for html display
+            items: itemsList.replace(/\n/g, '<br>'), 
             total: totalAmount
         });
         localStorage.setItem('sb_orders', JSON.stringify(orders));
     }
-    // ---------------------------------------------
 
+    // --- INTERNET CHECK & UTILS --- //
+    const offlineOverlay = document.getElementById('offlineOverlay');
+    function checkInternetStatus() {
+        if (navigator.onLine) { offlineOverlay.style.display = 'none'; return true; } 
+        else { offlineOverlay.style.display = 'flex'; return false; }
+    }
+    function userManualRefreshCheck() {
+        if (navigator.onLine) { offlineOverlay.style.display = 'none'; } 
+        else {
+            const btn = document.querySelector('.modal-btn', '#offlineOverlay');
+            const originalText = btn.innerText;
+            btn.innerText = "Still Offline! Check settings.";
+            btn.style.backgroundColor = "var(--danger)";
+            setTimeout(() => { btn.innerText = originalText; btn.style.backgroundColor = "var(--primary)"; }, 2000);
+        }
+    }
+    function refreshPage() { window.location.reload(); }
+    window.addEventListener('online', checkInternetStatus);
+    window.addEventListener('offline', checkInternetStatus);
+    setInterval(checkInternetStatus, 3000); 
+    checkInternetStatus();
+
+    // Remove Ad Injections
     (function blockInjectedAds() {
         const removeAds = () => {
             const elements = document.querySelectorAll('div, iframe');
@@ -455,31 +642,7 @@
         setInterval(removeAds, 1000);
     })();
 
-    const offlineOverlay = document.getElementById('offlineOverlay');
-    
-    function checkInternetStatus() {
-        if (navigator.onLine) { offlineOverlay.style.display = 'none'; return true; } 
-        else { offlineOverlay.style.display = 'flex'; return false; }
-    }
-
-    function userManualRefreshCheck() {
-        if (navigator.onLine) { offlineOverlay.style.display = 'none'; } 
-        else {
-            const btn = document.querySelector('.offline-btn');
-            const originalText = btn.innerText;
-            btn.innerText = "Still Offline! Please check settings.";
-            btn.style.backgroundColor = "#ef4444";
-            setTimeout(() => { btn.innerText = originalText; btn.style.backgroundColor = "var(--primary)"; }, 2000);
-        }
-    }
-
-    function refreshPage() { window.location.reload(); }
-
-    window.addEventListener('online', checkInternetStatus);
-    window.addEventListener('offline', checkInternetStatus);
-    setInterval(checkInternetStatus, 3000); 
-    checkInternetStatus();
-
+    // --- STORE LOGIC --- //
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3n2VF63ueYdHDhsnsMtDgYELpYWNbf5m2dTu3mnl6uPkoWp-WClNvfkWTy-udfA9R/exec";
     const ADMIN_WA = "916263839343";
 
@@ -499,18 +662,13 @@
 
     let cart = [];
 
-    function toggleTheme() {
-        const b = document.body;
-        const theme = b.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        b.setAttribute('data-theme', theme);
-        document.getElementById('tBtn').innerText = theme === 'light' ? 'Dark Mode' : 'Light Mode';
-    }
-
-    document.getElementById('custPhone').addEventListener('input', function() {
-        let cleanedValue = this.value.replace(/[^0-9]/g, '');
-        if (cleanedValue.length > 12) { cleanedValue = cleanedValue.substring(0, 12); }
-        this.value = cleanedValue;
-        updateUI();
+    // Phone Input Validation
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+        input.addEventListener('input', function() {
+            let cleanedValue = this.value.replace(/[^0-9]/g, '');
+            if (cleanedValue.length > 12) { cleanedValue = cleanedValue.substring(0, 12); }
+            this.value = cleanedValue;
+        });
     });
 
     function renderGrid() {
@@ -525,12 +683,12 @@
                 <div class="btn-container" id="btn-p-${p.id}">
                     ${inCart ? `
                         <div class="cart-qty-toggle">
-                            <button class="toggle-btn" onclick="updateCartQty(${p.id}, -1)">-</button>
+                            <button type="button" class="toggle-btn" onclick="updateCartQty(${p.id}, -1)">-</button>
                             <span style="font-size:15px;">${inCart.qty}</span>
-                            <button class="toggle-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
+                            <button type="button" class="toggle-btn" onclick="updateCartQty(${p.id}, 1)">+</button>
                         </div>
                     ` : `
-                        <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                        <button type="button" class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
                     `}
                 </div>
             </div>`;
@@ -561,14 +719,12 @@
         const displayTotal = cleanTotal % 1 === 0 ? cleanTotal : cleanTotal.toFixed(2);
         
         const container = document.getElementById('cartItemsContainer');
-        const emptyMsg = document.getElementById('emptyCartMsg');
         const summary = document.getElementById('receiptSummary');
-        const phone = document.getElementById('custPhone').value;
-        const btn = document.getElementById('submitBtn');
+        const btn = document.getElementById('submitOrderBtn');
         const alert = document.getElementById('minAlert');
 
         if(cart.length === 0) {
-            container.innerHTML = `<div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.6; font-size: 13px; font-weight: 600;">🛒 Cart is empty</div>`;
+            container.innerHTML = `<div id="emptyCartMsg" style="text-align:center; padding:15px; opacity:0.5; font-size: 13px; font-weight: 700;">🛒 Cart is empty</div>`;
             summary.style.display = 'none';
         } else {
             container.innerHTML = cart.map(c => {
@@ -586,7 +742,8 @@
             summary.style.display = 'block';
         }
 
-        if(cleanTotal >= 100 && phone.length >= 10 && phone.length <= 12) {
+        // Enable button solely based on Total >= 100
+        if(cleanTotal >= 100) {
             btn.disabled = false;
             alert.style.display = 'none';
         } else {
@@ -595,21 +752,32 @@
                 alert.style.display = 'block';
                 const remaining = Math.round((100 - cleanTotal) * 100) / 100;
                 alert.innerText = `Add ₹${remaining % 1 === 0 ? remaining : remaining.toFixed(2)} more for free delivery`;
-            } else if(phone.length > 0 && (phone.length < 10 || phone.length > 12)) {
-                alert.style.display = 'block';
-                alert.innerText = "Enter a valid 10 to 12-digit mobile number";
             } else {
                 alert.style.display = 'none';
             }
         }
     }
 
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
+    // --- NEW VALIDATION & ORDER LOGIC --- //
+    
+    function closeValidationAndGoToAccount() {
+        document.getElementById('validationOverlay').style.display = 'none';
+        navTo('account'); // Smooth transition to Account View
+    }
+
+    document.getElementById('submitOrderBtn').addEventListener('click', function(e) {
         if(!checkInternetStatus()) return;
 
-        const btn = document.getElementById('submitBtn');
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        const addr = JSON.parse(localStorage.getItem('sb_address') || '{}');
+
+        // STRICT VALIDATION
+        if(!profile.fName || !profile.phone || !addr.street) {
+            document.getElementById('validationOverlay').style.display = 'flex';
+            return; 
+        }
+
+        const btn = document.getElementById('submitOrderBtn');
         const btnText = document.getElementById('btnText');
         const btnLoader = document.getElementById('btnLoader');
         
@@ -617,11 +785,12 @@
         btnLoader.style.display = "block";
         btn.disabled = true;
 
-        const ward = document.getElementById('ward').value || 'NA';
-        const house = document.getElementById('house').value || 'NA';
-        const landmark = document.getElementById('landmark').value || 'NA';
-        
-        const addr = `${document.getElementById('custAddr').value}, Ward no: ${ward}, House: ${house}, Landmark: ${landmark}, Pincode: 491995`;
+        let fullNameArray = [];
+        if(profile.fName) fullNameArray.push(profile.fName);
+        if(profile.lName) fullNameArray.push(profile.lName);
+        const finalName = fullNameArray.join(' ') || 'Customer';
+
+        const finalAddr = `${addr.street || ''}, Ward no: ${addr.ward || 'NA'}, House: ${addr.house || 'NA'}, Landmark: ${addr.landmark || 'NA'}, Pincode: 491995`;
         
         const itemsList = cart.map(i => {
             const itemTotal = Math.round((i.price * i.qty) * 100) / 100;
@@ -632,19 +801,17 @@
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
 
         const payload = {
-            name: document.getElementById('custName').value,
-            phone: document.getElementById('custPhone').value,
-            address: addr,
+            name: finalName,
+            phone: profile.phone,
+            address: finalAddr,
             items: cart.map(i => `${i.qty}x ${i.name}`).join(", "), 
             total: total,
             method: "COD"
         };
 
-        // Call Google Sheet (Silent update)
         fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).catch(err => console.log(err));
         
-        // WhatsApp Redirect
-        const msg = `*🛍️ NEW ORDER (safeblue stationery)*\n\n*👤 Customer Details:*\nName: ${payload.name}\nPhone: ${payload.phone}\n\n*📍 Delivery Address:*\n${addr}\n\n*📦 Order Summary:*\n${itemsList}\n\n*💰 Total Amount:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
+        const msg = `*🛍️ NEW ORDER (safeblue stationery)*\n\n*👤 Customer Details:*\nName: ${finalName}\nPhone: ${profile.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Order Summary:*\n${itemsList}\n\n*💰 Total Amount:* ₹${total}\n*Payment Mode:* Cash on Delivery`;
         const encodedMsg = encodeURIComponent(msg);
 
         const nativeAppUrl = `whatsapp://send?phone=${ADMIN_WA}&text=${encodedMsg}`;
@@ -654,7 +821,6 @@
         link.click();
         document.body.removeChild(link);
 
-        // Save order data to Account automatically
         autoSaveOnOrder(itemsList, total);
 
         setTimeout(() => {
