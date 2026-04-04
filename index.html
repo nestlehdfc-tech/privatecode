@@ -216,7 +216,20 @@
         }
     </style>
 </head>
-<body data-theme="light">
+
+<script>
+    (function() {
+        var savedTheme = localStorage.getItem('sb_theme');
+        var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    })();
+</script>
+
+<body>
 
 <div id="splashScreen" class="splash-screen">
     <div class="splash-logo">
@@ -609,7 +622,6 @@
     function handleEnterKey(event, actionFunction) {
         if (event.key === 'Enter') {
             const tagName = event.target.tagName.toLowerCase();
-            // Allow 'Enter' to insert new line only in Textarea, else trigger save function
             if (tagName !== 'textarea' && tagName !== 'button') {
                 event.preventDefault();
                 actionFunction();
@@ -756,7 +768,7 @@
             }, 400);
         }, 500);
         
-        checkThemePreference();
+        syncToggleSwitch(); // Ensure UI matches the theme set by the early script
         migrateAddressData(); 
         renderAddressList();
         renderGrid();
@@ -770,19 +782,35 @@
         setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
     }
 
-    // --- THEME ---
+    // --- 100% SMART THEME DETECTION (SYSTEM + MANUAL OVERRIDE) ---
     function toggleTheme() {
-        const isLight = document.body.getAttribute('data-theme') === 'light';
-        const newTheme = isLight ? 'dark' : 'light';
+        const isCurrentlyDark = document.body.getAttribute('data-theme') === 'dark';
+        const newTheme = isCurrentlyDark ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
         document.body.setAttribute('data-theme', newTheme);
-        document.getElementById('themeCheckbox').checked = !isLight;
-        localStorage.setItem('sb_theme', newTheme);
+        document.getElementById('themeCheckbox').checked = !isCurrentlyDark;
+        
+        // Save the manual preference so it overrides system settings in the future
+        localStorage.setItem('sb_theme', newTheme); 
     }
-    function checkThemePreference() {
-        const saved = localStorage.getItem('sb_theme') || 'light';
-        document.body.setAttribute('data-theme', saved);
-        document.getElementById('themeCheckbox').checked = (saved === 'dark');
+    
+    function syncToggleSwitch() {
+        // Just visually syncs the toggle switch based on what the body theme actually is right now
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        const checkbox = document.getElementById('themeCheckbox');
+        if (checkbox) checkbox.checked = isDark;
     }
+
+    // Listen for Phone System Theme Changes in Real-Time (If user hasn't forced a manual preference)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (!localStorage.getItem('sb_theme')) { // Only auto-change if user hasn't set a manual preference
+            const newTheme = event.matches ? "dark" : "light";
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.body.setAttribute('data-theme', newTheme);
+            syncToggleSwitch();
+        }
+    });
 
     // --- NUMBER VALIDATOR UTILITY ---
     function isPhoneNumberValid(phone) {
@@ -1090,20 +1118,32 @@
         }
     });
 
-    // --- STORE LOGIC ---
+    // =========================================================================
+    // 📦 PRODUCTS LIST - EASY TO MANAGE (यहाँ आप आसानी से प्रोडक्ट जोड़/हटा सकते हैं)
+    // =========================================================================
+    // नियम:
+    // 1. नया प्रोडक्ट जोड़ने के लिए सबसे आखिरी लाइन को कॉपी करें और नई लाइन में पेस्ट करें।
+    // 2. हर प्रोडक्ट का "id" अलग होना चाहिए (जैसे 11, 12, 13)।
+    // 3. "name" के अंदर प्रोडक्ट का नाम और "price" के अंदर उसकी कीमत (बिना ₹ के) लिखें।
+    // 4. आखिरी प्रोडक्ट को छोड़कर, हर लाइन के अंत में 'कॉमा' (,) लगाना जरूरी है!
+    // =========================================================================
     const products = [
-        { id:1, name:'Combine copy page180 M.R.P=42', price:21 },
-        { id:2, name:'Combine copy page180 M.R.P=50', price:25 },
-        { id:3, name:'Combine copy page112 M.R.P=20', price:10 },
-        { id:4, name:'Box Maths Copy Page172 M.R.P=45', price:22.5 },
-        { id:5, name:'Four Line Copy page128 M.R.P=20', price:10 },
-        { id:6, name:'Double line page172 M.R.P=45', price:22.5 },
-        { id:7, name:'Blank Copy page172 M.R.P=40', price:20 },
-        { id:8, name:'Blank Copy page128 M.R.P=20', price:10 },
-        { id:9, name:'Rough Copy page108 M.R.P=10', price:5 }, 
-        { id:10, name:'Rough Copy page100 M.R.P=5', price:2.5 },
-        { id:11, name:'Chart Paper', price:5 }
+        { id: 1, name: 'Combine copy page180 M.R.P=42', price: 21 },
+        { id: 2, name: 'Combine copy page180 M.R.P=50', price: 25 },
+        { id: 3, name: 'Combine copy page112 M.R.P=20', price: 10 },
+        { id: 4, name: 'Box Maths Copy Page172 M.R.P=45', price: 22.5 },
+        { id: 5, name: 'Four Line Copy page128 M.R.P=20', price: 10 },
+        { id: 6, name: 'Double line page172 M.R.P=45', price: 22.5 },
+        { id: 7, name: 'Blank Copy page172 M.R.P=40', price: 20 },
+        { id: 8, name: 'Blank Copy page128 M.R.P=20', price: 10 },
+        { id: 9, name: 'Rough Copy page108 M.R.P=10', price: 5 }, 
+        { id: 10, name: 'Rough Copy page100 M.R.P=5', price: 2.5 },
+        { id: 11, name: 'Chart Paper', price: 5 }
+        // आप यहाँ नीचे अपने नए प्रोडक्ट जोड़ सकते हैं:
+        // ,{ id: 12, name: 'New Product Name', price: 50 } 
     ];
+    // =========================================================================
+    
     let cart = [];
 
     function renderGrid() {
