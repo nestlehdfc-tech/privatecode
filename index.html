@@ -166,27 +166,10 @@
         .dot-menu div { padding: 10px 15px; font-size: 14px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); }
         .dot-menu div:last-child { border-bottom: none; color: var(--danger); }
 
-        /* Order Card Style */
+        /* Order Card Compact Style (New Update) */
         .order-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); overflow: hidden; }
-        .order-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; font-size: 14px; }
-        .order-num { font-weight: 700; font-size: 16px; color: var(--text); }
-        .order-date-text { color: var(--muted); font-size: 13px; }
-        .order-status-wrap { padding: 0 15px 10px; }
-        .order-status-pill { display: inline-block; font-weight: 600; font-size: 12px; padding: 6px 12px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .order-items-box { background: var(--bg); padding: 15px; font-size: 14px; line-height: 1.6; border-radius: 8px; margin: 0 15px 15px; color: var(--text); border: 1px solid var(--border); }
-        .order-footer { display: flex; justify-content: space-between; align-items: flex-end; padding: 15px; border-top: 1px solid var(--border); background: var(--bg); }
-        .order-total-block { font-size: 13px; color: var(--muted); }
-        .order-total-amt { font-size: 18px; font-weight: 800; color: var(--text); display: block; margin-top: 2px; }
-        .order-for-text { font-size: 12px; color: var(--muted); font-weight: 500; }
-
-        /* Order Details Toggle Style */
-        .order-item-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px dashed var(--border); padding-bottom:8px; }
-        .order-item-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-        .item-info-left { flex:1; }
-        .item-title-name { font-weight:600; font-size:14px; display:flex; align-items:flex-start; gap:6px; color:var(--text); }
-        .item-price-calc { color:var(--muted); font-size:12px; margin-left:24px; margin-top:4px; font-weight:500; }
-        .item-info-right { font-weight:800; font-size:15px; color:var(--text); text-align:right; }
-
+        .order-status-pill { display: inline-block; font-weight: 600; font-size: 11px; padding: 4px 8px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        
         .view-details-btn { display: block; width: 100%; text-align: center; background: rgba(26,92,255,0.08); color: var(--primary); font-weight: 700; padding: 12px; border-radius: 10px; margin-top: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
         .view-details-btn:active { background: rgba(26,92,255,0.15); }
 
@@ -308,10 +291,8 @@
 <div id="splashScreen" class="splash-screen">
     <div class="splash-logo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="currentColor" fill-opacity="0.1"></path>
+            <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10Z" fill="currentColor" fill-opacity="0.15"></path>
             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            <path d="M8 22v-6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v6"></path>
-            <path d="M4 15h16"></path>
         </svg>
     </div>
 </div>
@@ -587,7 +568,7 @@
             <div class="menu-item" onclick="navTo('support')">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    Contact Us
+                    Help & Support
                 </div>
                 <div class="chevron">›</div>
             </div>
@@ -1474,6 +1455,7 @@
         `;
     }
 
+    // UPDATED FUNCTION: Compact Order Cards in List View
     function loadOrderHistory() {
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
         const container = document.getElementById('fullOrderHistoryList');
@@ -1484,52 +1466,34 @@
         }
 
         container.innerHTML = orders.slice().reverse().map(o => {
-            let visibleHtml = '';
-            const maxShow = 2;
-
-            o.items.slice(0, maxShow).forEach((item) => {
-                const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
-                const lineTotal = (item.price * item.qty) % 1 === 0 ? (item.price * item.qty) : (item.price * item.qty).toFixed(2);
-
-                visibleHtml += `
-                <div class="order-item-row">
-                    <div class="item-info-left">
-                        <div class="item-title-name"><span>📘</span><span>${item.name}</span></div>
-                        <div class="item-price-calc">₹${priceDisp} &times; ${item.qty} Qty</div>
-                    </div>
-                    <div class="item-info-right">₹${lineTotal}</div>
-                </div>`;
-            });
-
-            let viewDetailsBtnHtml = '';
-            if (o.items.length > maxShow) {
-                viewDetailsBtnHtml = `
-                <div class="view-details-btn" onclick="openOrderDetails(${o.id})">
-                    +${o.items.length - maxShow} more items... View Full Details ➔
-                </div>`;
-            } else {
-                viewDetailsBtnHtml = `
-                <div class="view-details-btn" onclick="openOrderDetails(${o.id})">
-                    View Full Order Details ➔
-                </div>`;
-            }
+            const totalItems = o.items.reduce((sum, item) => sum + item.qty, 0);
+            const itemSummary = o.items.length === 1 ? o.items[0].name : `${o.items[0].name} & ${o.items.length - 1} more`;
 
             return `
-            <div class="order-card">
-                <div class="order-header">
-                    <span class="order-num">Order #${o.id}</span>
-                    <span class="order-date-text">On ${o.date}</span>
+            <div class="order-card" style="padding: 0;">
+                <div style="padding: 12px 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: var(--text);">Order #${o.id}</div>
+                        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">${o.date}</div>
+                    </div>
+                    <span class="order-status-pill">Confirmed</span>
                 </div>
-                <div class="order-status-wrap">
-                    <span class="order-status-pill">Order Confirmed</span>
+                
+                <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; background: var(--bg);">
+                    <div style="font-size: 13px; color: var(--muted);">
+                        <div style="font-weight: 700; color: var(--text); margin-bottom: 3px;">${totalItems} Items</div>
+                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px;">${itemSummary}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 11px; color: var(--muted);">Total Amount</div>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--text);">₹${o.total}</div>
+                    </div>
                 </div>
-                <div class="order-items-box">
-                    ${visibleHtml}
-                    ${viewDetailsBtnHtml}
-                </div>
-                <div class="order-footer">
-                    <div class="order-total-block">Total <span class="order-total-amt">₹${o.total}</span></div>
-                    <div class="order-for-text">Ordered for : ${o.name}</div>
+                
+                <div style="padding: 10px 15px 15px;">
+                    <div class="view-details-btn" style="margin-top: 0; padding: 10px;" onclick="openOrderDetails(${o.id})">
+                        View Order Details ➔
+                    </div>
                 </div>
             </div>`;
         }).join('');
