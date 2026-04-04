@@ -166,6 +166,14 @@
         .order-total-amt { font-size: 18px; font-weight: 800; color: var(--text); display: block; margin-top: 2px; }
         .order-for-text { font-size: 12px; color: var(--muted); font-weight: 500; }
 
+        /* Order Details Toggle Style */
+        .order-item-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+        .order-item-row:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+        .item-info-left { flex:1; }
+        .item-title-name { font-weight:600; font-size:14px; display:flex; align-items:flex-start; gap:6px; color:var(--text); }
+        .item-price-calc { color:var(--muted); font-size:12px; margin-left:24px; margin-top:4px; font-weight:500; }
+        .item-info-right { font-weight:800; font-size:15px; color:var(--primary); text-align:right; }
+
         /* Theme Switch */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -313,7 +321,7 @@
 
 <div id="view-account" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Account
     </div>
     <div class="page-wrapper">
@@ -405,7 +413,7 @@
         </div>
         <div class="material-input">
             <label>Mobile Number</label>
-            <input type="tel" id="accPhone" placeholder="e.g. +91 98XXX-XXXXX">
+            <input type="tel" id="accPhone" placeholder="+91 98XXX-XXXXX">
         </div>
         <div class="material-input">
             <label>Email Address</label>
@@ -504,7 +512,7 @@
 </div>
 
 <script>
-    // --- CUSTOM CONFIRM MODAL LOGIC ---
+    // --- CUSTOM CONFIRM MODAL LOGIC (SECURE) ---
     let confirmActionCallback = null;
 
     function openCustomConfirm(title, message, callback) {
@@ -707,7 +715,6 @@
     }
 
     function clearAllData() {
-        // Updated to use the custom modal
         openCustomConfirm(
             "Clear All Data?", 
             "Are you sure you want to clear all your data? This action cannot be undone.", 
@@ -836,7 +843,6 @@
     }
     
     function deleteAddress(id) {
-        // Updated to use custom modal
         openCustomConfirm(
             "Remove Address?", 
             "Are you sure you want to remove this saved address?", 
@@ -944,7 +950,7 @@
         }
     }
 
-    // --- CHECKOUT LOGIC WITH RESUME ORDER FLOW ---
+    // --- CHECKOUT LOGIC WITH PROFESSIONAL WHATSAPP FORMATTING ---
     document.getElementById('submitOrderBtn').addEventListener('click', function() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
@@ -969,9 +975,15 @@
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
         let msgItems = "";
-        cart.forEach(i => msgItems += `▪️ ${i.qty}x ${i.name}\n`);
+        cart.forEach(i => {
+            const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
+            const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
+            // Formatted clearly with Price and Unit Total
+            msgItems += `▪️ *${i.name}*\n   Qty: ${i.qty}  |  Price: ₹${priceDisp}  |  Total: ₹${lineTotal}\n\n`;
+        });
         
-        const msg = `*🛍️ NEW ORDER (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}\n*💰 Total:* ₹${total}\n*Payment Mode:* COD`;
+        // Changed "NEW ORDER" to "ORDER DETAILS"
+        const msg = `*🛍️ ORDER DETAILS (safeblue)*\n\n*👤 Customer:*\nName: ${name}\nPhone: ${p.phone}\n\n*📍 Delivery Address:*\n${finalAddr}\n\n*📦 Items:*\n${msgItems}*💰 Grand Total:* ₹${total}\n*Payment Mode:* COD`;
         
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
         const orderId = orders.length + 1; 
@@ -1005,6 +1017,19 @@
         navTo('orders');
     }
 
+    // --- MY ORDERS LOGIC WITH EXPANDABLE DETAILS ---
+    window.toggleOrderItems = function(id) {
+        const hiddenDiv = document.getElementById('hidden-items-' + id);
+        const btn = document.getElementById('toggle-btn-' + id);
+        if (hiddenDiv.style.display === 'none') {
+            hiddenDiv.style.display = 'block';
+            btn.innerHTML = 'Show Less ▲';
+        } else {
+            hiddenDiv.style.display = 'none';
+            btn.innerHTML = '+' + btn.getAttribute('data-count') + ' more items ▼';
+        }
+    };
+
     function loadOrderHistory() {
         const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
         const container = document.getElementById('fullOrderHistoryList');
@@ -1015,13 +1040,40 @@
         }
 
         container.innerHTML = orders.slice().reverse().map(o => {
-            let itemHtml = '';
+            let visibleHtml = '';
+            let hiddenHtml = '';
             const maxShow = 2;
-            for(let i=0; i<Math.min(o.items.length, maxShow); i++) {
-                itemHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span style="display:flex; align-items:center; gap:8px;"><span style="font-size:16px;">📘</span> ${o.items[i].name}</span> <span>Qty ${o.items[i].qty}</span></div>`;
-            }
-            if(o.items.length > maxShow) {
-                itemHtml += `<div style="color:var(--primary); font-weight:600; font-size:13px; margin-top:6px;">+${o.items.length - maxShow} more items</div>`;
+
+            o.items.forEach((item, index) => {
+                const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
+                const lineTotal = (item.price * item.qty) % 1 === 0 ? (item.price * item.qty) : (item.price * item.qty).toFixed(2);
+
+                const itemRow = `
+                <div class="order-item-row">
+                    <div class="item-info-left">
+                        <div class="item-title-name"><span>📘</span><span>${item.name}</span></div>
+                        <div class="item-price-calc">Price: ₹${priceDisp} &times; ${item.qty} Qty</div>
+                    </div>
+                    <div class="item-info-right">₹${lineTotal}</div>
+                </div>`;
+
+                if (index < maxShow) {
+                    visibleHtml += itemRow;
+                } else {
+                    hiddenHtml += itemRow;
+                }
+            });
+
+            let toggleBtnHtml = '';
+            if (o.items.length > maxShow) {
+                const moreCount = o.items.length - maxShow;
+                toggleBtnHtml = `
+                <div id="hidden-items-${o.id}" style="display:none; padding-top:8px;">
+                    ${hiddenHtml}
+                </div>
+                <div id="toggle-btn-${o.id}" data-count="${moreCount}" onclick="toggleOrderItems(${o.id})" style="color:var(--primary); font-weight:700; font-size:13px; margin-top:10px; cursor:pointer; text-align:center; padding: 10px; background: rgba(26,92,255,0.06); border-radius: 8px; transition:0.2s;">
+                    +${moreCount} more items ▼
+                </div>`;
             }
 
             return `
@@ -1033,7 +1085,10 @@
                 <div class="order-status-wrap">
                     <span class="order-status-pill">Order Placed</span>
                 </div>
-                <div class="order-items-box">${itemHtml}</div>
+                <div class="order-items-box">
+                    ${visibleHtml}
+                    ${toggleBtnHtml}
+                </div>
                 <div class="order-footer">
                     <div class="order-total-block">Total <span class="order-total-amt">₹${o.total}</span></div>
                     <div class="order-for-text">Ordered for : ${o.name}</div>
