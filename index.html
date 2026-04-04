@@ -64,7 +64,7 @@
         
         .support-btn { background: var(--success); color: white; text-decoration: none; padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); transition: 0.2s; }
         .support-btn:active { transform: scale(0.92); }
-        .support-btn svg { stroke: var(--danger); }
+        .support-btn svg { fill: var(--danger); stroke: var(--danger); }
 
         .sub-header { background: var(--card); padding: 16px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; font-size: 18px; font-weight: 600; }
         .sub-header svg { width: 24px; height: 24px; cursor: pointer; stroke: var(--text); padding: 2px; }
@@ -111,22 +111,29 @@
         .menu-item svg { width: 20px; height: 20px; stroke: var(--primary); }
         .chevron { color: var(--muted); font-size: 18px; }
 
+        /* Read-Only Profile View */
+        .profile-info-box { background: var(--card); border-radius: 16px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .info-row { display: flex; flex-direction: column; margin-bottom: 15px; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { font-size: 16px; color: var(--text); font-weight: 700; }
+
         /* Floating Material Inputs */
         .material-input { position: relative; margin-bottom: 20px; width: 100%; }
         .material-input input, .material-input textarea, .material-input select { width: 100%; padding: 16px 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--input-bg); color: var(--text); font-family: inherit; outline: none; transition: 0.2s; }
         .material-input input:focus, .material-input textarea:focus { border-color: var(--primary); }
         .material-input label { position: absolute; top: -8px; left: 12px; background: var(--card); padding: 0 4px; font-size: 12px; color: var(--muted); border-radius: 4px; z-index: 1; transition: 0.2s; }
         
-        .verify-badge { position: absolute; right: 12px; top: 18px; font-size: 12px; font-weight: 700; color: var(--primary); background: rgba(26,92,255,0.1); padding: 4px 10px; border-radius: 8px; cursor: pointer; }
-        .verify-badge.verified { color: var(--success); background: rgba(16,185,129,0.1); cursor: default; }
-
         .gender-options { display: flex; gap: 20px; margin-top: 15px; margin-bottom: 30px;}
         .gender-options label { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text); cursor: pointer;}
         .gender-options input[type="radio"] { width: 18px; height: 18px; accent-color: var(--primary); }
 
-        .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); padding: 15px; border-top: 1px solid var(--border); z-index: 2000; padding-bottom: calc(15px + env(safe-area-inset-bottom)); }
+        .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); padding: 15px; border-top: 1px solid var(--border); z-index: 2000; padding-bottom: calc(15px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 12px; }
         .large-save-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .large-save-btn:active { transform: scale(0.97); }
+        .clear-all-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .clear-all-btn:active { background: rgba(239, 68, 68, 0.05); transform: scale(0.97); }
+        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 600; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; margin-top: 5px; }
 
         /* Manage Address Cards */
         .add-new-addr-btn { background: transparent; color: var(--primary); border: 1px solid var(--primary); width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 25px; transition: 0.2s; }
@@ -186,12 +193,6 @@
         .modal-btn { background: var(--primary); color: white; border: none; padding: 15px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 15px; transition: 0.2s; }
         .modal-btn:active { transform: scale(0.96); }
         
-        .otp-input { text-align: center; font-size: 24px; letter-spacing: 10px; font-weight: bold; background: var(--bg); }
-        .otp-input::-webkit-outer-spin-button, .otp-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .otp-input[type=number] { -moz-appearance: textfield; }
-
-        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 24px; color: var(--muted); cursor: pointer; }
-        
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 80px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 80px; opacity: 1; } to { bottom: 0; opacity: 0; } }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -218,6 +219,25 @@
 
 <div id="toast">Message</div>
 
+<div id="welcomePopup" class="overlay">
+    <div class="modal-card" style="padding-top: 25px;">
+        <h2 style="font-size: 22px;">Welcome to safeblue!</h2>
+        <p>Let's get started. Please enter your name below.</p>
+        
+        <div class="material-input" style="margin-bottom: 15px; text-align: left;">
+            <label style="background: var(--card);">First Name</label>
+            <input type="text" id="welcomeFName" placeholder="e.g. John">
+        </div>
+        <div class="material-input" style="margin-bottom: 25px; text-align: left;">
+            <label style="background: var(--card);">Last Name (Optional)</label>
+            <input type="text" id="welcomeLName" placeholder="e.g. Doe">
+        </div>
+
+        <button class="modal-btn" onclick="saveWelcomeData()">Continue</button>
+        <button class="text-btn" onclick="closeWelcomePopup()">Skip for now</button>
+    </div>
+</div>
+
 <div id="successOverlay" class="overlay">
     <div class="modal-card">
         <div class="modal-icon">✅</div>
@@ -227,32 +247,11 @@
     </div>
 </div>
 
-<div id="otpOverlay" class="overlay">
-    <div class="modal-card">
-        <span class="close-modal" onclick="closeOTPModal()">×</span>
-        <h2>Email Verification</h2>
-        <p id="otpMessage">An email with a 6-digit code has been sent.</p>
-        
-        <div class="material-input" style="margin-bottom: 10px;">
-            <input type="number" id="otpInput" class="otp-input" placeholder="------" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);">
-        </div>
-        
-        <div style="margin-bottom: 15px; font-size: 13px;">
-            <span style="color: var(--muted);">Didn't receive code? </span>
-            <span id="resendTimer" style="font-weight: bold; color: var(--text);">Wait 30s</span>
-            <span id="resendBtn" style="color: var(--primary); font-weight: bold; cursor: pointer; display: none;" onclick="resendOTP()">Resend Code</span>
-        </div>
-
-        <p style="font-size:11px; color:var(--primary); margin-top:0; font-weight:bold;">Demo Hint: Use 123456 to verify</p>
-        <button class="modal-btn" onclick="verifyOTP()">Confirm Code</button>
-    </div>
-</div>
-
 <nav id="topNav">
     <div class="brand">safeblue</div>
     <div class="nav-actions">
         <a href="tel:+916263839343" class="support-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="var(--danger)" stroke="var(--danger)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
             Support
@@ -292,8 +291,8 @@
 </div>
 
 <div id="view-orders" class="view-section">
-    <div class="sub-header" id="ordersSubHeader">
-        <svg id="ordersBackBtn" onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    <div class="sub-header">
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         My Orders
     </div>
     <div class="page-wrapper" id="fullOrderHistoryList">
@@ -302,12 +301,12 @@
 
 <div id="view-account" class="view-section">
     <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         Account
     </div>
     <div class="page-wrapper">
         <div class="account-menu">
-            <div class="menu-item" onclick="navTo('profile-edit')">
+            <div class="menu-item" onclick="handleProfileClick()">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     My Profile
@@ -342,35 +341,67 @@
     </div>
 </div>
 
+<div id="view-profile-view" class="view-section">
+    <div class="sub-header">
+        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        My Profile
+    </div>
+    <div class="page-wrapper" style="padding-bottom: 100px;">
+        <div class="profile-info-box">
+            <div class="info-row">
+                <span class="info-label">Full Name</span>
+                <span class="info-value" id="dispFullName">Not provided</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Phone Number</span>
+                <span class="info-value" id="dispPhone">Not provided</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Email Address</span>
+                <span class="info-value" id="dispEmail">Not provided</span>
+            </div>
+            <div class="info-row" style="flex-direction: row; gap: 40px;">
+                <div style="display:flex; flex-direction:column;">
+                    <span class="info-label">Age</span>
+                    <span class="info-value" id="dispAge">N/A</span>
+                </div>
+                <div style="display:flex; flex-direction:column;">
+                    <span class="info-label">Gender</span>
+                    <span class="info-value" id="dispGender">N/A</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-bottom-btn">
+        <button class="large-save-btn" onclick="navTo('profile-edit')">Edit Profile</button>
+    </div>
+</div>
+
 <div id="view-profile-edit" class="view-section">
     <div class="sub-header">
         <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Edit Profile
+        Edit Details
     </div>
-    <div class="page-wrapper" style="padding-bottom: 80px;">
+    <div class="page-wrapper" style="padding-bottom: 150px;">
         <div class="material-input">
-            <label>Your first name</label>
-            <input type="text" id="accFName" placeholder="e.g. Aasim">
+            <label>First Name</label>
+            <input type="text" id="accFName" placeholder="e.g. John">
         </div>
         <div class="material-input">
-            <label>Your last name</label>
-            <input type="text" id="accLName" placeholder="e.g. Khan">
+            <label>Last Name</label>
+            <input type="text" id="accLName" placeholder="e.g. Doe">
         </div>
-        
-        <div class="material-input">
-            <label>Your email id</label>
-            <input type="email" id="accEmail" placeholder="safebluechip@gmail.com" oninput="checkEmailVerificationStatus()">
-            <span class="verify-badge" id="btnVerifyEmail" onclick="openEmailOTPModal()">Verify</span>
-        </div>
-        
         <div class="material-input">
             <label>Mobile Number</label>
-            <input type="tel" id="accPhone" placeholder="6263839343">
+            <input type="tel" id="accPhone" placeholder="e.g. 9876543210">
         </div>
-        
         <div class="material-input">
-            <label>Your age</label>
-            <input type="number" id="accAge" placeholder="19">
+            <label>Email Address</label>
+            <input type="email" id="accEmail" placeholder="john.doe@example.com">
+        </div>
+        <div class="material-input">
+            <label>Your Age</label>
+            <input type="number" id="accAge" placeholder="e.g. 25">
         </div>
         
         <div>
@@ -383,7 +414,8 @@
         </div>
     </div>
     <div class="fixed-bottom-btn">
-        <button class="large-save-btn" onclick="saveProfileData()">Save</button>
+        <button class="large-save-btn" onclick="saveProfileData()">Save Changes</button>
+        <button class="clear-all-btn" onclick="clearAllData()">Clear All Data</button>
     </div>
 </div>
 
@@ -429,20 +461,20 @@
             <input type="text" id="inpLandmark" placeholder="Near Tiwari Shop...">
         </div>
     </div>
-    <div class="fixed-bottom-btn">
+    <div class="fixed-bottom-btn" style="flex-direction: row;">
         <button class="large-save-btn" onclick="saveAddressData()">Save Address</button>
     </div>
 </div>
 
 <div class="bottom-nav" id="mainBottomNav">
-    <button class="bottom-nav-item active" onclick="navTo('home', false, true)" id="nav-home">
+    <button class="bottom-nav-item active" onclick="navTo('home', true)" id="nav-home">
         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         Home
     </button>
-    <button class="bottom-nav-item" onclick="navTo('orders', false, true)" id="nav-orders">
+    <button class="bottom-nav-item" onclick="navTo('orders', true)" id="nav-orders">
         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -450,7 +482,7 @@
         </svg>
         My Orders
     </button>
-    <button class="bottom-nav-item" onclick="navTo('account', false, true)" id="nav-account">
+    <button class="bottom-nav-item" onclick="navTo('account', true)" id="nav-account">
         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -460,73 +492,77 @@
 </div>
 
 <script>
-    // --- 100% PROFESSIONAL ROUTING LOGIC ---
-    let viewHistory = []; // Master Stack
-
-    function navTo(section, isBack = false, isTabClick = false) {
-        const currentActive = document.querySelector('.view-section.active');
-        const currentId = currentActive ? currentActive.id.replace('view-', '') : 'home';
-
-        // History Management
-        if (isTabClick) {
-            viewHistory = (section === 'home') ? [] : ['home']; // Base is always home for tabs
-        } else if (!isBack && currentId !== section) {
-            viewHistory.push(currentId);
+    // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
+    function navTo(section, isTabClick = false, isPopState = false) {
+        // Handle Mobile Phone Hardware Back Button Support
+        if (!isPopState) {
+            if (section === 'home' && isTabClick) {
+                history.replaceState({ section: section }, '', '#' + section);
+            } else {
+                history.pushState({ section: section }, '', '#' + section);
+            }
         }
 
-        // View Switching
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         const newSection = document.getElementById('view-' + section);
         if(newSection) newSection.classList.add('active');
         window.scrollTo(0, 0);
 
-        // Determine if we are at a root tab level
-        const isRootTab = isTabClick || (['home', 'account', 'orders'].includes(section) && viewHistory.length <= 1);
+        const isRootTab = ['home', 'account', 'orders'].includes(section);
 
-        // Manage Top Nav Visibility (Only for Home)
         document.getElementById('topNav').style.display = (section === 'home') ? 'flex' : 'none';
-        
-        // Manage Bottom Nav Visibility
         document.getElementById('mainBottomNav').style.display = isRootTab ? 'flex' : 'none';
 
-        // Manage Bottom Nav Active State
-        if (['home', 'orders', 'account'].includes(section)) {
+        if (isRootTab) {
             document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
             const activeTab = document.getElementById('nav-' + section);
             if(activeTab) activeTab.classList.add('active');
         }
 
-        // Special UI Logic for Orders Screen
         if (section === 'orders') {
-            const backBtn = document.getElementById('ordersBackBtn');
-            // Hide back arrow if accessed via Bottom Tab, show if accessed from Account Menu
-            if(backBtn) backBtn.style.display = isRootTab ? 'none' : 'block';
-            
-            // Adjust padding if Bottom Nav is visible
             newSection.style.paddingBottom = isRootTab ? '85px' : '20px';
-            
             loadOrderHistory();
         }
 
-        // Init screen data
         if (section === 'profile-edit') populateProfileForm();
+        if (section === 'profile-view') renderProfileView();
         if (section === 'addresses') renderAddressList();
     }
 
     function goBack() {
-        if (viewHistory.length > 0) {
-            const prevSection = viewHistory.pop();
-            navTo(prevSection, true);
+        // Find current active section
+        const currentActive = document.querySelector('.view-section.active');
+        const currentId = currentActive ? currentActive.id.replace('view-', '') : 'home';
+
+        if (currentId === 'home') return; // Do nothing if on home page
+
+        if (window.history.length > 1) {
+            history.back(); // Standard phone back action
         } else {
-            navTo('home', false, true); // Fallback to home tab
+            navTo('home', false, false); // Fallback to Home
         }
     }
 
+    window.addEventListener('popstate', function(event) {
+        if (event.state && event.state.section) {
+            navTo(event.state.section, false, true); 
+        } else {
+            const hash = window.location.hash.replace('#', '');
+            if (hash) navTo(hash, false, true);
+            else navTo('home', false, true);
+        }
+    });
+
     // --- INIT ---
     document.addEventListener("DOMContentLoaded", function() {
+        history.replaceState({ section: 'home' }, '', '#home');
+
         setTimeout(() => {
             document.getElementById('splashScreen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('splashScreen').style.display = 'none'; }, 400);
+            setTimeout(() => { 
+                document.getElementById('splashScreen').style.display = 'none'; 
+                checkFirstTimeUser(); 
+            }, 400);
         }, 500);
         checkThemePreference();
         migrateAddressData(); 
@@ -556,26 +592,54 @@
         document.getElementById('themeCheckbox').checked = (saved === 'dark');
     }
 
-    // --- PROFILE LOGIC ---
-    let resendInterval;
-
-    function saveProfileData() {
-        const fName = document.getElementById('accFName').value.trim();
-        const phone = document.getElementById('accPhone').value.trim();
-        if(!fName || !phone) { showToast("First Name and Mobile Number are required."); return; }
-
+    // --- FIRST TIME USER LOGIC ---
+    function checkFirstTimeUser() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        const genderEl = document.querySelector('input[name="accGender"]:checked');
+        if (!p.fName) {
+            document.getElementById('welcomePopup').style.display = 'flex';
+        }
+    }
+    
+    function closeWelcomePopup() {
+        document.getElementById('welcomePopup').style.display = 'none';
+    }
+
+    function saveWelcomeData() {
+        const fName = document.getElementById('welcomeFName').value.trim();
+        const lName = document.getElementById('welcomeLName').value.trim();
+        if(!fName) {
+            showToast("First Name is required to continue.");
+            return;
+        }
         
-        const profile = {
-            fName: fName, lName: document.getElementById('accLName').value.trim(),
-            email: document.getElementById('accEmail').value.trim(), phone: phone,
-            age: document.getElementById('accAge').value.trim(), gender: genderEl ? genderEl.value : '',
-            emailVerified: p.email === document.getElementById('accEmail').value.trim() ? (p.emailVerified || false) : false
-        };
-        localStorage.setItem('sb_profile', JSON.stringify(profile));
-        showToast("Profile Saved Successfully!");
-        goBack(); 
+        let p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        p.fName = fName;
+        p.lName = lName;
+        localStorage.setItem('sb_profile', JSON.stringify(p));
+        
+        closeWelcomePopup();
+        showToast(`Welcome to safeblue, ${fName}!`);
+    }
+
+    // --- SMART PROFILE LOGIC ---
+    function handleProfileClick() {
+        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        // If nothing is filled, send directly to Form (Edit View)
+        if (!p.fName && !p.phone) {
+            navTo('profile-edit');
+        } else {
+            // If data exists, send to Read-Only View
+            navTo('profile-view');
+        }
+    }
+
+    function renderProfileView() {
+        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        document.getElementById('dispFullName').innerText = (p.fName || p.lName) ? `${p.fName || ''} ${p.lName || ''}`.trim() : 'Not provided';
+        document.getElementById('dispPhone').innerText = p.phone || 'Not provided';
+        document.getElementById('dispEmail').innerText = p.email || 'Not provided';
+        document.getElementById('dispAge').innerText = p.age || 'N/A';
+        document.getElementById('dispGender').innerText = p.gender || 'N/A';
     }
 
     function populateProfileForm() {
@@ -589,85 +653,41 @@
             const r = document.querySelector(`input[name="accGender"][value="${p.gender}"]`);
             if(r) r.checked = true;
         }
-        checkEmailVerificationStatus(p.emailVerified);
     }
 
-    function checkEmailVerificationStatus(forceStatus = null) {
-        const inputVal = document.getElementById('accEmail').value;
-        const btn = document.getElementById('btnVerifyEmail');
-        
-        if(!inputVal) { btn.style.display = 'none'; return; }
-        btn.style.display = 'block';
+    function saveProfileData() {
+        const fName = document.getElementById('accFName').value.trim();
+        const phone = document.getElementById('accPhone').value.trim();
+        if(!fName || !phone) { showToast("First Name and Mobile Number are required."); return; }
 
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        let isVerified = forceStatus !== null ? forceStatus : false;
+        const genderEl = document.querySelector('input[name="accGender"]:checked');
         
-        if(forceStatus === null && p.email === inputVal) isVerified = p.emailVerified;
-
-        if(isVerified) {
-            btn.className = "verify-badge verified";
-            btn.innerHTML = "Verified ✓";
-            btn.onclick = null;
+        const profile = {
+            fName: fName, lName: document.getElementById('accLName').value.trim(),
+            email: document.getElementById('accEmail').value.trim(), phone: phone,
+            age: document.getElementById('accAge').value.trim(), gender: genderEl ? genderEl.value : ''
+        };
+        localStorage.setItem('sb_profile', JSON.stringify(profile));
+        showToast("Profile Saved Successfully!");
+        
+        // Return to checkout if user came from there
+        if(sessionStorage.getItem('resumeOrder') === 'true') {
+            sessionStorage.removeItem('resumeOrder');
+            navTo('home', false, false); 
         } else {
-            btn.className = "verify-badge";
-            btn.innerHTML = "Verify Now";
-            btn.onclick = () => openEmailOTPModal();
+            goBack(); // Back to profile view safely
         }
     }
 
-    function startResendTimer() {
-        clearInterval(resendInterval);
-        let timeLeft = 30;
-        document.getElementById('resendTimer').style.display = 'inline';
-        document.getElementById('resendBtn').style.display = 'none';
-        document.getElementById('resendTimer').innerText = `Wait ${timeLeft}s`;
-
-        resendInterval = setInterval(() => {
-            timeLeft--;
-            document.getElementById('resendTimer').innerText = `Wait ${timeLeft}s`;
-            if(timeLeft <= 0) {
-                clearInterval(resendInterval);
-                document.getElementById('resendTimer').style.display = 'none';
-                document.getElementById('resendBtn').style.display = 'inline';
-            }
-        }, 1000);
-    }
-
-    function openEmailOTPModal() {
-        const emailVal = document.getElementById('accEmail').value;
-        if(!emailVal) { showToast("Please enter email first."); return; }
-        
-        const msg = `An email with a 6-digit verification code has been sent by <b>safebluechip@gmail.com</b> to ${emailVal}.`;
-        document.getElementById('otpMessage').innerHTML = msg;
-        document.getElementById('otpInput').value = '';
-        
-        startResendTimer();
-        document.getElementById('otpOverlay').style.display = 'flex';
-    }
-
-    function resendOTP() {
-        showToast("New 6-digit code has been sent to your email.");
-        startResendTimer();
-    }
-
-    function closeOTPModal() {
-        document.getElementById('otpOverlay').style.display = 'none';
-        clearInterval(resendInterval);
-    }
-
-    function verifyOTP() {
-        const otp = document.getElementById('otpInput').value;
-        if(otp === '123456') { 
-            showToast("Verified Successfully!");
-            const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-            p.emailVerified = true; 
-            p.email = document.getElementById('accEmail').value;
-            localStorage.setItem('sb_profile', JSON.stringify(p));
-            
-            checkEmailVerificationStatus(true);
-            closeOTPModal();
-        } else {
-            showToast("Invalid Verification Code.");
+    function clearAllData() {
+        if(confirm("Are you sure you want to clear all your data? This action cannot be undone.")) {
+            localStorage.removeItem('sb_profile');
+            localStorage.removeItem('sb_addresses');
+            localStorage.removeItem('sb_orders');
+            cart = [];
+            updateUI();
+            showToast("All data cleared successfully.");
+            navTo('home', true, false);
         }
     }
 
@@ -707,7 +727,14 @@
 
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         showToast("Address Saved Successfully!");
-        goBack();
+
+        // Return to checkout if user came from there
+        if(sessionStorage.getItem('resumeOrder') === 'true') {
+            sessionStorage.removeItem('resumeOrder');
+            navTo('home', false, false); 
+        } else {
+            goBack();
+        }
     }
 
     function openAddressEdit(id) {
@@ -756,7 +783,7 @@
                 <div class="addr-3dots" onclick="event.stopPropagation(); toggleDotMenu(${a.id})">⋮</div>
                 <div class="dot-menu" id="addrDotMenu-${a.id}">
                     <div onclick="event.stopPropagation(); openAddressEdit(${a.id})">Edit</div>
-                    <div onclick="event.stopPropagation(); deleteAddress(${a.id})">Delete</div>
+                    <div onclick="event.stopPropagation(); deleteAddress(${a.id})">Remove</div>
                 </div>
             </div>`;
         }).join('');
@@ -778,14 +805,14 @@
     }
     
     function deleteAddress(id) {
-        if(confirm("Delete this address?")) {
+        if(confirm("Remove this address?")) {
             let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
             addresses = addresses.filter(a => a.id !== id);
             if(addresses.length > 0 && !addresses.find(a=>a.isDefault)) addresses[0].isDefault = true;
             
             localStorage.setItem('sb_addresses', JSON.stringify(addresses));
             renderAddressList();
-            showToast("Address Deleted");
+            showToast("Address Removed");
         }
     }
 
@@ -881,23 +908,29 @@
         }
     }
 
-    // --- CHECKOUT LOGIC ---
+    // --- CHECKOUT LOGIC WITH RESUME ORDER FLOW ---
     document.getElementById('submitOrderBtn').addEventListener('click', function() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
+        // Conditional Check 1: No Profile -> Go to Profile Edit
         if(!p.fName || !p.phone) {
-            showToast("Please fill your Profile details first.");
+            showToast("Please complete your profile to place the order.");
+            sessionStorage.setItem('resumeOrder', 'true');
             navTo('profile-edit');
             return;
         }
+        
+        // Conditional Check 2: No Address -> Go to Address Edit
         if(!defaultAddr || !defaultAddr.street) {
-            showToast("Please add your Delivery Address first.");
-            navTo('address-edit');
+            showToast("Please add your delivery address.");
+            sessionStorage.setItem('resumeOrder', 'true');
+            openAddressEdit(null);
             return;
         }
 
+        // Both are filled, ready to order smoothly
         const name = `${p.fName} ${p.lName||''}`.trim();
         const finalAddr = `${defaultAddr.street}, Ward: ${defaultAddr.ward||'NA'}, House: ${defaultAddr.house||'NA'}, Landmark: ${defaultAddr.landmark||'NA'}, Pin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
@@ -936,7 +969,7 @@
 
     function closeSuccessPopup() {
         document.getElementById('successOverlay').style.display = 'none';
-        navTo('orders', false, true); // Direct to orders tab on success
+        navTo('orders');
     }
 
     function loadOrderHistory() {
@@ -944,7 +977,7 @@
         const container = document.getElementById('fullOrderHistoryList');
         
         if(orders.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:50px 20px; opacity:0.6;"><div style="font-size:40px; margin-bottom:10px;">📦</div><div style="font-size:16px; font-weight:700;">No Orders Yet</div><button onclick="navTo(\'home\', false, true)" class="add-btn" style="width:auto; padding:10px 20px; margin-top:20px;">Start Shopping</button></div>';
+            container.innerHTML = '<div style="text-align:center; padding:50px 20px; opacity:0.6;"><div style="font-size:40px; margin-bottom:10px;">📦</div><div style="font-size:16px; font-weight:700;">No Orders Yet</div><button onclick="navTo(\'home\', true)" class="add-btn" style="width:auto; padding:10px 20px; margin-top:20px;">Start Shopping</button></div>';
             return;
         }
 
