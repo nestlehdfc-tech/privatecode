@@ -133,7 +133,8 @@
         .large-save-btn:active { transform: scale(0.97); }
         .clear-all-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); width: 100%; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
         .clear-all-btn:active { background: rgba(239, 68, 68, 0.05); transform: scale(0.97); }
-        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 600; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; margin-top: 5px; }
+        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 600; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; margin-top: 5px; transition: 0.2s; }
+        .text-btn:active { background: rgba(0,0,0,0.05); border-radius: 8px; }
 
         /* Manage Address Cards */
         .add-new-addr-btn { background: transparent; color: var(--primary); border: 1px solid var(--primary); width: 100%; padding: 15px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 25px; transition: 0.2s; }
@@ -218,6 +219,17 @@
 </div>
 
 <div id="toast">Message</div>
+
+<div id="customConfirmOverlay" class="overlay">
+    <div class="modal-card" style="padding: 25px;">
+        <h2 id="confirmTitle" style="font-size: 18px; margin-bottom: 8px;">Confirm Action</h2>
+        <p id="confirmMessage" style="margin-bottom: 25px;">Are you sure?</p>
+        <div style="display: flex; gap: 10px;">
+            <button class="text-btn" style="background: var(--bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeCustomConfirm()">Cancel</button>
+            <button class="modal-btn" style="background: var(--danger); flex: 1; padding: 12px;" id="confirmActionBtn">Confirm</button>
+        </div>
+    </div>
+</div>
 
 <div id="welcomePopup" class="overlay">
     <div class="modal-card" style="padding-top: 25px;">
@@ -393,7 +405,7 @@
         </div>
         <div class="material-input">
             <label>Mobile Number</label>
-            <input type="tel" id="accPhone" placeholder="e.g. 9876543210">
+            <input type="tel" id="accPhone" placeholder="e.g. +91 98XXX-XXXXX">
         </div>
         <div class="material-input">
             <label>Email Address</label>
@@ -492,9 +504,28 @@
 </div>
 
 <script>
+    // --- CUSTOM CONFIRM MODAL LOGIC ---
+    let confirmActionCallback = null;
+
+    function openCustomConfirm(title, message, callback) {
+        document.getElementById('confirmTitle').innerText = title;
+        document.getElementById('confirmMessage').innerText = message;
+        confirmActionCallback = callback;
+        document.getElementById('customConfirmOverlay').style.display = 'flex';
+    }
+
+    function closeCustomConfirm() {
+        document.getElementById('customConfirmOverlay').style.display = 'none';
+        confirmActionCallback = null;
+    }
+
+    document.getElementById('confirmActionBtn').addEventListener('click', function() {
+        if (confirmActionCallback) confirmActionCallback();
+        closeCustomConfirm();
+    });
+
     // --- 100% PROFESSIONAL ROUTING & HISTORY LOGIC ---
     function navTo(section, isTabClick = false, isPopState = false) {
-        // Handle Mobile Phone Hardware Back Button Support
         if (!isPopState) {
             if (section === 'home' && isTabClick) {
                 history.replaceState({ section: section }, '', '#' + section);
@@ -530,16 +561,15 @@
     }
 
     function goBack() {
-        // Find current active section
         const currentActive = document.querySelector('.view-section.active');
         const currentId = currentActive ? currentActive.id.replace('view-', '') : 'home';
 
-        if (currentId === 'home') return; // Do nothing if on home page
+        if (currentId === 'home') return; 
 
         if (window.history.length > 1) {
-            history.back(); // Standard phone back action
+            history.back(); 
         } else {
-            navTo('home', false, false); // Fallback to Home
+            navTo('home', false, false); 
         }
     }
 
@@ -624,11 +654,9 @@
     // --- SMART PROFILE LOGIC ---
     function handleProfileClick() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        // If nothing is filled, send directly to Form (Edit View)
         if (!p.fName && !p.phone) {
             navTo('profile-edit');
         } else {
-            // If data exists, send to Read-Only View
             navTo('profile-view');
         }
     }
@@ -670,25 +698,29 @@
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         showToast("Profile Saved Successfully!");
         
-        // Return to checkout if user came from there
         if(sessionStorage.getItem('resumeOrder') === 'true') {
             sessionStorage.removeItem('resumeOrder');
             navTo('home', false, false); 
         } else {
-            goBack(); // Back to profile view safely
+            goBack(); 
         }
     }
 
     function clearAllData() {
-        if(confirm("Are you sure you want to clear all your data? This action cannot be undone.")) {
-            localStorage.removeItem('sb_profile');
-            localStorage.removeItem('sb_addresses');
-            localStorage.removeItem('sb_orders');
-            cart = [];
-            updateUI();
-            showToast("All data cleared successfully.");
-            navTo('home', true, false);
-        }
+        // Updated to use the custom modal
+        openCustomConfirm(
+            "Clear All Data?", 
+            "Are you sure you want to clear all your data? This action cannot be undone.", 
+            function() {
+                localStorage.removeItem('sb_profile');
+                localStorage.removeItem('sb_addresses');
+                localStorage.removeItem('sb_orders');
+                cart = [];
+                updateUI();
+                showToast("All data cleared successfully.");
+                navTo('home', true, false);
+            }
+        );
     }
 
     // --- ADDRESS LOGIC ---
@@ -728,7 +760,6 @@
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         showToast("Address Saved Successfully!");
 
-        // Return to checkout if user came from there
         if(sessionStorage.getItem('resumeOrder') === 'true') {
             sessionStorage.removeItem('resumeOrder');
             navTo('home', false, false); 
@@ -805,15 +836,20 @@
     }
     
     function deleteAddress(id) {
-        if(confirm("Remove this address?")) {
-            let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
-            addresses = addresses.filter(a => a.id !== id);
-            if(addresses.length > 0 && !addresses.find(a=>a.isDefault)) addresses[0].isDefault = true;
-            
-            localStorage.setItem('sb_addresses', JSON.stringify(addresses));
-            renderAddressList();
-            showToast("Address Removed");
-        }
+        // Updated to use custom modal
+        openCustomConfirm(
+            "Remove Address?", 
+            "Are you sure you want to remove this saved address?", 
+            function() {
+                let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+                addresses = addresses.filter(a => a.id !== id);
+                if(addresses.length > 0 && !addresses.find(a=>a.isDefault)) addresses[0].isDefault = true;
+                
+                localStorage.setItem('sb_addresses', JSON.stringify(addresses));
+                renderAddressList();
+                showToast("Address Removed");
+            }
+        );
     }
 
     document.addEventListener('click', function(e) {
@@ -914,7 +950,6 @@
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
-        // Conditional Check 1: No Profile -> Go to Profile Edit
         if(!p.fName || !p.phone) {
             showToast("Please complete your profile to place the order.");
             sessionStorage.setItem('resumeOrder', 'true');
@@ -922,7 +957,6 @@
             return;
         }
         
-        // Conditional Check 2: No Address -> Go to Address Edit
         if(!defaultAddr || !defaultAddr.street) {
             showToast("Please add your delivery address.");
             sessionStorage.setItem('resumeOrder', 'true');
@@ -930,7 +964,6 @@
             return;
         }
 
-        // Both are filled, ready to order smoothly
         const name = `${p.fName} ${p.lName||''}`.trim();
         const finalAddr = `${defaultAddr.street}, Ward: ${defaultAddr.ward||'NA'}, House: ${defaultAddr.house||'NA'}, Landmark: ${defaultAddr.landmark||'NA'}, Pin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
