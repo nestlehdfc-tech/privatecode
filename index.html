@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1a5cff">
     <meta name="description" content="safeblue stationery premium store for fast and secure delivery">
     
@@ -477,6 +476,7 @@
             border-bottom: 1px solid var(--border); 
             padding-top: 20px;
             padding-bottom: 20px;
+            position: relative;
         }
 
         .pdp-slider-container::-webkit-scrollbar { 
@@ -1571,6 +1571,43 @@
             from { transform: scale(0.85); opacity: 0; } 
             to { transform: scale(1); opacity: 1; } 
         }
+        
+        /* --------------------------------------------------------------------------
+           20. FULLSCREEN IMAGE VIEWER STYLES
+           -------------------------------------------------------------------------- */
+        #fullscreenImageViewer {
+            background-color: var(--bg);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            z-index: 9999999;
+            flex-direction: column;
+            padding: 0;
+            position: fixed;
+        }
+
+        /* Custom Navigation Arrows for Fullscreen */
+        .fs-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            background: var(--solid-card);
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: opacity 0.2s;
+        }
+        
+        .fs-nav-btn:active {
+            background-color: var(--input-bg);
+        }
     </style>
 
     <script>
@@ -1610,6 +1647,28 @@
 </head>
 
 <body>
+
+<div id="fullscreenImageViewer" class="overlay">
+    <div style="width: 100%; padding: 15px; display: flex; justify-content: flex-end; position: absolute; top: 0; z-index: 30;">
+        <button onclick="closeImageViewer()" style="background: var(--solid-card); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+    </div>
+    
+    <button id="fsPrevBtn" class="fs-nav-btn" style="left: 15px;" onclick="moveFsSlide(-1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+
+    <div id="fsSliderContainer" class="pdp-slider-container" style="height: 100vh; width: 100%; background: transparent; border: none; align-items: center; padding: 0;" onscroll="handleFsSliderScroll(this)">
+    </div>
+    
+    <button id="fsNextBtn" class="fs-nav-btn" style="right: 15px;" onclick="moveFsSlide(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <div id="fsSliderDots" class="pdp-slider-dots" style="position: absolute; bottom: 40px; width: 100%; background: transparent; pointer-events: none; z-index: 30;">
+    </div>
+</div>
 
 <div id="premiumOfflineOverlay" class="overlay">
     <div style="text-align: center; padding: 30px; width: 100%; max-width: 320px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
@@ -2171,17 +2230,35 @@
 </div>
 
 <script>
-    // =========================================================================
-    // 🌟 HOW TO ADD A NEW PRODUCT (EASY FOR BEGINNERS) 🌟
-    // =========================================================================
-    // 1. Copy an entire block from { to }, and paste it below the last product.
-    // 2. Change the 'id' to a new unique number (e.g., 12, 13).
-    // 3. Edit 'name', 'mrp', 'price', and 'desc'.
-    // 4. To add UNLIMITED IMAGES for the slider, just put links inside the [ ] brackets, separated by commas.
-    //    Example for 3 images: images: ['photo1.jpg', 'photo2.png', 'photo3.jpg'],
-    // =========================================================================
-    
     const PLACEHOLDER_IMG = 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image';
+
+    /*
+    =============================================================================
+    💡 DEVELOPER GUIDE: HOW TO ADD MULTIPLE PHOTOS FOR A PRODUCT
+    =============================================================================
+    To add multiple photos (like 3 or 4 images) so they appear in a slider,
+    simply add their internet links inside the "images" array for that product.
+
+    FORMAT RULES:
+    1. Every link must be wrapped inside single quotes (' ') or double quotes (" ").
+    2. Separate each image link with a comma (,). The final image does not need a comma.
+    3. Make sure all images are enclosed inside the square brackets: [  ].
+
+    CODE EXAMPLE:
+    { 
+        id: 1, 
+        name: 'My Special Product', 
+        mrp: 100, 
+        price: 50, 
+        images: [
+            'https://example.com/photo-1.jpg',   <-- Image 1
+            'https://example.com/photo-2.jpg',   <-- Image 2
+            'https://example.com/photo-3.jpg'    <-- Image 3 (No comma at the end)
+        ],
+        desc: 'Product description goes here...'
+    }
+    =============================================================================
+    */
 
     const PRODUCTS = [
         { 
@@ -2189,8 +2266,9 @@
             name: 'Combine Copy Page 180 Premium', 
             mrp: 42, 
             price: 21, 
-            // ⬇️ You can put as many images as you want here. The slider will auto-adjust!
-            images: ['https://www.bbassets.com/media/uploads/p/l/40236391_2-navneet-youva-brown-cover-soft-bound-notebook-with-double-lines-172-pages.jpg'],
+            images: [
+                'https://www.bbassets.com/media/uploads/p/l/40236391_2-navneet-youva-brown-cover-soft-bound-notebook-with-double-lines-172-pages.jpg'
+            ],
             desc: 'High-quality premium paper designed for students. Offers a smooth writing experience without ink bleeding.'
         },
         { 
@@ -2281,6 +2359,7 @@
     let cart = []; // Holds items currently in the cart
     let pendingOrderData = null; // Temporarily holds order data before WhatsApp confirmation
     let currentPdpId = null; // Tracks which product is currently open in the Product Details Page
+    let currentFsTotalSlides = 0; // Tracks images in fullscreen view
 
     // =========================================================================
     // 3. OFFLINE DETECTION LOGIC
@@ -2323,28 +2402,145 @@
     }
 
     // =========================================================================
+    // FULLSCREEN IMAGE VIEWER LOGIC (NEW FEATURE)
+    // =========================================================================
+    function openImageViewer(productId, startIndex) {
+        const product = PRODUCTS.find(x => x.id === productId);
+        if(!product || !product.images || product.images.length === 0) return;
+
+        const viewer = document.getElementById('fullscreenImageViewer');
+        const container = document.getElementById('fsSliderContainer');
+        const dotsContainer = document.getElementById('fsSliderDots');
+        const prevBtn = document.getElementById('fsPrevBtn');
+        const nextBtn = document.getElementById('fsNextBtn');
+
+        currentFsTotalSlides = product.images.length;
+
+        let slidesHtml = '';
+        let dotsHtml = '';
+
+        product.images.forEach((imgSrc, index) => {
+            slidesHtml += `
+            <div class="pdp-slide" style="height: 100%; align-items: center; justify-content: center; width: 100vw; flex: 0 0 100vw;">
+                <img src="${imgSrc}" style="max-width: 95vw; max-height: 85vh; object-fit: contain;" onerror="this.src='${PLACEHOLDER_IMG}'">
+            </div>`;
+
+            const activeClass = (index === startIndex) ? 'active' : '';
+            dotsHtml += `<div class="pdp-dot ${activeClass}" id="fsDot-${index}" style="box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>`;
+        });
+
+        container.innerHTML = slidesHtml;
+        
+        // Show Navigation dots and arrows if more than 1 image exists
+        if(product.images.length > 1){
+            dotsContainer.innerHTML = dotsHtml;
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+        } else {
+            dotsContainer.innerHTML = '';
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+
+        viewer.style.display = 'flex';
+        
+        // Force reflow for animation
+        void viewer.offsetWidth;
+        viewer.classList.add('show');
+
+        // Scroll to the clicked image instantly
+        setTimeout(() => {
+            const slideWidth = container.offsetWidth;
+            container.scrollTo({ left: slideWidth * startIndex, behavior: 'instant' });
+            updateFsArrowButtons(startIndex);
+        }, 10);
+    }
+
+    function closeImageViewer() {
+        const viewer = document.getElementById('fullscreenImageViewer');
+        viewer.classList.remove('show');
+        setTimeout(() => {
+            viewer.style.display = 'none';
+        }, 300); // Matches the CSS transition time
+    }
+    
+    // Logic for left/right arrow buttons in Fullscreen viewer
+    function moveFsSlide(direction) {
+        const container = document.getElementById('fsSliderContainer');
+        const slideWidth = container.offsetWidth;
+        const scrollPosition = container.scrollLeft;
+        const currentIndex = Math.round(scrollPosition / slideWidth);
+        
+        const newIndex = currentIndex + direction;
+        
+        if(newIndex >= 0 && newIndex < currentFsTotalSlides) {
+            container.scrollTo({ left: slideWidth * newIndex, behavior: 'smooth' });
+        }
+    }
+
+    // Handles arrow button visual state based on scroll position
+    function updateFsArrowButtons(currentIndex) {
+        const prevBtn = document.getElementById('fsPrevBtn');
+        const nextBtn = document.getElementById('fsNextBtn');
+        
+        if (currentFsTotalSlides <= 1) return;
+
+        if (currentIndex === 0) {
+            prevBtn.style.opacity = '0.3';
+            prevBtn.style.pointerEvents = 'none';
+        } else {
+            prevBtn.style.opacity = '1';
+            prevBtn.style.pointerEvents = 'auto';
+        }
+
+        if (currentIndex === currentFsTotalSlides - 1) {
+            nextBtn.style.opacity = '0.3';
+            nextBtn.style.pointerEvents = 'none';
+        } else {
+            nextBtn.style.opacity = '1';
+            nextBtn.style.pointerEvents = 'auto';
+        }
+    }
+
+    function handleFsSliderScroll(element) {
+        if(currentFsTotalSlides <= 1) return;
+        const scrollPosition = element.scrollLeft;
+        const slideWidth = element.offsetWidth;
+        const currentIndex = Math.round(scrollPosition / slideWidth);
+
+        // Update Dots
+        const dots = document.getElementById('fsSliderDots').querySelectorAll('.pdp-dot');
+        dots.forEach((dot, index) => {
+            if(index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        // Update Arrows
+        updateFsArrowButtons(currentIndex);
+    }
+
+    // =========================================================================
     // 4. AUTO-SAVE LOGIC (PROTECTS DRAFTS)
     // =========================================================================
     function setupAutoSave() {
-        // Collect all inputs and textareas
         const inputs = document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]), textarea');
         
         inputs.forEach(input => {
             if (input.id) {
-                // Restore text data on load
                 const savedData = sessionStorage.getItem('draft_' + input.id);
                 if (savedData !== null) {
                     input.value = savedData;
                 }
                 
-                // Save text data on typing
                 input.addEventListener('input', () => { 
                     sessionStorage.setItem('draft_' + input.id, input.value); 
                 });
             }
         });
         
-        // Handle Radio Buttons independently
         const radios = document.querySelectorAll('input[type="radio"]');
         radios.forEach(radio => {
             if(radio.name) {
@@ -2362,7 +2558,6 @@
     }
 
     function clearAutoSave() { 
-        // Remove all items from sessionStorage that start with 'draft_'
         const keys = Object.keys(sessionStorage); 
         keys.forEach(k => { 
             if (k.startsWith('draft_')) {
@@ -2371,11 +2566,9 @@
         }); 
     }
 
-    // Listen for "Enter" key press on input fields to automatically trigger save
     function handleEnterKey(event, actionFunction) {
         if (event.key === 'Enter') {
             const tagName = event.target.tagName.toLowerCase();
-            // Prevent default action (like submitting a form) unless it's a textarea
             if (tagName !== 'textarea' && tagName !== 'button') { 
                 event.preventDefault(); 
                 actionFunction(); 
@@ -2400,7 +2593,6 @@
         confirmActionCallback = null; 
     }
     
-    // Attach event to the confirm button inside the modal
     document.getElementById('confirmActionBtn').addEventListener('click', function() { 
         if (confirmActionCallback) {
             confirmActionCallback(); 
@@ -2426,7 +2618,6 @@
         const val = document.getElementById('advancedConfirmInput').value.trim().toLowerCase();
         const btn = document.getElementById('advancedConfirmBtn');
         
-        // Only enable button if user types "clear data" exactly
         if (val === 'clear data') { 
             btn.disabled = false; 
             btn.style.opacity = '1'; 
@@ -2438,7 +2629,6 @@
         }
     }
     
-    // Attach event to the advanced confirm button
     document.getElementById('advancedConfirmBtn').addEventListener('click', function() { 
         if (advancedConfirmCallback && !this.disabled) {
             advancedConfirmCallback(); 
@@ -2449,7 +2639,6 @@
     // =========================================================================
     // 6. ROUTING & NAVIGATION SYSTEM
     // =========================================================================
-    // Allowed views in the app
     const validSections = [
         'home', 'orders', 'order-details', 'account', 'profile-view', 
         'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 
@@ -2457,12 +2646,10 @@
     ];
 
     function navTo(section, isTabClick = false, isPopState = false) {
-        // Fallback to home if section is invalid
         if (!validSections.includes(section)) {
             section = 'home';
         }
         
-        // Handle Browser History (Back/Forward arrows)
         if (!isPopState) {
             if (section === 'home' && isTabClick) {
                 history.replaceState({ section: section }, '', '#' + section);
@@ -2471,32 +2658,26 @@
             }
         }
 
-        // 1. Hide all views
         document.querySelectorAll('.view-section').forEach(el => {
             el.classList.remove('active');
         });
         
-        // 2. Show the target view
         const newSection = document.getElementById('view-' + section);
         if(newSection) {
             newSection.classList.add('active');
         }
         
-        // 3. Scroll to top of the page smoothly
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Logic Flags
         const isRootTab = ['home', 'account', 'orders', 'cart'].includes(section);
         const isOnboarding = ['onboarding-profile', 'onboarding-address'].includes(section);
 
-        // UI Components
         const topAppBar = document.getElementById('topAppBar');
         const mainBottomNav = document.getElementById('mainBottomNav');
         const pdpBottomBar = document.getElementById('pdpBottomBar');
         const topBackBtn = document.getElementById('topBackBtn');
         const topTitle = document.getElementById('topTitle');
 
-        // Nav Bar Visibility Rules
         if (isOnboarding) {
             topAppBar.style.display = 'none';
             mainBottomNav.style.display = 'none';
@@ -2505,19 +2686,16 @@
             topAppBar.style.display = 'flex';
             
             if (section === 'pdp') {
-                // Settings for Product Details Page
                 mainBottomNav.style.display = 'none';
                 if(pdpBottomBar) pdpBottomBar.style.display = 'flex';
                 topBackBtn.style.display = 'block';
                 topTitle.innerText = "Item details";
                 topTitle.classList.remove('brand-color');
             } else {
-                // Settings for normal pages
                 if(pdpBottomBar) pdpBottomBar.style.display = 'none';
                 mainBottomNav.style.display = isRootTab ? 'flex' : 'none';
                 topBackBtn.style.display = (section === 'home') ? 'none' : 'block';
                 
-                // Set Title intelligently
                 let titleText = section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ');
                 if (section === 'home') { 
                     titleText = 'safeblue'; 
@@ -2529,7 +2707,6 @@
                     titleText = 'Manage Addresses'; 
                     topTitle.classList.remove('brand-color'); 
                 } else if (section === 'address-edit') { 
-                    // Make title change dynamically without crashing
                     const isEdit = document.getElementById('inpAddrId') && document.getElementById('inpAddrId').value;
                     titleText = isEdit ? 'Edit Address' : 'Add New Address'; 
                     topTitle.classList.remove('brand-color'); 
@@ -2541,7 +2718,6 @@
             }
         }
 
-        // Bottom Nav Active State Logic
         if (isRootTab) {
             document.querySelectorAll('.bottom-nav-item').forEach(el => {
                 el.classList.remove('active');
@@ -2552,7 +2728,6 @@
             }
         }
 
-        // Section Specific Hooks (Run functions when landing on a page)
         if (section === 'orders') { 
             newSection.style.paddingBottom = isRootTab ? '85px' : '20px'; 
             loadOrderHistory(); 
@@ -2570,7 +2745,6 @@
             renderAddressList();
         }
         if (section === 'home') { 
-            // Clear search bar when returning home
             const searchBox = document.getElementById('searchInput');
             if (searchBox) { 
                 searchBox.value = ""; 
@@ -2583,7 +2757,6 @@
         const currentActive = document.querySelector('.view-section.active');
         const currentId = currentActive ? currentActive.id.replace('view-', '') : 'home';
         
-        // Disable back button on home page
         if (currentId === 'home') return; 
         
         if (window.history.length > 1) { 
@@ -2593,8 +2766,14 @@
         }
     }
 
-    // Browser Back Button Listener
     window.addEventListener('popstate', function(event) {
+        // Handle Viewer Closing on back button
+        const viewer = document.getElementById('fullscreenImageViewer');
+        if (viewer.classList.contains('show')) {
+            closeImageViewer();
+            return;
+        }
+
         if (event.state && event.state.section) { 
             navTo(event.state.section, false, true); 
         } else { 
@@ -2603,35 +2782,29 @@
         }
     });
 
-    // Boot App Logic (Decides which page to show first)
     function bootApp() {
         const hash = window.location.hash.replace('#', '');
         const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const skipped = localStorage.getItem('sb_skip_onboarding');
 
-        // Check if user is new
         if ((!profile.fName || !profile.phone) && !skipped) { 
             history.replaceState({ section: 'onboarding-profile' }, '', '#onboarding-profile'); 
             navTo('onboarding-profile', false, true); 
         } 
-        // Or if hash matches a section
         else if (hash && validSections.includes(hash)) { 
             navTo(hash, false, true); 
         } 
-        // Default to home
         else { 
             history.replaceState({ section: 'home' }, '', '#home'); 
             navTo('home', false, true); 
         }
     }
 
-    // Initialize the app on DOM Load
     document.addEventListener("DOMContentLoaded", function() {
         syncToggleSwitch(); 
         setupAutoSave(); 
         bootApp();
         
-        // Dismiss Splash Screen
         setTimeout(() => { 
             document.getElementById('splashScreen').style.opacity = '0'; 
             setTimeout(() => { 
@@ -2639,7 +2812,6 @@
             }, 400); 
         }, 500);
         
-        // Execute migrations and initial render
         migrateAddressData(); 
         renderAddressList(); 
         renderGrid(PRODUCTS); 
@@ -2677,7 +2849,6 @@
         }
     }
     
-    // System Theme Listener
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { 
         if (!localStorage.getItem('sb_theme')) { 
             const newTheme = event.matches ? "dark" : "light"; 
@@ -2714,7 +2885,6 @@
         const email = document.getElementById('obEmail').value.trim(); 
         const age = document.getElementById('obAge').value.trim();
         
-        // Basic Validations
         if(!fName || !phone) { 
             showToast("First Name and Mobile Number are required."); 
             return; 
@@ -2861,7 +3031,6 @@
         clearAutoSave(); 
         showToast("Profile Saved Successfully!");
         
-        // Handle checkout chain flow (If user was forced here during checkout)
         if(sessionStorage.getItem('checkout_chain') === 'step1_profile') {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
             
@@ -2901,7 +3070,6 @@
     // =========================================================================
     // 10. ADDRESS MANAGEMENT LOGIC
     // =========================================================================
-    // Migration script in case older versions of app stored address differently
     function migrateAddressData() {
         const oldAddr = JSON.parse(localStorage.getItem('sb_address') || 'null');
         if(oldAddr && !oldAddr.length) { 
@@ -2928,7 +3096,7 @@
             ward: document.getElementById('inpWard').value.trim(), 
             house: document.getElementById('inpHouse').value.trim(), 
             landmark: document.getElementById('inpLandmark').value.trim(), 
-            isDefault: addresses.length === 0 // Make default if it's the first address
+            isDefault: addresses.length === 0
         };
         
         if(editId) { 
@@ -2945,7 +3113,6 @@
         clearAutoSave(); 
         showToast("Address Saved Securely!");
         
-        // Resume checkout flow if applicable
         if(sessionStorage.getItem('checkout_chain') === 'step2_address') { 
             sessionStorage.removeItem('checkout_chain'); 
             navTo('cart'); 
@@ -2977,7 +3144,6 @@
             if(!sessionStorage.getItem('draft_inpLandmark')) document.getElementById('inpLandmark').value = '';
         }
         
-        // Use navTo to safely manage transitions and title setting
         navTo('address-edit');
     }
     
@@ -3053,7 +3219,6 @@
             
             addresses = addresses.filter(a => a.id !== id); 
             
-            // Automatically assign a new default if the deleted one was default
             if(addresses.length > 0 && !addresses.find(a => a.isDefault)) { 
                 addresses[0].isDefault = true; 
             } 
@@ -3064,7 +3229,6 @@
         }); 
     }
     
-    // Close the 3-dots menu when clicked outside
     document.addEventListener('click', function(e) { 
         if(!e.target.classList.contains('addr-3dots')) { 
             document.querySelectorAll('.dot-menu').forEach(m => {
@@ -3106,7 +3270,6 @@
             const priceDisp = p.price % 1 === 0 ? p.price : p.price.toFixed(2);
             const discountPercent = Math.round(((p.mrp - p.price) / p.mrp) * 100);
             
-            // Fallback to placeholder if image array is missing or empty
             const primaryImage = (p.images && p.images.length > 0) ? p.images[0] : PLACEHOLDER_IMG;
             
             return `
@@ -3139,12 +3302,12 @@
         const priceDisp = product.price % 1 === 0 ? product.price : product.price.toFixed(2);
         const discountPercent = Math.round(((product.mrp - product.price) / product.mrp) * 100);
 
-        // Generate Slider Images HTML dynamically based on how many images exist in array
         let sliderHtml = '';
         if (product.images && product.images.length > 0) {
-            product.images.forEach((imgSrc) => {
+            product.images.forEach((imgSrc, index) => {
+                // ADDED ONCLICK EVENT TO OPEN VIEWER
                 sliderHtml += `
-                <div class="pdp-slide">
+                <div class="pdp-slide" style="cursor: pointer;" onclick="openImageViewer(${product.id}, ${index})">
                     <img src="${imgSrc}" alt="${product.name}" onerror="this.src='${PLACEHOLDER_IMG}'">
                 </div>`;
             });
@@ -3155,7 +3318,6 @@
             </div>`;
         }
 
-        // Generate Dots HTML (Only if there is more than 1 image)
         let dotsHtml = '';
         if (product.images && product.images.length > 1) {
             dotsHtml = `<div class="pdp-slider-dots">`;
@@ -3200,7 +3362,6 @@
         navTo('pdp');
     }
 
-    // Handles the active dot change when swiping images
     function handleSliderScroll(element, totalSlides) {
         if(totalSlides <= 1) return;
         
@@ -3208,7 +3369,7 @@
         const slideWidth = element.offsetWidth;
         const currentIndex = Math.round(scrollPosition / slideWidth);
         
-        document.querySelectorAll('.pdp-dot').forEach((dot, index) => {
+        document.querySelectorAll('#view-pdp .pdp-dot').forEach((dot, index) => {
             if(index === currentIndex) {
                 dot.classList.add('active');
             } else {
@@ -3241,7 +3402,6 @@
         if(itemIndex > -1) { 
             cart[itemIndex].qty += delta; 
             
-            // Remove item if qty is less than 1
             if(cart[itemIndex].qty < 1) {
                 cart.splice(itemIndex, 1); 
             }
@@ -3253,12 +3413,9 @@
         updateUI();
     }
 
-    // Master function to sync all views based on Cart status
     function updateUI() {
-        // Only re-filter products on current view
         filterProducts(); 
         
-        // Ensure PDP button is synced if PDP is currently open
         if(currentPdpId) {
             renderPdpBottomBar();
         }
@@ -3268,7 +3425,6 @@
         const totalMrp = cart.reduce((a, c) => a + (c.mrp * c.qty), 0);
         const totalDiscount = totalMrp - totalPrice;
 
-        // Update Cart Badges across Top and Bottom Navbars
         const badges = [document.getElementById('topCartBadge'), document.getElementById('navCartBadge')];
         badges.forEach(badge => { 
             if(totalQty > 0) { 
@@ -3298,7 +3454,6 @@
         } else {
             summaryTitle.style.display = 'block';
             
-            // 🌟 GENERATE DETAILED MATH CALCULATION FOR EACH CART ITEM
             container.innerHTML = cart.map(c => {
                 const priceDisp = c.price % 1 === 0 ? c.price : c.price.toFixed(2);
                 const lineTotal = (c.price * c.qty) % 1 === 0 ? (c.price * c.qty) : (c.price * c.qty).toFixed(2);
@@ -3341,7 +3496,6 @@
                 </div>`;
             }).join("");
             
-            // Render Order Summary Mathematics
             summary.style.display = 'block';
             
             document.getElementById('mrpTotal').innerText = `₹${totalMrp % 1 === 0 ? totalMrp : totalMrp.toFixed(2)}`;
@@ -3349,7 +3503,6 @@
             document.getElementById('subTotal').innerText = `₹${totalPrice % 1 === 0 ? totalPrice : totalPrice.toFixed(2)}`;
             document.getElementById('grandTotal').innerText = `₹${totalPrice % 1 === 0 ? totalPrice : totalPrice.toFixed(2)}`;
             
-            // Check Minimum Order Value for Free Delivery Logic
             if(totalPrice >= 100) { 
                 btn.disabled = false; 
                 alertBox.style.display = 'none'; 
@@ -3369,7 +3522,6 @@
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
-        // 1. Ensure Profile is Complete
         if(!profile.fName || !profile.phone) { 
             showToast("Please complete your profile to place the order."); 
             sessionStorage.setItem('checkout_chain', 'step1_profile'); 
@@ -3377,7 +3529,6 @@
             return; 
         }
         
-        // 2. Ensure Address is provided
         if(!defaultAddr || !defaultAddr.street) { 
             showToast("Please add your delivery address to proceed."); 
             sessionStorage.setItem('checkout_chain', 'step2_address'); 
@@ -3385,7 +3536,6 @@
             return; 
         }
 
-        // Generate Formatted String for WhatsApp Message
         const customerName = `${profile.fName} ${profile.lName||''}`.trim();
         
         let finalAddr = "";
@@ -3407,7 +3557,6 @@
 
         const grandTotal = document.getElementById('grandTotal').innerText.replace('₹', '');
         
-        // Compile Cart Items into text
         let msgItems = "";
         cart.forEach((item) => {
             const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
@@ -3434,7 +3583,6 @@
                   
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         
-        // Store order locally to save it upon return from WhatsApp
         pendingOrderData = { 
             date: dateStr, 
             items: cart.slice(), 
@@ -3444,12 +3592,10 @@
         
         sessionStorage.setItem('waitingForWaReturn', 'true');
         
-        // Trigger WhatsApp Deep Link
         const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(finalWhatsappMsg)}`;
         window.location.href = waLink;
     });
 
-    // Detect when user comes back to the webapp after sending WhatsApp message
     document.addEventListener("visibilitychange", function() { 
         if (document.visibilityState === 'visible' && sessionStorage.getItem('waitingForWaReturn') === 'true') { 
             sessionStorage.removeItem('waitingForWaReturn'); 
@@ -3463,7 +3609,6 @@
         if (pendingOrderData) {
             const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]'); 
             
-            // Auto increment Order ID
             const orderId = orders.length > 0 ? orders[orders.length - 1].id + 1 : 1;
             pendingOrderData.id = orderId; 
             
@@ -3472,11 +3617,9 @@
             localStorage.setItem('sb_orders', JSON.stringify(orders)); 
             pendingOrderData = null; 
             
-            // Empty the cart
             cart = []; 
             updateUI(); 
             
-            // Show Success Screen
             document.getElementById('successOverlay').classList.add('show');
         }
     }
