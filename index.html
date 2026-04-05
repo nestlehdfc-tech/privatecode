@@ -886,6 +886,46 @@
         }, 800);
     }
 
+    // 🛠️ AUTO-SAVE SYSTEM: Prevents data loss on accidental app refresh
+    function setupAutoSave() {
+        const inputs = document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]), textarea');
+        inputs.forEach(input => {
+            if (input.id) {
+                // Restore text data
+                const savedData = sessionStorage.getItem('draft_' + input.id);
+                if (savedData !== null) {
+                    input.value = savedData;
+                }
+                // Save text data on type
+                input.addEventListener('input', () => {
+                    sessionStorage.setItem('draft_' + input.id, input.value);
+                });
+            }
+        });
+
+        // Restore radio button data
+        const radios = document.querySelectorAll('input[type="radio"]');
+        radios.forEach(radio => {
+            if(radio.name) {
+                const savedRadio = sessionStorage.getItem('draft_radio_' + radio.name);
+                if (savedRadio && radio.value === savedRadio) {
+                    radio.checked = true;
+                }
+                radio.addEventListener('change', () => {
+                    if (radio.checked) sessionStorage.setItem('draft_radio_' + radio.name, radio.value);
+                });
+            }
+        });
+    }
+
+    // 🧹 CLEAR AUTO-SAVE: Removes draft data when user successfully saves the form
+    function clearAutoSave() {
+        const keys = Object.keys(sessionStorage);
+        keys.forEach(k => {
+            if (k.startsWith('draft_')) sessionStorage.removeItem(k);
+        });
+    }
+
     // --- GLOBAL ENTER KEY HANDLER ---
     function handleEnterKey(event, actionFunction) {
         if (event.key === 'Enter') {
@@ -1028,6 +1068,7 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         syncToggleSwitch();
+        setupAutoSave(); // Added AutoSave setup here
         bootApp();
 
         setTimeout(() => {
@@ -1119,6 +1160,7 @@
         localStorage.setItem('sb_profile', JSON.stringify(profile));
         localStorage.removeItem('sb_skip_onboarding'); 
         
+        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
         showToast(`Profile Setup Successful!`);
         navTo('onboarding-address', false, false);
     }
@@ -1145,6 +1187,7 @@
         });
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         
+        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
         showToast("Address saved successfully!");
         navTo('home', false, false);
     }
@@ -1169,12 +1212,14 @@
 
     function populateProfileForm() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        document.getElementById('accFName').value = p.fName || '';
-        document.getElementById('accLName').value = p.lName || '';
-        document.getElementById('accEmail').value = p.email || '';
-        document.getElementById('accPhone').value = p.phone || '';
-        document.getElementById('accAge').value = p.age || '';
-        if(p.gender) {
+        // Draft data should not overwrite unless fields are empty, let AutoSave handle it
+        if(!sessionStorage.getItem('draft_accFName')) document.getElementById('accFName').value = p.fName || '';
+        if(!sessionStorage.getItem('draft_accLName')) document.getElementById('accLName').value = p.lName || '';
+        if(!sessionStorage.getItem('draft_accEmail')) document.getElementById('accEmail').value = p.email || '';
+        if(!sessionStorage.getItem('draft_accPhone')) document.getElementById('accPhone').value = p.phone || '';
+        if(!sessionStorage.getItem('draft_accAge')) document.getElementById('accAge').value = p.age || '';
+        
+        if(p.gender && !sessionStorage.getItem('draft_radio_accGender')) {
             const r = document.querySelector(`input[name="accGender"][value="${p.gender}"]`);
             if(r) r.checked = true;
         }
@@ -1205,6 +1250,8 @@
             age: age, gender: genderEl ? genderEl.value : ''
         };
         localStorage.setItem('sb_profile', JSON.stringify(profile));
+        
+        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
         showToast("Profile Saved Successfully!");
         
         if(sessionStorage.getItem('checkout_chain') === 'step1_profile') {
@@ -1227,6 +1274,7 @@
             localStorage.removeItem('sb_profile');
             localStorage.removeItem('sb_addresses');
             localStorage.removeItem('sb_skip_onboarding');
+            clearAutoSave();
             
             cart = [];
             updateUI();
@@ -1274,6 +1322,8 @@
         }
 
         localStorage.setItem('sb_addresses', JSON.stringify(addresses));
+        
+        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
         showToast("Address Saved Securely!");
 
         if(sessionStorage.getItem('checkout_chain') === 'step2_address') {
@@ -1288,20 +1338,22 @@
     function openAddressEdit(id) {
         document.getElementById('inpAddrId').value = id || '';
         document.getElementById('addressEditTitle').innerText = id ? 'Edit Address' : 'Add New Address';
+        
+        // Let AutoSave control inputs if there are drafts, else load fresh from saved storage
         if(id) {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
             const a = addresses.find(x => x.id == id);
             if(a) {
-                document.getElementById('inpStreet').value = a.street || '';
-                document.getElementById('inpWard').value = a.ward || '';
-                document.getElementById('inpHouse').value = a.house || '';
-                document.getElementById('inpLandmark').value = a.landmark || '';
+                if(!sessionStorage.getItem('draft_inpStreet')) document.getElementById('inpStreet').value = a.street || '';
+                if(!sessionStorage.getItem('draft_inpWard')) document.getElementById('inpWard').value = a.ward || '';
+                if(!sessionStorage.getItem('draft_inpHouse')) document.getElementById('inpHouse').value = a.house || '';
+                if(!sessionStorage.getItem('draft_inpLandmark')) document.getElementById('inpLandmark').value = a.landmark || '';
             }
         } else {
-            document.getElementById('inpStreet').value = '';
-            document.getElementById('inpWard').value = '';
-            document.getElementById('inpHouse').value = '';
-            document.getElementById('inpLandmark').value = '';
+            if(!sessionStorage.getItem('draft_inpStreet')) document.getElementById('inpStreet').value = '';
+            if(!sessionStorage.getItem('draft_inpWard')) document.getElementById('inpWard').value = '';
+            if(!sessionStorage.getItem('draft_inpHouse')) document.getElementById('inpHouse').value = '';
+            if(!sessionStorage.getItem('draft_inpLandmark')) document.getElementById('inpLandmark').value = '';
         }
         navTo('address-edit');
     }
