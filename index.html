@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a5cff">
+    <meta name="description" content="safeblue stationery premium store for fast and secure delivery">
+    
     <title>safeblue stationery | Premium Store</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,301 +14,1542 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* =========================================
-           ADVANCED DESIGN SYSTEM (MOBILE OPTIMIZED)
-           ========================================= */
+        /* --------------------------------------------------------------------------
+           1. CSS VARIABLES (COLORS & THEMING)
+           -------------------------------------------------------------------------- */
         :root { 
+            /* Backgrounds */
             --bg: #f8fafc; 
             --card: rgba(255, 255, 255, 0.95); 
             --solid-card: #ffffff;
+            --input-bg: #f1f5f9; 
+            
+            /* Text Colors */
             --text: #0f172a; 
+            --muted: #64748b;
+            
+            /* Brand Colors */
             --primary: #1a5cff; 
             --primary-glow: rgba(26, 92, 255, 0.12);
             --border: #e2e8f0; 
-            --input-bg: #f1f5f9; 
+            
+            /* Status Colors */
             --danger: #ef4444; 
             --whatsapp: #25D366; 
-            --success: #10b981;
-            --muted: #64748b;
+            --success: #0f8a4f;
             
-            --phone-color: #0284c7; --phone-bg: #e0f2fe;
-            --wa-color: #16a34a; --wa-bg: #dcfce7;
-            --email-color: #dc2626; --email-bg: #fee2e2;
-            --time-color: #ca8a04; --time-bg: #fef9c3;
+            /* Contact Buttons Specific Colors */
+            --phone-color: #0284c7; 
+            --phone-bg: #e0f2fe;
+            --wa-color: #16a34a; 
+            --wa-bg: #dcfce7;
+            --email-color: #dc2626; 
+            --email-bg: #fee2e2;
+            --time-color: #ca8a04; 
+            --time-bg: #fef9c3;
         }
 
+        /* Dark Mode Configuration */
         :root[data-theme="dark"] { 
             --bg: #0b1120; 
             --card: rgba(30, 41, 59, 0.85); 
             --solid-card: #1e293b;
+            --input-bg: #0f172a; 
+            
             --text: #f8fafc; 
+            --muted: #94a3b8;
+            
             --primary: #3b82f6; 
             --primary-glow: rgba(59, 130, 246, 0.15);
             --border: #334155; 
-            --input-bg: #0f172a; 
+            
             --danger: #f87171; 
             --success: #34d399;
-            --muted: #94a3b8;
 
-            --phone-color: #38bdf8; --phone-bg: rgba(2, 132, 199, 0.15);
-            --wa-color: #4ade80; --wa-bg: rgba(22, 163, 74, 0.15);
-            --email-color: #f87171; --email-bg: rgba(220, 38, 38, 0.15);
-            --time-color: #facc15; --time-bg: rgba(202, 138, 4, 0.15);
+            --phone-color: #38bdf8; 
+            --phone-bg: rgba(2, 132, 199, 0.15);
+            --wa-color: #4ade80; 
+            --wa-bg: rgba(22, 163, 74, 0.15);
+            --email-color: #f87171; 
+            --email-bg: rgba(220, 38, 38, 0.15);
+            --time-color: #facc15; 
+            --time-bg: rgba(202, 138, 4, 0.15);
         }
         
-        /* 🚀 CRITICAL FIX: Prevent Pull-to-Refresh Globally */
+        /* --------------------------------------------------------------------------
+           2. GLOBAL RESETS & BODY
+           -------------------------------------------------------------------------- */
         html {
             overscroll-behavior-y: none !important;
             overscroll-behavior-x: none !important;
         }
 
-        * { box-sizing: border-box; } 
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        } 
+
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            margin: 0; 
-            background: var(--bg); 
+            background-color: var(--bg); 
             color: var(--text); 
-            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease; 
-            -webkit-tap-highlight-color: transparent; 
-            /* Strict block on native bouncing/refreshing to protect form data */
+            transition-property: background-color, color;
+            transition-duration: 0.3s;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             overscroll-behavior-y: none !important; 
             overscroll-behavior: none !important;
         }
 
-        /* =========================================
-           ROUTING & ANIMATION
-           ========================================= */
+        /* --------------------------------------------------------------------------
+           3. ROUTING & SECTION ANIMATIONS
+           -------------------------------------------------------------------------- */
         .view-section { 
             display: none; 
-            padding-bottom: 85px; 
-            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            padding-bottom: 95px; 
+            animation-name: slideUpFade;
+            animation-duration: 0.3s;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+            animation-fill-mode: forwards;
         }
-        .view-section.active { display: block; }
+
+        .view-section.active { 
+            display: block; 
+        }
+
         @keyframes slideUpFade { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
+            0% { 
+                opacity: 0; 
+                transform: translateY(15px); 
+            } 
+            100% { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
         }
 
-        /* =========================================
-           SPLASH SCREEN & LOGO
-           ========================================= */
+        /* --------------------------------------------------------------------------
+           4. SPLASH SCREEN & ICONS
+           -------------------------------------------------------------------------- */
         .splash-screen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg); z-index: 9999999; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            transition: opacity 0.3s ease-out; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: var(--bg); 
+            z-index: 9999999; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            transition: opacity 0.4s ease-out; 
         }
+
         .splash-logo svg { 
-            width: 80px; height: 80px; color: var(--primary); 
+            width: 85px; 
+            height: 85px; 
+            color: var(--primary); 
             filter: drop-shadow(0px 8px 16px var(--primary-glow)); 
-            animation: elegantPulse 1.5s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); 
+            animation-name: elegantPulse;
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         @keyframes elegantPulse { 
-            0% { transform: scale(0.96); } 
-            100% { transform: scale(1.04); } 
+            0% { transform: scale(0.95); } 
+            100% { transform: scale(1.05); } 
         }
 
-        /* =========================================
-           NAVIGATION & HEADER
-           ========================================= */
-        nav { 
-            background: var(--card); 
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; 
+        /* --------------------------------------------------------------------------
+           5. TOP APP BAR (HEADER)
+           -------------------------------------------------------------------------- */
+        .top-app-bar {
+            background-color: var(--solid-card);
+            padding-top: 12px;
+            padding-bottom: 12px;
+            padding-left: 16px;
+            padding-right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border-bottom: 1px solid var(--border);
+            display: none; 
+        }
+
+        .top-app-bar-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .back-icon { 
+            width: 24px; 
+            height: 24px; 
+            cursor: pointer; 
+            display: none; 
+            color: var(--text); 
+        }
+
+        .app-title { 
+            font-weight: 800; 
+            font-size: 18px; 
+            color: var(--text); 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
+
+        .app-title.brand-color { 
+            color: var(--primary); 
+        }
+        
+        .top-app-bar-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+
+        .icon-btn { 
+            background: none; 
+            border: none; 
+            padding: 4px; 
+            cursor: pointer; 
+            color: var(--text); 
+            position: relative; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .icon-btn svg { 
+            width: 24px; 
+            height: 24px; 
+            stroke-width: 2; 
+        }
+
+        .cart-badge {
+            position: absolute; 
+            top: -2px; 
+            right: -4px; 
+            background-color: var(--danger); 
+            color: white;
+            font-size: 10px; 
+            font-weight: 800; 
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 5px;
+            padding-right: 5px;
+            border-radius: 10px; 
+            border: 2px solid var(--solid-card);
+            display: none;
+        }
+
+        /* --------------------------------------------------------------------------
+           6. SEARCH BAR
+           -------------------------------------------------------------------------- */
+        .search-container-wrapper {
+            padding-top: 15px;
+            padding-bottom: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
+            position: sticky;
+            top: 55px; 
+            z-index: 999;
+            background-color: var(--bg);
+        }
+
+        .search-input-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input-box input {
+            width: 100%;
+            padding-top: 14px;
+            padding-bottom: 14px;
+            padding-left: 45px;
+            padding-right: 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 50px;
+            font-size: 14px;
+            background-color: var(--solid-card);
+            color: var(--text);
+            font-family: inherit;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .search-input-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .search-input-box svg {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            stroke: var(--muted);
+            transition: stroke 0.2s ease;
+        }
+
+        .search-input-box input:focus + svg {
+            stroke: var(--primary);
+        }
+
+        /* --------------------------------------------------------------------------
+           7. PRODUCT GRID (HOME PAGE)
+           -------------------------------------------------------------------------- */
+        .container { 
+            padding-top: 10px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+            padding-left: 15px;
+        }
+
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 12px; 
+        }
+        
+        .product-card { 
+            background-color: var(--solid-card); 
+            border-radius: 12px; 
+            padding: 12px; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            cursor: pointer; 
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:active { 
+            transform: scale(0.97); 
+        }
+        
+        .discount-tag {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            background-color: var(--success); 
+            color: white;
+            font-size: 10px; 
+            font-weight: 800; 
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 0 0 8px 0; 
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+        
+        .product-img { 
+            width: 100%; 
+            height: 120px; 
+            object-fit: contain; 
+            margin-bottom: 12px; 
+            padding: 5px; 
+            border-radius: 8px; 
+            background-color: var(--bg);
+        }
+        
+        .product-title { 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: var(--text); 
+            line-height: 1.4; 
+            margin-bottom: 6px; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+            height: 36px; 
+        }
+
+        .mrp-row { 
+            font-size: 11px; 
+            color: var(--muted); 
+            text-decoration: line-through; 
+            margin-bottom: 2px; 
+            font-weight: 500;
+        }
+
+        .price-row { 
+            display: flex; 
+            align-items: baseline; 
+            gap: 6px; 
+            margin-bottom: 12px; 
+        }
+
+        .actual-price { 
+            font-size: 16px; 
+            font-weight: 800; 
+            color: var(--text); 
+        }
+        
+        .btn-container { 
+            height: 36px; 
+            width: 100%; 
+            margin-top: auto; 
+        }
+
+        .add-btn-outline { 
+            background-color: transparent; 
+            color: var(--primary); 
+            border: 1.5px solid var(--primary); 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 13px; 
+            cursor: pointer; 
+            transition: background-color 0.2s; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-btn-outline:active { 
+            background-color: var(--primary-glow); 
+        }
+        
+        .cart-qty-toggle { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            background-color: var(--primary); 
+            color: white; 
+            width: 100%; 
+            height: 100%; 
+            padding-left: 4px;
+            padding-right: 4px;
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 14px;
+        }
+
+        .toggle-btn { 
+            background-color: white; 
+            color: var(--primary); 
+            border: none; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 800; 
+            font-size: 16px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: transform 0.2s;
+        }
+
+        .toggle-btn:active {
+            transform: scale(0.90);
+        }
+
+        /* --------------------------------------------------------------------------
+           8. PRODUCT DETAILS PAGE (PDP) WITH HORIZONTAL SLIDER
+           -------------------------------------------------------------------------- */
+        .pdp-slider-container { 
+            display: flex; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            background-color: var(--solid-card); 
             border-bottom: 1px solid var(--border); 
-            position: sticky; top: 0; z-index: 1000; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.03); 
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
-        .brand { 
-            font-weight: 800; font-size: 19px; color: var(--primary); 
-            letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; 
+
+        .pdp-slider-container::-webkit-scrollbar { 
+            display: none; 
         }
-        .brand-icon { width: 26px; height: 26px; stroke-width: 2.2px; }
         
-        .nav-profile-btn { 
-            background: var(--primary-glow); padding: 6px; border-radius: 50%; 
-            cursor: pointer; color: var(--primary); display: flex; 
-            justify-content: center; align-items: center; transition: 0.2s; border: none; outline: none; 
+        .pdp-slide {
+            flex: 0 0 100%; 
+            scroll-snap-align: center;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 250px;
         }
-        .nav-profile-btn:active { transform: scale(0.90); }
-        .nav-profile-btn svg { width: 18px; height: 18px; }
 
-        .sub-header { 
-            background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 14px 15px; display: flex; align-items: center; gap: 12px; 
-            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; 
-            font-size: 16px; font-weight: 700; 
+        .pdp-slide img { 
+            max-width: 90%; 
+            max-height: 100%; 
+            object-fit: contain; 
         }
-        .sub-header svg { width: 20px; height: 20px; cursor: pointer; stroke: var(--text); padding: 2px; }
 
-        header { 
-            background: linear-gradient(135deg, var(--primary) 0%, #003ebd 100%); 
-            color: white; padding: 25px 15px 45px; text-align: center; 
-            border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
+        .pdp-slider-dots { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            gap: 6px; 
+            background-color: var(--solid-card); 
+            padding-bottom: 15px;
         }
-        header h1 { margin: 0 0 5px 0; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
-        header p { margin: 0; font-size: 12px; opacity: 0.9; font-weight: 500; }
 
-        /* =========================================
-           HOME & CATALOG GRID
-           ========================================= */
-        .container { display: flex; flex-direction: column; margin: -25px auto 20px; gap: 15px; padding: 0 12px; position: relative; z-index: 10;}
-        .catalog { width: 100%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-        .card { 
-            background: var(--solid-card); border-radius: 14px; padding: 14px; 
-            border: 1px solid var(--border); text-align: center; display: flex; flex-direction: column; 
-            height: 100%; box-shadow: 0 3px 10px rgba(0,0,0,0.02); transition: transform 0.2s;
+        .pdp-dot { 
+            width: 6px; 
+            height: 6px; 
+            border-radius: 50%; 
+            background-color: var(--border); 
+            transition: all 0.3s ease;
         }
-        .card h3 { margin: 0 0 10px 0; font-size: 13px; font-weight: 600; line-height: 1.4; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
-        .price { font-size: 18px; font-weight: 800; color: var(--primary); margin: 0 0 12px 0; }
-        
-        .btn-container { height: 36px; width: 100%; margin-top: auto; }
-        .add-btn { 
-            background: var(--primary); color: white; border: none; width: 100%; height: 100%; 
-            border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s; 
+
+        .pdp-dot.active { 
+            background-color: var(--primary); 
+            width: 14px; 
+            border-radius: 4px;
         }
-        .add-btn:active { transform: scale(0.95); }
-        .cart-qty-toggle { display: flex; align-items: center; justify-content: space-between; background: var(--primary); color: white; width: 100%; height: 100%; padding: 0 4px; border-radius: 8px; font-weight: 700; font-size: 14px;}
-        .toggle-btn { background: white; color: var(--primary); border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 
-        /* =========================================
-           SIDEBAR & CART
-           ========================================= */
-        .sidebar { background: var(--solid-card); padding: 18px; border-radius: 16px; border: 1px solid var(--border); margin-top: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .cart-item-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; border-bottom: 1px dashed var(--border); padding-bottom: 12px; }
-        .cart-item-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .receipt-summary { margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--border); }
-        .summary-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--muted); }
-        .grand-total { font-size: 18px; font-weight: 800; color: var(--text); margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
-        
-        #minAlert { background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 800; text-align: center; margin-top: 12px; display: none; border: 1px solid rgba(239, 68, 68, 0.2); }
-        
-        .confirm-btn { background: var(--whatsapp); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25); transition: 0.2s; }
-        .confirm-btn:active:not(:disabled) { transform: scale(0.96); }
-        .confirm-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; box-shadow: none; }
-
-        /* =========================================
-           FORMS & INPUTS
-           ========================================= */
-        .page-wrapper { padding: 15px 12px; }
-        
-        .material-input { position: relative; margin-bottom: 18px; width: 100%; }
-        .material-input input, .material-input textarea, .material-input select { 
-            width: 100%; padding: 15px 14px; border: 1.5px solid var(--border); 
-            border-radius: 12px; font-size: 14px; background: var(--input-bg); 
-            color: var(--text); font-family: inherit; font-weight: 500; outline: none; transition: 0.2s; 
+        .pdp-details { 
+            padding-top: 20px;
+            padding-right: 15px;
+            padding-bottom: 20px;
+            padding-left: 15px;
+            background-color: var(--solid-card); 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid var(--border); 
         }
-        .material-input input:focus, .material-input textarea:focus { border-color: var(--primary); background: var(--solid-card); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .material-input label { position: absolute; top: -8px; left: 12px; background: var(--solid-card); padding: 0 6px; font-size: 11px; font-weight: 700; color: var(--muted); border-radius: 4px; z-index: 1; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .pdp-title { 
+            font-size: 18px; 
+            font-weight: 700; 
+            color: var(--text); 
+            line-height: 1.4; 
+            margin-bottom: 15px; 
+        }
+
+        .pdp-price-section { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            margin-bottom: 5px; 
+        }
+
+        .pdp-mrp { 
+            color: var(--muted); 
+            text-decoration: line-through; 
+            font-size: 13px; 
+            font-weight: 500;
+        }
+
+        .pdp-discount { 
+            color: var(--success); 
+            font-weight: 800; 
+            font-size: 13px; 
+        }
+
+        .pdp-actual-price { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: var(--text); 
+        }
+
+        .pdp-tax-info { 
+            font-size: 11px; 
+            color: var(--muted); 
+            margin-bottom: 20px; 
+        }
         
-        .gender-options { display: flex; gap: 15px; margin-top: 12px; margin-bottom: 25px;}
-        .gender-options label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer;}
-        .gender-options input[type="radio"] { width: 18px; height: 18px; accent-color: var(--primary); }
+        .pdp-block { 
+            background-color: var(--solid-card); 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border); 
+            margin-top: 0;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            margin-left: 15px;
+            display: flex; 
+            align-items: flex-start; 
+            gap: 12px;
+        }
 
-        /* =========================================
-           COMPONENTS (MENUS, BUTTONS)
-           ========================================= */
-        .account-menu { background: var(--solid-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.02); }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); font-weight: 700; font-size: 15px; transition: background 0.2s; }
-        .menu-item:active { background: var(--input-bg); }
-        .menu-item:last-child { border-bottom: none; }
-        .menu-item-left { display: flex; align-items: center; gap: 12px; }
-        .menu-item svg { width: 20px; height: 20px; stroke: var(--primary); }
-        .chevron { color: var(--muted); font-size: 18px; }
+        .pdp-block svg { 
+            stroke: var(--primary); 
+            flex-shrink: 0; 
+            width: 20px; 
+            height: 20px; 
+            margin-top: 2px;
+        }
 
-        .profile-info-box { background: var(--solid-card); border-radius: 16px; padding: 18px; border: 1px solid var(--border); margin-bottom: 16px; box-shadow: 0 3px 12px rgba(0,0,0,0.02); }
-        .info-row { display: flex; flex-direction: column; margin-bottom: 14px; }
-        .info-row:last-child { margin-bottom: 0; }
-        .info-label { font-size: 11px; color: var(--muted); font-weight: 800; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .info-value { font-size: 15px; color: var(--text); font-weight: 700; }
+        .pdp-block-title { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--text); 
+            margin-bottom: 4px; 
+        }
 
-        .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 12px; border-top: 1px solid var(--border); z-index: 2000; padding-bottom: calc(12px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
-        .large-save-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 15px var(--primary-glow); }
-        .large-save-btn:active { transform: scale(0.97); }
-        .clear-all-btn { background: transparent; color: var(--danger); border: 1.5px solid var(--danger); width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; }
-        .clear-all-btn:active { background: rgba(239, 68, 68, 0.05); transform: scale(0.97); }
-        .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 700; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; transition: 0.2s; }
-        .text-btn:active { background: var(--input-bg); border-radius: 8px; }
+        .pdp-block-desc { 
+            font-size: 13px; 
+            color: var(--muted); 
+            line-height: 1.5; 
+            font-weight: 500;
+            white-space: pre-line; /* Allows line breaks in description */
+        }
 
-        .add-new-addr-btn { background: var(--primary-glow); color: var(--primary); border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; }
-        .add-new-addr-btn:active { transform: scale(0.98); background: rgba(26,92,255,0.15); }
+        /* --------------------------------------------------------------------------
+           9. CART PAGE & ORDER SUMMARY
+           -------------------------------------------------------------------------- */
+        .cart-card {
+            background-color: var(--solid-card); 
+            border-radius: 12px; 
+            padding: 15px;
+            border: 1px solid var(--border); 
+            margin-bottom: 15px;
+            display: flex; 
+            gap: 15px; 
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .cart-card-img-box {
+            width: 70px; 
+            height: 70px; 
+            flex-shrink: 0; 
+            background-color: var(--bg);
+            border-radius: 8px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            border: 1px solid var(--border); 
+            padding: 5px;
+        }
+
+        .cart-card-img-box img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
         
-        .address-card { background: var(--solid-card); border-radius: 14px; padding: 16px; display: flex; gap: 12px; position: relative; margin-bottom: 12px; border: 1.5px solid var(--border); cursor: pointer; transition: 0.2s; box-shadow: 0 3px 8px rgba(0,0,0,0.02); }
-        .address-card.selected { border-color: var(--primary); background: var(--primary-glow); }
-        .addr-radio { margin-top: 2px; accent-color: var(--primary); width: 18px; height: 18px; }
-        .addr-details { flex-grow: 1; }
-        .addr-title { font-weight: 800; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; color: var(--text); }
-        .addr-pin { font-weight: 600; color: var(--muted); font-size: 12px; background: var(--input-bg); padding: 2px 6px; border-radius: 4px; }
-        .addr-text { font-size: 13px; color: var(--muted); line-height: 1.5; font-weight: 500; }
-        .addr-3dots { cursor: pointer; padding: 0 5px; font-size: 18px; color: var(--muted); font-weight: bold; }
+        .cart-card-info { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+
+        .cart-card-title { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--text); 
+            line-height: 1.4; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+            padding-right: 25px;
+        }
+
+        .cart-card-remove { 
+            position: absolute; 
+            top: 12px; 
+            right: 12px; 
+            background-color: var(--input-bg); 
+            border: none; 
+            width: 26px; 
+            height: 26px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--muted); 
+            font-size: 12px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+
+        .cart-card-remove:active { 
+            background-color: var(--danger); 
+            color: white; 
+            transform: scale(0.9); 
+        }
         
-        .dot-menu { position: absolute; right: 15px; top: 40px; background: var(--solid-card); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.12); z-index: 10; display: none; overflow: hidden; min-width: 120px; }
-        .dot-menu div { padding: 10px 15px; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); transition: 0.2s;}
-        .dot-menu div:active { background: var(--input-bg); }
-        .dot-menu div:last-child { border-bottom: none; color: var(--danger); }
+        .cart-card-pricing { 
+            display: flex; 
+            flex-direction: column;
+            gap: 4px; 
+            margin-top: 5px; 
+            margin-bottom: 10px;
+        }
 
-        .order-card { background: var(--solid-card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.02); overflow: hidden; }
-        .order-status-pill { display: inline-block; font-weight: 700; font-size: 10px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); text-transform: uppercase; letter-spacing: 0.5px;}
-        .view-details-btn { display: block; width: 100%; text-align: center; background: var(--primary-glow); color: var(--primary); font-weight: 800; padding: 12px; border-radius: 10px; margin-top: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
-        .view-details-btn:active { transform: scale(0.98); }
+        .cart-card-mrp { 
+            font-size: 12px; 
+            color: var(--muted); 
+            text-decoration: line-through; 
+            font-weight: 500;
+        }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 2500; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
-        .bottom-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 10px; font-weight: 700; gap: 4px; background: none; border: none; cursor: pointer; transition: 0.2s; }
-        .bottom-nav-item.active { color: var(--primary); }
-        .bottom-nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; transition: 0.2s; }
-        .bottom-nav-item.active svg { transform: scale(1.15); }
+        .cart-card-discount { 
+            font-size: 12px; 
+            color: var(--success); 
+            font-weight: 800;
+            margin-left: 6px;
+        }
+        
+        .cart-card-calculation {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+            margin-top: 2px;
+        }
 
+        .cart-card-calculation span.total-bold {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 15px;
+        }
+        
+        .cart-card-bottom { 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: flex-end; 
+        }
+
+        .cart-card-controls { 
+            width: 100px; 
+            height: 34px; 
+        }
+
+        /* Order Summary styling */
+        .receipt-summary { 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: var(--solid-card); 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-bottom: 12px; 
+            color: var(--muted); 
+        }
+
+        .grand-total { 
+            font-size: 18px; 
+            font-weight: 800; 
+            color: var(--text); 
+            margin-top: 15px; 
+            padding-top: 15px; 
+            border-top: 1px dashed var(--border); 
+        }
+        
+        #minAlert { 
+            background-color: rgba(239, 68, 68, 0.1); 
+            color: var(--danger); 
+            padding: 12px; 
+            border-radius: 10px; 
+            font-size: 13px; 
+            font-weight: 800; 
+            text-align: center; 
+            margin-top: 15px;
+            margin-right: 15px;
+            margin-bottom: 0;
+            margin-left: 15px; 
+            display: none; 
+            border: 1px solid rgba(239, 68, 68, 0.2); 
+        }
+        
+        .confirm-btn { 
+            background-color: var(--whatsapp); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            font-size: 15px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            margin-top: 15px; 
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25); 
+            transition: transform 0.2s; 
+        }
+
+        .confirm-btn:active:not(:disabled) { 
+            transform: scale(0.96); 
+        }
+
+        .confirm-btn:disabled { 
+            background-color: var(--border); 
+            color: var(--muted); 
+            cursor: not-allowed; 
+            box-shadow: none; 
+        }
+
+        /* --------------------------------------------------------------------------
+           10. FORMS & MATERIAL INPUTS
+           -------------------------------------------------------------------------- */
+        .page-wrapper { 
+            padding-top: 15px;
+            padding-right: 12px;
+            padding-bottom: 15px;
+            padding-left: 12px;
+        }
+
+        .material-input { 
+            position: relative; 
+            margin-bottom: 20px; 
+            width: 100%; 
+        }
+
+        .material-input input, 
+        .material-input textarea, 
+        .material-input select { 
+            width: 100%; 
+            padding-top: 16px;
+            padding-bottom: 16px;
+            padding-left: 14px;
+            padding-right: 14px;
+            border: 1.5px solid var(--border); 
+            border-radius: 12px; 
+            font-size: 14px; 
+            background-color: var(--input-bg); 
+            color: var(--text); 
+            font-family: inherit; 
+            font-weight: 500; 
+            outline: none; 
+            transition: all 0.2s ease; 
+        }
+
+        .material-input input:focus, 
+        .material-input textarea:focus { 
+            border-color: var(--primary); 
+            background-color: var(--solid-card); 
+            box-shadow: 0 0 0 3px var(--primary-glow); 
+        }
+
+        .material-input label { 
+            position: absolute; 
+            top: -8px; 
+            left: 12px; 
+            background-color: var(--solid-card); 
+            padding-left: 6px;
+            padding-right: 6px;
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--muted); 
+            border-radius: 4px; 
+            z-index: 1; 
+            transition: color 0.2s ease; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .gender-options { 
+            display: flex; 
+            gap: 15px; 
+            margin-top: 12px; 
+            margin-bottom: 25px;
+        }
+
+        .gender-options label { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: var(--text); 
+            cursor: pointer;
+        }
+
+        .gender-options input[type="radio"] { 
+            width: 18px; 
+            height: 18px; 
+            accent-color: var(--primary); 
+        }
+
+        /* --------------------------------------------------------------------------
+           11. ACCOUNT MENU & PROFILE STYLES
+           -------------------------------------------------------------------------- */
+        .account-menu { 
+            background-color: var(--solid-card); 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            overflow: hidden; 
+            box-shadow: 0 3px 12px rgba(0,0,0,0.02); 
+        }
+
+        .menu-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px; 
+            border-bottom: 1px solid var(--border); 
+            cursor: pointer; 
+            color: var(--text); 
+            font-weight: 700; 
+            font-size: 15px; 
+            transition: background-color 0.2s ease; 
+        }
+
+        .menu-item:active { 
+            background-color: var(--input-bg); 
+        }
+
+        .menu-item:last-child { 
+            border-bottom: none; 
+        }
+
+        .menu-item-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .menu-item svg { 
+            width: 20px; 
+            height: 20px; 
+            stroke: var(--primary); 
+        }
+
+        .chevron { 
+            color: var(--muted); 
+            font-size: 18px; 
+        }
+
+        .profile-info-box { 
+            background-color: var(--solid-card); 
+            border-radius: 16px; 
+            padding: 18px; 
+            border: 1px solid var(--border); 
+            margin-bottom: 16px; 
+            box-shadow: 0 3px 12px rgba(0,0,0,0.02); 
+        }
+
+        .info-row { 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: 14px; 
+        }
+
+        .info-row:last-child { 
+            margin-bottom: 0; 
+        }
+
+        .info-label { 
+            font-size: 11px; 
+            color: var(--muted); 
+            font-weight: 800; 
+            margin-bottom: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+
+        .info-value { 
+            font-size: 15px; 
+            color: var(--text); 
+            font-weight: 700; 
+        }
+
+        /* --------------------------------------------------------------------------
+           12. BOTTOM BAR FIXED BUTTONS
+           -------------------------------------------------------------------------- */
+        .fixed-bottom-btn { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background-color: var(--card); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            padding: 12px; 
+            border-top: 1px solid var(--border); 
+            z-index: 2000; 
+            padding-bottom: calc(12px + env(safe-area-inset-bottom)); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        }
+
+        .large-save-btn { 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            box-shadow: 0 6px 15px var(--primary-glow); 
+        }
+
+        .large-save-btn:active { 
+            transform: scale(0.97); 
+        }
+
+        .clear-all-btn { 
+            background-color: transparent; 
+            color: var(--danger); 
+            border: 1.5px solid var(--danger); 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+
+        .clear-all-btn:active { 
+            background-color: rgba(239, 68, 68, 0.05); 
+            transform: scale(0.97); 
+        }
+
+        .text-btn { 
+            background-color: transparent; 
+            color: var(--muted); 
+            border: none; 
+            font-weight: 700; 
+            font-size: 14px; 
+            padding: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            transition: background-color 0.2s; 
+        }
+
+        .text-btn:active { 
+            background-color: var(--input-bg); 
+            border-radius: 8px; 
+        }
+
+        /* --------------------------------------------------------------------------
+           13. ADDRESS MANAGEMENT UI
+           -------------------------------------------------------------------------- */
+        .add-new-addr-btn { 
+            background-color: var(--primary-glow); 
+            color: var(--primary); 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            font-size: 14px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 20px; 
+            transition: transform 0.2s, background-color 0.2s; 
+        }
+
+        .add-new-addr-btn:active { 
+            transform: scale(0.98); 
+            background-color: rgba(26,92,255,0.15); 
+        }
+        
+        .address-card { 
+            background-color: var(--solid-card); 
+            border-radius: 14px; 
+            padding: 16px; 
+            display: flex; 
+            gap: 12px; 
+            position: relative; 
+            margin-bottom: 12px; 
+            border: 1.5px solid var(--border); 
+            cursor: pointer; 
+            transition: border-color 0.2s, background-color 0.2s; 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.02); 
+        }
+
+        .address-card.selected { 
+            border-color: var(--primary); 
+            background-color: var(--primary-glow); 
+        }
+
+        .addr-radio { 
+            margin-top: 2px; 
+            accent-color: var(--primary); 
+            width: 18px; 
+            height: 18px; 
+        }
+
+        .addr-details { 
+            flex-grow: 1; 
+        }
+
+        .addr-title { 
+            font-weight: 800; 
+            font-size: 15px; 
+            margin-bottom: 4px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: var(--text); 
+        }
+
+        .addr-text { 
+            font-size: 13px; 
+            color: var(--muted); 
+            line-height: 1.5; 
+            font-weight: 500; 
+        }
+
+        .addr-3dots { 
+            cursor: pointer; 
+            padding-left: 5px;
+            padding-right: 5px; 
+            font-size: 18px; 
+            color: var(--muted); 
+            font-weight: bold; 
+        }
+        
+        .dot-menu { 
+            position: absolute; 
+            right: 15px; 
+            top: 40px; 
+            background-color: var(--solid-card); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12); 
+            z-index: 10; 
+            display: none; 
+            overflow: hidden; 
+            min-width: 120px; 
+        }
+
+        .dot-menu div { 
+            padding: 10px 15px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            border-bottom: 1px solid var(--border); 
+            cursor: pointer; 
+            color: var(--text); 
+            transition: background-color 0.2s;
+        }
+
+        .dot-menu div:active { 
+            background-color: var(--input-bg); 
+        }
+
+        .dot-menu div:last-child { 
+            border-bottom: none; 
+            color: var(--danger); 
+        }
+
+        /* --------------------------------------------------------------------------
+           14. ORDER HISTORY CARDS
+           -------------------------------------------------------------------------- */
+        .order-card { 
+            background-color: var(--solid-card); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.02); 
+            overflow: hidden; 
+        }
+
+        .order-status-pill { 
+            display: inline-block; 
+            font-weight: 700; 
+            font-size: 10px; 
+            padding-top: 4px;
+            padding-bottom: 4px;
+            padding-left: 10px;
+            padding-right: 10px; 
+            border-radius: 20px; 
+            background-color: rgba(16, 185, 129, 0.1); 
+            color: var(--success); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+
+        .view-details-btn { 
+            display: block; 
+            width: 100%; 
+            text-align: center; 
+            background-color: var(--primary-glow); 
+            color: var(--primary); 
+            font-weight: 800; 
+            padding: 12px; 
+            border-radius: 10px; 
+            margin-top: 12px; 
+            cursor: pointer; 
+            transition: transform 0.2s; 
+            font-size: 13px; 
+        }
+
+        .view-details-btn:active { 
+            transform: scale(0.98); 
+        }
+
+        /* --------------------------------------------------------------------------
+           15. BOTTOM NAVIGATION BAR
+           -------------------------------------------------------------------------- */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background-color: var(--card); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-top: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-around; 
+            padding-top: 10px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom)); 
+            z-index: 2500; 
+        }
+
+        .bottom-nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--muted); 
+            font-size: 10px; 
+            font-weight: 700; 
+            gap: 4px; 
+            background-color: transparent; 
+            border: none; 
+            cursor: pointer; 
+            transition: color 0.2s; 
+            position: relative;
+        }
+
+        .bottom-nav-item.active { 
+            color: var(--primary); 
+        }
+
+        .bottom-nav-item svg { 
+            width: 22px; 
+            height: 22px; 
+            stroke: currentColor; 
+            fill: none; 
+            transition: transform 0.2s; 
+        }
+
+        .bottom-nav-item.active svg { 
+            transform: scale(1.15); 
+        }
+
+        .nav-cart-badge { 
+            position: absolute; 
+            top: -5px; 
+            right: 15px; 
+            background-color: var(--danger); 
+            color: white; 
+            font-size: 9px; 
+            font-weight: 800; 
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 4px;
+            padding-right: 4px; 
+            border-radius: 10px; 
+            display: none; 
+            border: 1.5px solid var(--solid-card); 
+        }
+
+        /* --------------------------------------------------------------------------
+           16. SUPPORT & CONTACT WIDGETS
+           -------------------------------------------------------------------------- */
         .contact-item-premium {
-            display: flex; align-items: center; padding: 15px; margin-bottom: 14px;
-            background: var(--solid-card); border: 1px solid var(--border);
-            border-radius: 16px; text-decoration: none; transition: all 0.2s ease;
-            cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.02);
+            display: flex; 
+            align-items: center; 
+            padding: 15px; 
+            margin-bottom: 14px;
+            background-color: var(--solid-card); 
+            border: 1px solid var(--border);
+            border-radius: 16px; 
+            text-decoration: none; 
+            transition: all 0.2s ease;
+            cursor: pointer; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.02);
         }
-        .contact-item-premium:active { transform: scale(0.97); background: var(--input-bg); }
-        .contact-item-premium.time-btn { cursor: default; }
-        .contact-item-premium.time-btn:active { transform: none; background: var(--solid-card); }
-        .icon-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 14px; flex-shrink: 0; }
-        .icon-circle svg { width: 20px; height: 20px; stroke-width: 2.2; }
-        .btn-text-content { display: flex; flex-direction: column; }
-        .btn-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
-        .btn-subtitle { font-size: 12px; font-weight: 600; color: var(--muted); }
 
-        #toast { visibility: hidden; min-width: 220px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 10px; padding: 14px; font-weight: 600; position: fixed; z-index: 5000; left: 50%; bottom: 90px; font-size: 13px; transform: translateX(-50%); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
+        .contact-item-premium:active { 
+            transform: scale(0.97); 
+            background-color: var(--input-bg); 
+        }
+
+        .contact-item-premium.time-btn { 
+            cursor: default; 
+        }
+
+        .contact-item-premium.time-btn:active { 
+            transform: none; 
+            background-color: var(--solid-card); 
+        }
+
+        .icon-circle { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-right: 14px; 
+            flex-shrink: 0; 
+        }
+
+        .icon-circle svg { 
+            width: 20px; 
+            height: 20px; 
+            stroke-width: 2.2; 
+        }
+
+        .btn-text-content { 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .btn-title { 
+            font-size: 15px; 
+            font-weight: 800; 
+            color: var(--text); 
+            margin-bottom: 3px; 
+        }
+
+        .btn-subtitle { 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--muted); 
+        }
+
+        /* --------------------------------------------------------------------------
+           17. NOTIFICATIONS & MODALS
+           -------------------------------------------------------------------------- */
+        #toast { 
+            visibility: hidden; 
+            min-width: 220px; 
+            background-color: #1e293b; 
+            color: #fff; 
+            text-align: center; 
+            border-radius: 10px; 
+            padding: 14px; 
+            font-weight: 600; 
+            position: fixed; 
+            z-index: 5000; 
+            left: 50%; 
+            bottom: 90px; 
+            font-size: 13px; 
+            transform: translateX(-50%); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+        }
+
+        #toast.show { 
+            visibility: visible; 
+            animation-name: fadein, fadeout;
+            animation-duration: 0.3s, 0.3s;
+            animation-delay: 0s, 2.5s;
+        }
         
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 15px; opacity: 0; transition: opacity 0.2s ease; }
-        .overlay.show { display: flex; opacity: 1; }
-        .modal-card { background: var(--solid-card); padding: 30px 20px; border-radius: 20px; text-align: center; max-width: 310px; width: 100%; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; }
-        .modal-icon { font-size: 45px; margin-bottom: 12px; color: var(--success); }
-        .modal-card h2 { margin: 0 0 10px; color: var(--text); font-size: 20px; font-weight: 800; }
-        .modal-card p { font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
-        .modal-btn { background: var(--primary); color: white; border: none; padding: 14px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-size: 14px; transition: 0.2s; box-shadow: 0 6px 15px var(--primary-glow);}
-        .modal-btn:active { transform: scale(0.96); }
-        
-        /* SUPER PREMIUM OFFLINE SCREEN */
+        .overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            z-index: 4000; 
+            justify-content: center; 
+            align-items: center; 
+            backdrop-filter: blur(6px); 
+            -webkit-backdrop-filter: blur(6px); 
+            padding: 15px; 
+            opacity: 0; 
+            transition: opacity 0.2s ease; 
+        }
+
+        .overlay.show { 
+            display: flex; 
+            opacity: 1; 
+        }
+
+        .modal-card { 
+            background-color: var(--solid-card); 
+            padding-top: 30px;
+            padding-bottom: 30px;
+            padding-left: 20px;
+            padding-right: 20px; 
+            border-radius: 20px; 
+            text-align: center; 
+            max-width: 310px; 
+            width: 100%; 
+            animation-name: popIn;
+            animation-duration: 0.3s;
+            animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            position: relative; 
+        }
+
+        .modal-icon { 
+            font-size: 45px; 
+            margin-bottom: 12px; 
+            color: var(--success); 
+        }
+
+        .modal-card h2 { 
+            margin-top: 0;
+            margin-right: 0;
+            margin-bottom: 10px;
+            margin-left: 0; 
+            color: var(--text); 
+            font-size: 20px; 
+            font-weight: 800; 
+        }
+
+        .modal-card p { 
+            font-size: 13px; 
+            font-weight: 500; 
+            color: var(--muted); 
+            margin-bottom: 25px; 
+            line-height: 1.5; 
+        }
+
+        .modal-btn { 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            padding-top: 14px;
+            padding-bottom: 14px;
+            padding-left: 18px;
+            padding-right: 18px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 14px; 
+            transition: transform 0.2s; 
+            box-shadow: 0 6px 15px var(--primary-glow);
+        }
+
+        .modal-btn:active { 
+            transform: scale(0.96); 
+        }
+
+        /* --------------------------------------------------------------------------
+           18. THEME TOGGLE SWITCH
+           -------------------------------------------------------------------------- */
+        .switch { 
+            position: relative; 
+            display: inline-block; 
+            width: 46px; 
+            height: 26px; 
+        }
+
+        .switch input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+        }
+
+        .slider { 
+            position: absolute; 
+            cursor: pointer; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background-color: var(--border); 
+            transition: background-color 0.4s; 
+            border-radius: 34px; 
+        }
+
+        .slider:before { 
+            position: absolute; 
+            content: ""; 
+            height: 18px; 
+            width: 18px; 
+            left: 4px; 
+            bottom: 4px; 
+            background-color: white; 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-radius: 50%; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input:checked + .slider { 
+            background-color: var(--primary); 
+        }
+
+        input:checked + .slider:before { 
+            transform: translateX(20px); 
+        }
+
+        /* --------------------------------------------------------------------------
+           19. OFFLINE OVERLAY SPECIFICS
+           -------------------------------------------------------------------------- */
         #premiumOfflineOverlay {
-            background: var(--bg);
+            background-color: var(--bg);
             backdrop-filter: none;
             flex-direction: column;
             z-index: 99999999;
             width: 100%;
             height: 100%;
         }
+
         .offline-icon-container {
-            width: 90px; height: 90px; background: rgba(239, 68, 68, 0.1);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            margin: 0 auto 25px; color: var(--danger);
+            width: 90px; 
+            height: 90px; 
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 25px;
+            margin-left: auto; 
+            color: var(--danger);
             box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.05);
-            animation: pulseDanger 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            animation-name: pulseDanger;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .offline-icon-container svg { width: 40px; height: 40px; stroke-width: 2.5; }
+
+        .offline-icon-container svg { 
+            width: 40px; 
+            height: 40px; 
+            stroke-width: 2.5; 
+        }
+
         @keyframes pulseDanger {
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
             70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
             100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
-        .shake-animation { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+        .shake-animation { 
+            animation-name: shake;
+            animation-duration: 0.4s;
+            animation-timing-function: cubic-bezier(.36,.07,.19,.97);
+            animation-fill-mode: both; 
+        }
+
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
             20%, 80% { transform: translate3d(2px, 0, 0); }
@@ -313,20 +1557,24 @@
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
 
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 90px; opacity: 1; } }
-        @keyframes fadeout { from { bottom: 90px; opacity: 1; } to { bottom: 0; opacity: 0; } }
-        @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadein { 
+            from { bottom: 0; opacity: 0; } 
+            to { bottom: 90px; opacity: 1; } 
+        }
 
-        .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
+        @keyframes fadeout { 
+            from { bottom: 90px; opacity: 1; } 
+            to { bottom: 0; opacity: 0; } 
+        }
+
+        @keyframes popIn { 
+            from { transform: scale(0.85); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
+        }
     </style>
 
     <script>
-        // Theme Setup
+        // 1. Initial Theme Setup (Avoids flicker on load)
         (function() {
             var savedTheme = localStorage.getItem('sb_theme');
             var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -337,24 +1585,23 @@
             }
         })();
 
-        // 🚀 PWA SERVICE WORKER REGISTRATION (Enables offline capability if hosted correctly)
+        // 2. Service Worker Registration
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js').then(function() {
-                    console.log('App successfully cached.');
-                }).catch(function(err) {});
+                navigator.serviceWorker.register('sw.js').catch(function(err) {
+                    console.log('Service Worker not registered (normal for local HTML file).');
+                });
             });
         }
         
-        // 🛑 ADVANCED ANTI PULL-TO-REFRESH SCRIPT (Prevents data loss on all forms)
+        // 3. Strict Pull-to-Refresh Prevention (Protects data in forms)
         let _touchStartY = 0;
-        document.addEventListener('touchstart', function(e) {
-            _touchStartY = e.touches[0].pageY;
+        document.addEventListener('touchstart', function(e) { 
+            _touchStartY = e.touches[0].pageY; 
         }, { passive: true });
-
+        
         document.addEventListener('touchmove', function(e) {
             const y = e.touches[0].pageY;
-            // Block the native refresh swipe if the user is at the very top of the screen
             if (window.scrollY === 0 && y > _touchStartY) {
                 e.preventDefault();
             }
@@ -384,7 +1631,7 @@
 </div>
 
 <script>
-    // INSTANT OFFLINE CHECK ON PAGE LOAD
+    // Instant Check for offline status
     if (!navigator.onLine) {
         document.getElementById('premiumOfflineOverlay').style.display = 'flex';
         document.getElementById('premiumOfflineOverlay').classList.add('show');
@@ -454,23 +1701,31 @@
     </div>
 </div>
 
-<nav id="topNav">
-    <div class="brand">
-        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="5" y="3" width="14" height="18" rx="4.5"></rect>
-            <path d="M8 9h8"></path>
-            <path d="M12 9v3"></path>
-            <path d="M7 15h10v3a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-3z"></path>
+<nav class="top-app-bar" id="topAppBar">
+    <div class="top-app-bar-left">
+        <svg class="back-icon" id="topBackBtn" onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        safeblue
+        <div class="app-title brand-color" id="topTitle">safeblue</div>
     </div>
     
-    <button class="nav-profile-btn" onclick="navTo('account')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-    </button>
+    <div class="top-app-bar-right">
+        <button class="icon-btn" onclick="navTo('account')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </button>
+        <button class="icon-btn" onclick="navTo('cart')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="topCartBadge" class="cart-badge">0</span>
+        </button>
+    </div>
 </nav>
 
 <div id="view-onboarding-profile" class="view-section" onkeydown="handleEnterKey(event, saveOnboardingProfile)">
@@ -507,7 +1762,7 @@
                 <label><input type="radio" name="obGender" value="Other"> Other</label>
             </div>
         </div>
-
+        
         <div style="margin-top: 30px;">
             <button class="large-save-btn" onclick="saveOnboardingProfile()">Continue Setup</button>
             <button class="text-btn" onclick="skipOnboardingProfile()" style="margin-top: 8px;">Skip for now</button>
@@ -545,66 +1800,104 @@
 </div>
 
 <div id="view-home" class="view-section">
-    <header>
-        <h1>safeblue stationery</h1>
-        <p>Kawardha (491995) | Fast & Free Delivery</p>
-    </header>
-    <div class="container">
-        <div class="catalog">
-            <div class="grid" id="productGrid"></div>
+    
+    <div class="search-container-wrapper">
+        <div class="search-input-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search for copies, chart paper..." onkeyup="filterProducts()">
         </div>
-        <div class="sidebar">
-            <h3 style="margin:0 0 15px 0; font-size: 16px; font-weight: 800;">Order Summary</h3>
-            <div id="cartItemsContainer"></div>
-            
-            <div id="receiptSummary" class="receipt-summary" style="display:none;">
-                <div class="summary-row"><span>Subtotal</span><span id="subTotal">₹0</span></div>
-                <div class="summary-row"><span>Delivery Fee</span><span style="color: var(--success); font-weight: 800;">FREE</span></div>
-                <div class="summary-row grand-total"><span>Grand Total</span><span id="grandTotal">₹0</span></div>
-            </div>
-            
-            <div id="minAlert">Minimum ₹100 required for free delivery</div>
+    </div>
 
-            <div style="margin-top: 15px;">
-                <div style="background: var(--primary-glow); padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; font-weight:800; color:var(--primary); font-size:12px; border: 1px dashed rgba(26,92,255,0.4);">🚚 Cash on Delivery Only</div>
-                <button type="button" class="confirm-btn" id="submitOrderBtn" disabled>
-                    Complete Order via WhatsApp
-                </button>
+    <div class="container">
+        <div class="grid" id="productGrid"></div>
+        
+        <div id="noProductFound" style="display:none; text-align:center; padding: 40px 15px; color: var(--muted); font-weight: 600;">
+            <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
+            No products found matching your search.
+        </div>
+    </div>
+</div>
+
+<div id="view-pdp" class="view-section">
+    <div id="pdpContent"></div>
+    
+    <div class="fixed-bottom-btn" id="pdpBottomBar" style="display:none; flex-direction: row; align-items: center; justify-content: center; background-color: var(--solid-card);">
+        <div id="pdpBtnContainer" style="width: 100%;">
             </div>
+    </div>
+</div>
+
+<div id="view-cart" class="view-section">
+    
+    <div class="page-wrapper" id="cartItemsContainer" style="padding-top: 10px;">
+        </div>
+    
+    <div id="minAlert">Minimum ₹100 required for free delivery</div>
+
+    <div class="page-wrapper">
+        <h3 style="font-size: 16px; font-weight: 800; margin: 5px 0 15px 0; color: var(--text); display: none;" id="summaryTitleText">Order Summary</h3>
+        
+        <div id="receiptSummary" class="receipt-summary" style="display:none; margin-top: 0;">
+            
+            <div class="summary-row">
+                <span>Total MRP</span>
+                <span id="mrpTotal" style="text-decoration: line-through;">₹0</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Product Discount</span>
+                <span style="color: var(--success); font-weight: 800;">- ₹<span id="discountTotal">0</span></span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subTotal">₹0</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span style="color: var(--success); font-weight: 800;">FREE</span>
+            </div>
+            
+            <div class="summary-row grand-total">
+                <span>Grand Total</span>
+                <span id="grandTotal">₹0</span>
+            </div>
+            
+            <div style="background-color: var(--primary-glow); padding:12px; border-radius:10px; margin-top:20px; text-align:center; font-weight:800; color:var(--primary); font-size:12px; border: 1px dashed rgba(26,92,255,0.4);">
+                🚚 Cash on Delivery Only
+            </div>
+            
+            <button type="button" class="confirm-btn" id="submitOrderBtn" disabled>
+                Complete Order via WhatsApp
+            </button>
         </div>
     </div>
 </div>
 
 <div id="view-orders" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Order History
-    </div>
     <div class="page-wrapper" id="fullOrderHistoryList">
-    </div>
+        </div>
 </div>
 
 <div id="view-order-details" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Order Details
-    </div>
     <div class="page-wrapper" id="singleOrderDetailsContainer">
-    </div>
+        </div>
 </div>
 
 <div id="view-support" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Help & Support
-    </div>
     <div class="page-wrapper">
         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 8px; color: var(--text);">Get in Touch</h2>
         <p style="color: var(--muted); margin-bottom: 25px; font-size: 14px; font-weight: 500; line-height: 1.5;">We are dedicated to providing exceptional support. Connect with our team instantly.</p>
 
         <a href="tel:+916263839343" class="contact-item-premium">
-            <div class="icon-circle" style="background: var(--phone-bg); color: var(--phone-color);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <div class="icon-circle" style="background-color: var(--phone-bg); color: var(--phone-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">Call Us Directly</span>
@@ -613,8 +1906,10 @@
         </a>
 
         <a href="whatsapp://send?phone=916263839343" class="contact-item-premium">
-            <div class="icon-circle" style="background: var(--wa-bg); color: var(--wa-color);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <div class="icon-circle" style="background-color: var(--wa-bg); color: var(--wa-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">WhatsApp Support</span>
@@ -623,8 +1918,11 @@
         </a>
 
         <a href="mailto:safebluechip@gmail.com" class="contact-item-premium">
-            <div class="icon-circle" style="background: var(--email-bg); color: var(--email-color);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <div class="icon-circle" style="background-color: var(--email-bg); color: var(--email-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">Send an Email</span>
@@ -633,8 +1931,11 @@
         </a>
 
         <div class="contact-item-premium time-btn">
-            <div class="icon-circle" style="background: var(--time-bg); color: var(--time-color);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <div class="icon-circle" style="background-color: var(--time-bg); color: var(--time-color);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
             </div>
             <div class="btn-text-content">
                 <span class="btn-title">Working Hours</span>
@@ -646,19 +1947,20 @@
 </div>
 
 <div id="view-account" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="visibility: hidden;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Account
-    </div>
     <div class="page-wrapper">
         <div class="account-menu">
+            
             <div class="menu-item" onclick="handleProfileClick()">
                 <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
                     My Profile
                 </div>
                 <div class="chevron">›</div>
             </div>
+            
             <div class="menu-item" onclick="navTo('orders')">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -670,9 +1972,13 @@
                 </div>
                 <div class="chevron">›</div>
             </div>
+            
             <div class="menu-item" onclick="navTo('addresses')">
                 <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
                     Manage Addresses
                 </div>
                 <div class="chevron">›</div>
@@ -680,7 +1986,11 @@
             
             <div class="menu-item" onclick="navTo('support')">
                 <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
                     Help & Support
                 </div>
                 <div class="chevron">›</div>
@@ -688,7 +1998,9 @@
 
             <div class="menu-item">
                 <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                     Dark Mode Theme
                 </div>
                 <label class="switch">
@@ -696,15 +2008,12 @@
                     <span class="slider"></span>
                 </label>
             </div>
+            
         </div>
     </div>
 </div>
 
 <div id="view-profile-view" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        My Profile
-    </div>
     <div class="page-wrapper" style="padding-bottom: 70px;">
         <div class="profile-info-box">
             <div class="info-row">
@@ -731,17 +2040,15 @@
             </div>
         </div>
     </div>
+    
     <div class="fixed-bottom-btn">
         <button class="large-save-btn" onclick="navTo('profile-edit')">Edit Profile Details</button>
     </div>
 </div>
 
 <div id="view-profile-edit" class="view-section" onkeydown="handleEnterKey(event, saveProfileData)">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Edit Details
-    </div>
     <div class="page-wrapper" style="padding-bottom: 110px;">
+        
         <div class="material-input">
             <label>First Name</label>
             <input type="text" id="accFName" autocomplete="given-name" placeholder="e.g. John">
@@ -771,7 +2078,9 @@
                 <label><input type="radio" name="accGender" value="Other"> Other</label>
             </div>
         </div>
+        
     </div>
+    
     <div class="fixed-bottom-btn">
         <button class="large-save-btn" onclick="saveProfileData()">Save All Changes</button>
         <button class="clear-all-btn" onclick="clearAllData()">Clear Application Data</button>
@@ -779,28 +2088,23 @@
 </div>
 
 <div id="view-addresses" class="view-section">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        Manage Addresses
-    </div>
     <div class="page-wrapper">
         <button class="add-new-addr-btn" onclick="openAddressEdit(null)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
             Add New Address
         </button>
         
         <div style="font-weight: 800; font-size: 14px; margin-bottom: 12px; color: var(--text);">Saved Addresses (Select Default)</div>
         
         <div id="addressDisplayList">
-        </div>
+            </div>
     </div>
 </div>
 
 <div id="view-address-edit" class="view-section" onkeydown="handleEnterKey(event, saveAddressData)">
-    <div class="sub-header">
-        <svg onclick="goBack()" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        <span id="addressEditTitle">Add Address</span>
-    </div>
     <div class="page-wrapper" style="padding-bottom: 70px;">
         <input type="hidden" id="inpAddrId" value="">
         
@@ -821,12 +2125,14 @@
             <input type="text" id="inpWard" autocomplete="address-level4" placeholder="e.g. Ward 12">
         </div>
     </div>
+    
     <div class="fixed-bottom-btn" style="flex-direction: row;">
         <button class="large-save-btn" onclick="saveAddressData()">Save Address Securely</button>
     </div>
 </div>
 
-<div class="bottom-nav" id="mainBottomNav">
+<div class="bottom-nav" id="mainBottomNav" style="display:none;">
+    
     <button class="bottom-nav-item active" onclick="navTo('home', true)" id="nav-home">
         <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -834,6 +2140,7 @@
         </svg>
         Home
     </button>
+    
     <button class="bottom-nav-item" onclick="navTo('orders', true)" id="nav-orders">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
@@ -842,6 +2149,17 @@
         </svg>
         Orders
     </button>
+    
+    <button class="bottom-nav-item" onclick="navTo('cart', true)" id="nav-cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        Cart
+        <span id="navCartBadge" class="nav-cart-badge">0</span>
+    </button>
+    
     <button class="bottom-nav-item" onclick="navTo('account', true)" id="nav-account">
         <svg viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -849,15 +2167,131 @@
         </svg>
         Account
     </button>
+    
 </div>
 
 <script>
-    // --- TURBO OFFLINE DETECTION SYSTEM ---
+    // =========================================================================
+    // 🌟 HOW TO ADD A NEW PRODUCT (EASY FOR BEGINNERS) 🌟
+    // =========================================================================
+    // 1. Copy an entire block from { to }, and paste it below the last product.
+    // 2. Change the 'id' to a new unique number (e.g., 12, 13).
+    // 3. Edit 'name', 'mrp', 'price', and 'desc'.
+    // 4. To add UNLIMITED IMAGES for the slider, just put links inside the [ ] brackets, separated by commas.
+    //    Example for 3 images: images: ['photo1.jpg', 'photo2.png', 'photo3.jpg'],
+    // =========================================================================
+    
+    const PLACEHOLDER_IMG = 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image';
+
+    const PRODUCTS = [
+        { 
+            id: 1, 
+            name: 'Combine Copy Page 180 Premium', 
+            mrp: 42, 
+            price: 21, 
+            // ⬇️ You can put as many images as you want here. The slider will auto-adjust!
+            images: [PLACEHOLDER_IMG, PLACEHOLDER_IMG, PLACEHOLDER_IMG], 
+            desc: 'High-quality premium paper designed for students. Offers a smooth writing experience without ink bleeding.'
+        },
+        { 
+            id: 2, 
+            name: 'Combine Copy Page 180 Standard', 
+            mrp: 50, 
+            price: 25, 
+            images: [PLACEHOLDER_IMG], 
+            desc: 'Standard quality combine copy ideal for daily rough notes and classroom assignments.'
+        },
+        { 
+            id: 3, 
+            name: 'Combine Copy Page 112', 
+            mrp: 20, 
+            price: 10, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Compact 112-page combine copy. Easy to carry and perfect for quick note-taking.'
+        },
+        { 
+            id: 4, 
+            name: 'Box Maths Copy Page 172', 
+            mrp: 45, 
+            price: 22.5, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Specialized box layout for mathematics. Helps in keeping numbers aligned and neat.'
+        },
+        { 
+            id: 5, 
+            name: 'Four Line Copy Page 128', 
+            mrp: 20, 
+            price: 10, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Four-line ruled copy to practice and improve English handwriting.'
+        },
+        { 
+            id: 6, 
+            name: 'Double Line Copy Page 172', 
+            mrp: 45, 
+            price: 22.5, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Double-line ruled notebook primarily used for Hindi handwriting practice.'
+        },
+        { 
+            id: 7, 
+            name: 'Blank Copy Page 172', 
+            mrp: 40, 
+            price: 20, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Completely unruled blank pages. Ideal for drawing, geometry, or mind mapping.'
+        },
+        { 
+            id: 8, 
+            name: 'Blank Copy Page 128', 
+            mrp: 20, 
+            price: 10, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Lightweight unruled blank notebook. Good for random scribbling.'
+        },
+        { 
+            id: 9, 
+            name: 'Rough Copy Page 108', 
+            mrp: 10, 
+            price: 5, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Cost-effective rough copy for practicing calculations and temporary notes.'
+        }, 
+        { 
+            id: 10, 
+            name: 'Rough Copy Page 100', 
+            mrp: 5, 
+            price: 2.5, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Extremely affordable 100-page rough notebook for basic use.'
+        },
+        { 
+            id: 11, 
+            name: 'Chart Paper (Assorted Colors)', 
+            mrp: 10, 
+            price: 5, 
+            images: [PLACEHOLDER_IMG],
+            desc: 'Thick and vibrant chart paper for school projects and craft activities.'
+        }
+    ];
+
+    // =========================================================================
+    // 2. GLOBAL STATE VARIABLES
+    // =========================================================================
+    let cart = []; // Holds items currently in the cart
+    let pendingOrderData = null; // Temporarily holds order data before WhatsApp confirmation
+    let currentPdpId = null; // Tracks which product is currently open in the Product Details Page
+
+    // =========================================================================
+    // 3. OFFLINE DETECTION LOGIC
+    // =========================================================================
     function handleConnectionChange() {
         const offlineOverlay = document.getElementById('premiumOfflineOverlay');
         if (navigator.onLine) {
             offlineOverlay.classList.remove('show');
-            setTimeout(() => { offlineOverlay.style.display = 'none'; }, 300);
+            setTimeout(() => { 
+                offlineOverlay.style.display = 'none'; 
+            }, 300);
         } else {
             offlineOverlay.style.display = 'flex';
             // Force browser repaint to trigger CSS animation smoothly
@@ -865,45 +2299,52 @@
             offlineOverlay.classList.add('show');
         }
     }
+    
+    // Attach listeners for online/offline events
     window.addEventListener('online', handleConnectionChange);
     window.addEventListener('offline', handleConnectionChange);
 
     function manualRetry() {
         const btn = document.getElementById('retryConnectionBtn');
-        btn.innerHTML = 'Checking... ⏳';
+        btn.innerHTML = 'Checking... ⏳'; 
         btn.style.opacity = '0.7';
         
         setTimeout(() => {
-            if(navigator.onLine) {
-                handleConnectionChange();
-                showToast("Internet Restored! 🚀");
-            } else {
-                btn.innerHTML = 'Try Again';
-                btn.style.opacity = '1';
-                btn.classList.add('shake-animation');
-                setTimeout(()=> btn.classList.remove('shake-animation'), 400);
+            if(navigator.onLine) { 
+                handleConnectionChange(); 
+                showToast("Internet Restored! 🚀"); 
+            } else { 
+                btn.innerHTML = 'Try Again'; 
+                btn.style.opacity = '1'; 
+                btn.classList.add('shake-animation'); 
+                setTimeout(()=> btn.classList.remove('shake-animation'), 400); 
             }
         }, 800);
     }
 
-    // 🛠️ AUTO-SAVE SYSTEM: Prevents data loss on accidental app refresh
+    // =========================================================================
+    // 4. AUTO-SAVE LOGIC (PROTECTS DRAFTS)
+    // =========================================================================
     function setupAutoSave() {
+        // Collect all inputs and textareas
         const inputs = document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]), textarea');
+        
         inputs.forEach(input => {
             if (input.id) {
-                // Restore text data
+                // Restore text data on load
                 const savedData = sessionStorage.getItem('draft_' + input.id);
                 if (savedData !== null) {
                     input.value = savedData;
                 }
-                // Save text data on type
-                input.addEventListener('input', () => {
-                    sessionStorage.setItem('draft_' + input.id, input.value);
+                
+                // Save text data on typing
+                input.addEventListener('input', () => { 
+                    sessionStorage.setItem('draft_' + input.id, input.value); 
                 });
             }
         });
-
-        // Restore radio button data
+        
+        // Handle Radio Buttons independently
         const radios = document.querySelectorAll('input[type="radio"]');
         radios.forEach(radio => {
             if(radio.name) {
@@ -911,88 +2352,117 @@
                 if (savedRadio && radio.value === savedRadio) {
                     radio.checked = true;
                 }
-                radio.addEventListener('change', () => {
-                    if (radio.checked) sessionStorage.setItem('draft_radio_' + radio.name, radio.value);
+                radio.addEventListener('change', () => { 
+                    if (radio.checked) {
+                        sessionStorage.setItem('draft_radio_' + radio.name, radio.value); 
+                    }
                 });
             }
         });
     }
 
-    // 🧹 CLEAR AUTO-SAVE: Removes draft data when user successfully saves the form
-    function clearAutoSave() {
-        const keys = Object.keys(sessionStorage);
-        keys.forEach(k => {
-            if (k.startsWith('draft_')) sessionStorage.removeItem(k);
-        });
+    function clearAutoSave() { 
+        // Remove all items from sessionStorage that start with 'draft_'
+        const keys = Object.keys(sessionStorage); 
+        keys.forEach(k => { 
+            if (k.startsWith('draft_')) {
+                sessionStorage.removeItem(k); 
+            }
+        }); 
     }
 
-    // --- GLOBAL ENTER KEY HANDLER ---
+    // Listen for "Enter" key press on input fields to automatically trigger save
     function handleEnterKey(event, actionFunction) {
         if (event.key === 'Enter') {
             const tagName = event.target.tagName.toLowerCase();
-            if (tagName !== 'textarea' && tagName !== 'button') {
-                event.preventDefault();
-                actionFunction();
+            // Prevent default action (like submitting a form) unless it's a textarea
+            if (tagName !== 'textarea' && tagName !== 'button') { 
+                event.preventDefault(); 
+                actionFunction(); 
             }
         }
     }
 
-    // --- SECURE MODALS CONTROLLERS ---
+    // =========================================================================
+    // 5. CUSTOM MODALS & CONFIRMATION DIALOGS
+    // =========================================================================
     let confirmActionCallback = null;
-
-    function openCustomConfirm(title, message, callback) {
-        document.getElementById('confirmTitle').innerText = title;
-        document.getElementById('confirmMessage').innerText = message;
-        confirmActionCallback = callback;
-        document.getElementById('customConfirmOverlay').classList.add('show');
+    
+    function openCustomConfirm(title, message, callback) { 
+        document.getElementById('confirmTitle').innerText = title; 
+        document.getElementById('confirmMessage').innerText = message; 
+        confirmActionCallback = callback; 
+        document.getElementById('customConfirmOverlay').classList.add('show'); 
     }
-    function closeCustomConfirm() {
-        document.getElementById('customConfirmOverlay').classList.remove('show');
-        confirmActionCallback = null;
+    
+    function closeCustomConfirm() { 
+        document.getElementById('customConfirmOverlay').classList.remove('show'); 
+        confirmActionCallback = null; 
     }
-    document.getElementById('confirmActionBtn').addEventListener('click', function() {
-        if (confirmActionCallback) confirmActionCallback();
-        closeCustomConfirm();
+    
+    // Attach event to the confirm button inside the modal
+    document.getElementById('confirmActionBtn').addEventListener('click', function() { 
+        if (confirmActionCallback) {
+            confirmActionCallback(); 
+        }
+        closeCustomConfirm(); 
     });
 
     let advancedConfirmCallback = null;
-
-    function openAdvancedConfirm(callback) {
-        document.getElementById('advancedConfirmInput').value = '';
+    
+    function openAdvancedConfirm(callback) { 
+        document.getElementById('advancedConfirmInput').value = ''; 
         checkAdvancedConfirm(); 
-        advancedConfirmCallback = callback;
-        document.getElementById('advancedConfirmOverlay').classList.add('show');
+        advancedConfirmCallback = callback; 
+        document.getElementById('advancedConfirmOverlay').classList.add('show'); 
     }
-    function closeAdvancedConfirm() {
-        document.getElementById('advancedConfirmOverlay').classList.remove('show');
-        advancedConfirmCallback = null;
+    
+    function closeAdvancedConfirm() { 
+        document.getElementById('advancedConfirmOverlay').classList.remove('show'); 
+        advancedConfirmCallback = null; 
     }
     
     function checkAdvancedConfirm() {
         const val = document.getElementById('advancedConfirmInput').value.trim().toLowerCase();
         const btn = document.getElementById('advancedConfirmBtn');
-        if (val === 'clear data') {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-            btn.style.cursor = 'pointer';
-        } else {
-            btn.disabled = true;
-            btn.style.opacity = '0.4';
-            btn.style.cursor = 'not-allowed';
+        
+        // Only enable button if user types "clear data" exactly
+        if (val === 'clear data') { 
+            btn.disabled = false; 
+            btn.style.opacity = '1'; 
+            btn.style.cursor = 'pointer'; 
+        } else { 
+            btn.disabled = true; 
+            btn.style.opacity = '0.4'; 
+            btn.style.cursor = 'not-allowed'; 
         }
     }
     
-    document.getElementById('advancedConfirmBtn').addEventListener('click', function() {
-        if (advancedConfirmCallback && !this.disabled) advancedConfirmCallback();
-        closeAdvancedConfirm();
+    // Attach event to the advanced confirm button
+    document.getElementById('advancedConfirmBtn').addEventListener('click', function() { 
+        if (advancedConfirmCallback && !this.disabled) {
+            advancedConfirmCallback(); 
+        }
+        closeAdvancedConfirm(); 
     });
 
-    // --- ADVANCED ROUTING SYSTEM ---
-    const validSections = ['home', 'orders', 'order-details', 'account', 'profile-view', 'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 'onboarding-address', 'support'];
+    // =========================================================================
+    // 6. ROUTING & NAVIGATION SYSTEM
+    // =========================================================================
+    // Allowed views in the app
+    const validSections = [
+        'home', 'orders', 'order-details', 'account', 'profile-view', 
+        'profile-edit', 'addresses', 'address-edit', 'onboarding-profile', 
+        'onboarding-address', 'support', 'pdp', 'cart'
+    ];
 
     function navTo(section, isTabClick = false, isPopState = false) {
-        if (!validSections.includes(section)) section = 'home';
-
+        // Fallback to home if section is invalid
+        if (!validSections.includes(section)) {
+            section = 'home';
+        }
+        
+        // Handle Browser History (Back/Forward arrows)
         if (!isPopState) {
             if (section === 'home' && isTabClick) {
                 history.replaceState({ section: section }, '', '#' + section);
@@ -1001,93 +2471,187 @@
             }
         }
 
-        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        // 1. Hide all views
+        document.querySelectorAll('.view-section').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // 2. Show the target view
         const newSection = document.getElementById('view-' + section);
-        if(newSection) newSection.classList.add('active');
+        if(newSection) {
+            newSection.classList.add('active');
+        }
+        
+        // 3. Scroll to top of the page smoothly
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        const isRootTab = ['home', 'account', 'orders'].includes(section);
+        // Logic Flags
+        const isRootTab = ['home', 'account', 'orders', 'cart'].includes(section);
         const isOnboarding = ['onboarding-profile', 'onboarding-address'].includes(section);
 
-        document.getElementById('topNav').style.display = (section === 'home') ? 'flex' : 'none';
-        document.getElementById('mainBottomNav').style.display = (isRootTab && !isOnboarding) ? 'flex' : 'none';
+        // UI Components
+        const topAppBar = document.getElementById('topAppBar');
+        const mainBottomNav = document.getElementById('mainBottomNav');
+        const pdpBottomBar = document.getElementById('pdpBottomBar');
+        const topBackBtn = document.getElementById('topBackBtn');
+        const topTitle = document.getElementById('topTitle');
 
+        // Nav Bar Visibility Rules
+        if (isOnboarding) {
+            topAppBar.style.display = 'none';
+            mainBottomNav.style.display = 'none';
+            if(pdpBottomBar) pdpBottomBar.style.display = 'none';
+        } else {
+            topAppBar.style.display = 'flex';
+            
+            if (section === 'pdp') {
+                // Settings for Product Details Page
+                mainBottomNav.style.display = 'none';
+                if(pdpBottomBar) pdpBottomBar.style.display = 'flex';
+                topBackBtn.style.display = 'block';
+                topTitle.innerText = "Item details";
+                topTitle.classList.remove('brand-color');
+            } else {
+                // Settings for normal pages
+                if(pdpBottomBar) pdpBottomBar.style.display = 'none';
+                mainBottomNav.style.display = isRootTab ? 'flex' : 'none';
+                topBackBtn.style.display = (section === 'home') ? 'none' : 'block';
+                
+                // Set Title intelligently
+                let titleText = section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ');
+                if (section === 'home') { 
+                    titleText = 'safeblue'; 
+                    topTitle.classList.add('brand-color'); 
+                } else if (section === 'cart') { 
+                    titleText = 'Your Cart'; 
+                    topTitle.classList.remove('brand-color'); 
+                } else if (section === 'addresses') { 
+                    titleText = 'Manage Addresses'; 
+                    topTitle.classList.remove('brand-color'); 
+                } else { 
+                    topTitle.classList.remove('brand-color'); 
+                }
+                
+                topTitle.innerText = titleText;
+            }
+        }
+
+        // Bottom Nav Active State Logic
         if (isRootTab) {
-            document.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
             const activeTab = document.getElementById('nav-' + section);
-            if(activeTab) activeTab.classList.add('active');
+            if(activeTab) {
+                activeTab.classList.add('active');
+            }
         }
 
-        if (section === 'orders') {
-            newSection.style.paddingBottom = isRootTab ? '85px' : '20px';
-            loadOrderHistory();
+        // Section Specific Hooks (Run functions when landing on a page)
+        if (section === 'orders') { 
+            newSection.style.paddingBottom = isRootTab ? '85px' : '20px'; 
+            loadOrderHistory(); 
         }
-
-        if (section === 'profile-edit') populateProfileForm();
-        if (section === 'profile-view') renderProfileView();
-        if (section === 'addresses') renderAddressList();
+        if (section === 'cart') { 
+            updateUI(); 
+        }
+        if (section === 'profile-edit') {
+            populateProfileForm();
+        }
+        if (section === 'profile-view') {
+            renderProfileView();
+        }
+        if (section === 'addresses') {
+            renderAddressList();
+        }
+        if (section === 'home') { 
+            // Clear search bar when returning home
+            const searchBox = document.getElementById('searchInput');
+            if (searchBox) { 
+                searchBox.value = ""; 
+                filterProducts(); 
+            }
+        } 
     }
 
     function goBack() {
         const currentActive = document.querySelector('.view-section.active');
         const currentId = currentActive ? currentActive.id.replace('view-', '') : 'home';
-
+        
+        // Disable back button on home page
         if (currentId === 'home') return; 
-
-        if (window.history.length > 1) {
+        
+        if (window.history.length > 1) { 
             history.back(); 
-        } else {
+        } else { 
             navTo('home', false, false); 
         }
     }
 
+    // Browser Back Button Listener
     window.addEventListener('popstate', function(event) {
-        if (event.state && event.state.section) {
+        if (event.state && event.state.section) { 
             navTo(event.state.section, false, true); 
-        } else {
-            const hash = window.location.hash.replace('#', '');
-            navTo(hash || 'home', false, true);
+        } else { 
+            const hash = window.location.hash.replace('#', ''); 
+            navTo(hash || 'home', false, true); 
         }
     });
 
+    // Boot App Logic (Decides which page to show first)
     function bootApp() {
         const hash = window.location.hash.replace('#', '');
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const skipped = localStorage.getItem('sb_skip_onboarding');
 
-        if ((!p.fName || !p.phone) && !skipped) {
-            history.replaceState({ section: 'onboarding-profile' }, '', '#onboarding-profile');
-            navTo('onboarding-profile', false, true);
-        } else if (hash && validSections.includes(hash)) {
-            navTo(hash, false, true);
-        } else {
-            history.replaceState({ section: 'home' }, '', '#home');
-            navTo('home', false, true);
+        // Check if user is new
+        if ((!profile.fName || !profile.phone) && !skipped) { 
+            history.replaceState({ section: 'onboarding-profile' }, '', '#onboarding-profile'); 
+            navTo('onboarding-profile', false, true); 
+        } 
+        // Or if hash matches a section
+        else if (hash && validSections.includes(hash)) { 
+            navTo(hash, false, true); 
+        } 
+        // Default to home
+        else { 
+            history.replaceState({ section: 'home' }, '', '#home'); 
+            navTo('home', false, true); 
         }
     }
 
+    // Initialize the app on DOM Load
     document.addEventListener("DOMContentLoaded", function() {
-        syncToggleSwitch();
-        setupAutoSave(); // Added AutoSave setup here
+        syncToggleSwitch(); 
+        setupAutoSave(); 
         bootApp();
-
-        setTimeout(() => {
-            document.getElementById('splashScreen').style.opacity = '0';
+        
+        // Dismiss Splash Screen
+        setTimeout(() => { 
+            document.getElementById('splashScreen').style.opacity = '0'; 
             setTimeout(() => { 
                 document.getElementById('splashScreen').style.display = 'none'; 
-            }, 400);
+            }, 400); 
         }, 500);
         
+        // Execute migrations and initial render
         migrateAddressData(); 
-        renderAddressList();
-        renderGrid();
+        renderAddressList(); 
+        renderGrid(PRODUCTS); 
+        updateUI();
     });
 
-    function showToast(message) {
-        const toast = document.getElementById("toast");
-        toast.innerText = message;
-        toast.className = "show";
-        setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+    // =========================================================================
+    // 7. UTILITY FUNCTIONS (Toasts, Themes, Validation)
+    // =========================================================================
+    function showToast(message) { 
+        const toast = document.getElementById("toast"); 
+        toast.innerText = message; 
+        toast.className = "show"; 
+        
+        setTimeout(() => { 
+            toast.className = toast.className.replace("show", ""); 
+        }, 3000); 
     }
 
     function toggleTheme() {
@@ -1100,249 +2664,302 @@
         localStorage.setItem('sb_theme', newTheme); 
     }
     
-    function syncToggleSwitch() {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const checkbox = document.getElementById('themeCheckbox');
-        if (checkbox) checkbox.checked = isDark;
-    }
-
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (!localStorage.getItem('sb_theme')) {
-            const newTheme = event.matches ? "dark" : "light";
-            document.documentElement.setAttribute('data-theme', newTheme);
-            syncToggleSwitch();
+    function syncToggleSwitch() { 
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; 
+        const checkbox = document.getElementById('themeCheckbox'); 
+        if (checkbox) {
+            checkbox.checked = isDark; 
         }
+    }
+    
+    // System Theme Listener
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { 
+        if (!localStorage.getItem('sb_theme')) { 
+            const newTheme = event.matches ? "dark" : "light"; 
+            document.documentElement.setAttribute('data-theme', newTheme); 
+            syncToggleSwitch(); 
+        } 
     });
 
     function isPhoneNumberValid(phone) {
         const digitsOnly = phone.replace(/[^0-9]/g, ''); 
-        if(digitsOnly.length < 10) {
-            showToast("Please enter a valid phone number (at least 10 digits).");
-            return false;
+        if(digitsOnly.length < 10) { 
+            showToast("Please enter a valid phone number (at least 10 digits)."); 
+            return false; 
         }
-        if(digitsOnly.length > 15) {
-            showToast("Phone number is too long, please check again.");
-            return false;
+        if(digitsOnly.length > 15) { 
+            showToast("Phone number is too long, please check again."); 
+            return false; 
         }
         return true;
     }
 
-    function skipOnboardingProfile() {
-        localStorage.setItem('sb_skip_onboarding', 'true');
-        navTo('home', false, false);
+    // =========================================================================
+    // 8. ONBOARDING LOGIC
+    // =========================================================================
+    function skipOnboardingProfile() { 
+        localStorage.setItem('sb_skip_onboarding', 'true'); 
+        navTo('home', false, false); 
     }
-
+    
     function saveOnboardingProfile() {
-        const fName = document.getElementById('obFName').value.trim();
+        const fName = document.getElementById('obFName').value.trim(); 
         const phone = document.getElementById('obPhone').value.trim();
-        const lName = document.getElementById('obLName').value.trim();
-        const email = document.getElementById('obEmail').value.trim();
+        const lName = document.getElementById('obLName').value.trim(); 
+        const email = document.getElementById('obEmail').value.trim(); 
         const age = document.getElementById('obAge').value.trim();
         
-        if(!fName || !phone) {
-            showToast("First Name and Mobile Number are required.");
-            return;
-        }
-
-        if(!isPhoneNumberValid(phone)) return;
-
-        if(age !== "" && parseInt(age) <= 0) {
-            showToast("Age cannot be 0 or less.");
-            return;
-        }
-
-        const genderEl = document.querySelector('input[name="obGender"]:checked');
-        
-        const profile = {
-            fName: fName, lName: lName, email: email, 
-            phone: phone, age: age, gender: genderEl ? genderEl.value : ''
-        };
-        localStorage.setItem('sb_profile', JSON.stringify(profile));
-        localStorage.removeItem('sb_skip_onboarding'); 
-        
-        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
-        showToast(`Profile Setup Successful!`);
-        navTo('onboarding-address', false, false);
-    }
-
-    function skipOnboardingAddress() {
-        navTo('home', false, false);
-    }
-
-    function saveOnboardingAddress() {
-        const street = document.getElementById('obStreet').value.trim();
-        if(!street) {
-            showToast("Please enter your Area/Street address.");
-            return;
-        }
-
-        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
-        addresses.push({
-            id: Date.now(),
-            street: street, 
-            ward: document.getElementById('obWard').value.trim(), 
-            house: document.getElementById('obHouse').value.trim(), 
-            landmark: document.getElementById('obLandmark').value.trim(),
-            isDefault: true
-        });
-        localStorage.setItem('sb_addresses', JSON.stringify(addresses));
-        
-        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
-        showToast("Address saved successfully!");
-        navTo('home', false, false);
-    }
-
-    function handleProfileClick() {
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        if (!p.fName || !p.phone) {
-            navTo('profile-edit');
-        } else {
-            navTo('profile-view');
-        }
-    }
-
-    function renderProfileView() {
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        document.getElementById('dispFullName').innerText = (p.fName || p.lName) ? `${p.fName || ''} ${p.lName || ''}`.trim() : 'Not provided';
-        document.getElementById('dispPhone').innerText = p.phone || 'Not provided';
-        document.getElementById('dispEmail').innerText = p.email || 'Not provided';
-        document.getElementById('dispAge').innerText = p.age || 'N/A';
-        document.getElementById('dispGender').innerText = p.gender || 'N/A';
-    }
-
-    function populateProfileForm() {
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
-        // Draft data should not overwrite unless fields are empty, let AutoSave handle it
-        if(!sessionStorage.getItem('draft_accFName')) document.getElementById('accFName').value = p.fName || '';
-        if(!sessionStorage.getItem('draft_accLName')) document.getElementById('accLName').value = p.lName || '';
-        if(!sessionStorage.getItem('draft_accEmail')) document.getElementById('accEmail').value = p.email || '';
-        if(!sessionStorage.getItem('draft_accPhone')) document.getElementById('accPhone').value = p.phone || '';
-        if(!sessionStorage.getItem('draft_accAge')) document.getElementById('accAge').value = p.age || '';
-        
-        if(p.gender && !sessionStorage.getItem('draft_radio_accGender')) {
-            const r = document.querySelector(`input[name="accGender"][value="${p.gender}"]`);
-            if(r) r.checked = true;
-        }
-    }
-
-    function saveProfileData() {
-        const fName = document.getElementById('accFName').value.trim();
-        const phone = document.getElementById('accPhone').value.trim();
-        const age = document.getElementById('accAge').value.trim();
-
+        // Basic Validations
         if(!fName || !phone) { 
             showToast("First Name and Mobile Number are required."); 
             return; 
         }
-
-        if(!isPhoneNumberValid(phone)) return;
-
-        if(age !== "" && parseInt(age) <= 0) {
-            showToast("Age cannot be 0 or less.");
+        
+        if(!isPhoneNumberValid(phone)) {
             return;
         }
+        
+        if(age !== "" && parseInt(age) <= 0) { 
+            showToast("Age cannot be 0 or less."); 
+            return; 
+        }
+        
+        const genderEl = document.querySelector('input[name="obGender"]:checked');
+        
+        const profile = { 
+            fName: fName, 
+            lName: lName, 
+            email: email, 
+            phone: phone, 
+            age: age, 
+            gender: genderEl ? genderEl.value : '' 
+        };
+        
+        localStorage.setItem('sb_profile', JSON.stringify(profile)); 
+        localStorage.removeItem('sb_skip_onboarding'); 
+        
+        clearAutoSave(); 
+        showToast(`Profile Setup Successful!`); 
+        
+        navTo('onboarding-address', false, false);
+    }
+    
+    function skipOnboardingAddress() { 
+        navTo('home', false, false); 
+    }
+    
+    function saveOnboardingAddress() {
+        const street = document.getElementById('obStreet').value.trim();
+        
+        if(!street) { 
+            showToast("Please enter your Area/Street address."); 
+            return; 
+        }
+        
+        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+        
+        addresses.push({ 
+            id: Date.now(), 
+            street: street, 
+            ward: document.getElementById('obWard').value.trim(), 
+            house: document.getElementById('obHouse').value.trim(), 
+            landmark: document.getElementById('obLandmark').value.trim(), 
+            isDefault: true 
+        });
+        
+        localStorage.setItem('sb_addresses', JSON.stringify(addresses)); 
+        clearAutoSave(); 
+        
+        showToast("Address saved successfully!"); 
+        navTo('home', false, false);
+    }
 
+    // =========================================================================
+    // 9. PROFILE MANAGEMENT LOGIC
+    // =========================================================================
+    function handleProfileClick() { 
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}'); 
+        
+        if (!profile.fName || !profile.phone) { 
+            navTo('profile-edit'); 
+        } else { 
+            navTo('profile-view'); 
+        } 
+    }
+    
+    function renderProfileView() {
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        
+        document.getElementById('dispFullName').innerText = (profile.fName || profile.lName) ? `${profile.fName || ''} ${profile.lName || ''}`.trim() : 'Not provided';
+        document.getElementById('dispPhone').innerText = profile.phone || 'Not provided'; 
+        document.getElementById('dispEmail').innerText = profile.email || 'Not provided';
+        document.getElementById('dispAge').innerText = profile.age || 'N/A'; 
+        document.getElementById('dispGender').innerText = profile.gender || 'N/A';
+    }
+    
+    function populateProfileForm() {
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        
+        if(!sessionStorage.getItem('draft_accFName')) {
+            document.getElementById('accFName').value = profile.fName || '';
+        }
+        if(!sessionStorage.getItem('draft_accLName')) {
+            document.getElementById('accLName').value = profile.lName || '';
+        }
+        if(!sessionStorage.getItem('draft_accEmail')) {
+            document.getElementById('accEmail').value = profile.email || '';
+        }
+        if(!sessionStorage.getItem('draft_accPhone')) {
+            document.getElementById('accPhone').value = profile.phone || '';
+        }
+        if(!sessionStorage.getItem('draft_accAge')) {
+            document.getElementById('accAge').value = profile.age || '';
+        }
+        
+        if(profile.gender && !sessionStorage.getItem('draft_radio_accGender')) { 
+            const radio = document.querySelector(`input[name="accGender"][value="${profile.gender}"]`); 
+            if(radio) {
+                radio.checked = true; 
+            }
+        }
+    }
+    
+    function saveProfileData() {
+        const fName = document.getElementById('accFName').value.trim(); 
+        const phone = document.getElementById('accPhone').value.trim(); 
+        const age = document.getElementById('accAge').value.trim();
+        
+        if(!fName || !phone) { 
+            showToast("First Name and Mobile Number are required."); 
+            return; 
+        }
+        
+        if(!isPhoneNumberValid(phone)) return;
+        
+        if(age !== "" && parseInt(age) <= 0) { 
+            showToast("Age cannot be 0 or less."); 
+            return; 
+        }
+        
         const genderEl = document.querySelector('input[name="accGender"]:checked');
         
-        const profile = {
-            fName: fName, lName: document.getElementById('accLName').value.trim(),
-            email: document.getElementById('accEmail').value.trim(), phone: phone,
-            age: age, gender: genderEl ? genderEl.value : ''
+        const profile = { 
+            fName: fName, 
+            lName: document.getElementById('accLName').value.trim(), 
+            email: document.getElementById('accEmail').value.trim(), 
+            phone: phone, 
+            age: age, 
+            gender: genderEl ? genderEl.value : '' 
         };
-        localStorage.setItem('sb_profile', JSON.stringify(profile));
         
-        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
+        localStorage.setItem('sb_profile', JSON.stringify(profile)); 
+        clearAutoSave(); 
         showToast("Profile Saved Successfully!");
         
+        // Handle checkout chain flow (If user was forced here during checkout)
         if(sessionStorage.getItem('checkout_chain') === 'step1_profile') {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
-            if (addresses.length === 0) {
-                sessionStorage.setItem('checkout_chain', 'step2_address');
+            
+            if (addresses.length === 0) { 
+                sessionStorage.setItem('checkout_chain', 'step2_address'); 
                 navTo('address-edit'); 
-            } else {
-                sessionStorage.removeItem('checkout_chain');
-                navTo('home'); 
-                setTimeout(() => { document.getElementById('submitOrderBtn').click(); }, 400);
+            } else { 
+                sessionStorage.removeItem('checkout_chain'); 
+                navTo('cart'); 
+                setTimeout(() => { 
+                    document.getElementById('submitOrderBtn').click(); 
+                }, 400); 
             }
-        } else {
+        } else { 
             goBack(); 
         }
     }
-
+    
     function clearAllData() {
         openAdvancedConfirm(function() {
-            localStorage.removeItem('sb_profile');
-            localStorage.removeItem('sb_addresses');
-            localStorage.removeItem('sb_skip_onboarding');
+            localStorage.removeItem('sb_profile'); 
+            localStorage.removeItem('sb_addresses'); 
+            localStorage.removeItem('sb_skip_onboarding'); 
             clearAutoSave();
             
-            cart = [];
-            updateUI();
-            showToast("Application Data Cleared. Order History is safe!");
-            setTimeout(() => {
-                window.location.hash = '';
+            cart = []; 
+            updateUI(); 
+            showToast("Application Data Cleared."); 
+            
+            setTimeout(() => { 
+                window.location.hash = ''; 
                 location.reload(); 
             }, 1200);
         });
     }
 
+    // =========================================================================
+    // 10. ADDRESS MANAGEMENT LOGIC
+    // =========================================================================
+    // Migration script in case older versions of app stored address differently
     function migrateAddressData() {
         const oldAddr = JSON.parse(localStorage.getItem('sb_address') || 'null');
         if(oldAddr && !oldAddr.length) { 
-            const newArr = [{...oldAddr, id: Date.now(), isDefault: true}];
-            localStorage.setItem('sb_addresses', JSON.stringify(newArr));
-            localStorage.removeItem('sb_address');
+            const newArr = [{...oldAddr, id: Date.now(), isDefault: true}]; 
+            localStorage.setItem('sb_addresses', JSON.stringify(newArr)); 
+            localStorage.removeItem('sb_address'); 
         }
     }
-
+    
     function saveAddressData() {
         const street = document.getElementById('inpStreet').value.trim();
-        if(!street) { showToast("Please enter your Area/Street Address."); return; }
-
-        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+        
+        if(!street) { 
+            showToast("Please enter your Area/Street Address."); 
+            return; 
+        }
+        
+        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
         const editId = document.getElementById('inpAddrId').value;
         
-        const newAddrObj = {
-            id: editId ? parseInt(editId) : Date.now(),
+        const newAddrObj = { 
+            id: editId ? parseInt(editId) : Date.now(), 
             street: street, 
-            ward: document.getElementById('inpWard').value.trim(),
+            ward: document.getElementById('inpWard').value.trim(), 
             house: document.getElementById('inpHouse').value.trim(), 
-            landmark: document.getElementById('inpLandmark').value.trim(),
-            isDefault: addresses.length === 0
+            landmark: document.getElementById('inpLandmark').value.trim(), 
+            isDefault: addresses.length === 0 // Make default if it's the first address
         };
-
-        if(editId) {
-            const idx = addresses.findIndex(a => a.id == editId);
-            if(idx > -1) {
-                newAddrObj.isDefault = addresses[idx].isDefault;
-                addresses[idx] = newAddrObj;
-            }
-        } else {
-            addresses.push(newAddrObj);
-        }
-
-        localStorage.setItem('sb_addresses', JSON.stringify(addresses));
         
-        clearAutoSave(); // CLEAR DRAFT AFTER SAVE
+        if(editId) { 
+            const idx = addresses.findIndex(a => a.id == editId); 
+            if(idx > -1) { 
+                newAddrObj.isDefault = addresses[idx].isDefault; 
+                addresses[idx] = newAddrObj; 
+            } 
+        } else { 
+            addresses.push(newAddrObj); 
+        }
+        
+        localStorage.setItem('sb_addresses', JSON.stringify(addresses)); 
+        clearAutoSave(); 
         showToast("Address Saved Securely!");
-
-        if(sessionStorage.getItem('checkout_chain') === 'step2_address') {
-            sessionStorage.removeItem('checkout_chain');
-            navTo('home'); 
-            setTimeout(() => { document.getElementById('submitOrderBtn').click(); }, 400);
-        } else {
-            goBack();
+        
+        // Resume checkout flow if applicable
+        if(sessionStorage.getItem('checkout_chain') === 'step2_address') { 
+            sessionStorage.removeItem('checkout_chain'); 
+            navTo('cart'); 
+            setTimeout(() => { 
+                document.getElementById('submitOrderBtn').click(); 
+            }, 400); 
+        } else { 
+            goBack(); 
         }
     }
-
+    
     function openAddressEdit(id) {
-        document.getElementById('inpAddrId').value = id || '';
+        document.getElementById('inpAddrId').value = id || ''; 
         document.getElementById('addressEditTitle').innerText = id ? 'Edit Address' : 'Add New Address';
         
-        // Let AutoSave control inputs if there are drafts, else load fresh from saved storage
         if(id) {
-            const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+            const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
             const a = addresses.find(x => x.id == id);
+            
             if(a) {
                 if(!sessionStorage.getItem('draft_inpStreet')) document.getElementById('inpStreet').value = a.street || '';
                 if(!sessionStorage.getItem('draft_inpWard')) document.getElementById('inpWard').value = a.ward || '';
@@ -1355,41 +2972,39 @@
             if(!sessionStorage.getItem('draft_inpHouse')) document.getElementById('inpHouse').value = '';
             if(!sessionStorage.getItem('draft_inpLandmark')) document.getElementById('inpLandmark').value = '';
         }
+        
         navTo('address-edit');
     }
-
+    
     function renderAddressList() {
-        const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
+        const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
         const container = document.getElementById('addressDisplayList');
-        if(addresses.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding: 20px; opacity:0.5; font-weight:600; font-size:13px;">No saved addresses found.</div>';
-            return;
+        
+        if(addresses.length === 0) { 
+            container.innerHTML = '<div style="text-align:center; padding: 20px; opacity:0.5; font-weight:600; font-size:13px;">No saved addresses found.</div>'; 
+            return; 
         }
         
         container.innerHTML = addresses.map((a, index) => {
             let fullAddr = '';
-            
-            if (a.house && a.house.trim() !== '') {
-                fullAddr += `<b style="color:var(--text);">${a.house.trim()}</b>, `;
+            if (a.house && a.house.trim() !== '') { 
+                fullAddr += `<b style="color:var(--text);">${a.house.trim()}</b>, `; 
+            }
+            if (a.street && a.street.trim() !== '') { 
+                fullAddr += `${a.street.trim()}`; 
             }
             
-            if (a.street && a.street.trim() !== '') {
-                fullAddr += `${a.street.trim()}`;
-            }
-
-            let wardDisp = (a.ward && a.ward.trim() !== '') ? a.ward.trim() : 'NA';
-            let lmDisp = (a.landmark && a.landmark.trim() !== '') ? a.landmark.trim() : 'NA';
-
-            fullAddr += `<br>Ward: ${wardDisp}`;
-            fullAddr += `<br>Landmark: ${lmDisp}`;
-            fullAddr += `<br>Pin: 491995`;
-
             return `
             <div class="address-card ${a.isDefault ? 'selected' : ''}" onclick="setDefaultAddress(${a.id})">
                 <input type="radio" class="addr-radio" name="default_addr" ${a.isDefault ? 'checked' : ''}>
                 <div class="addr-details">
                     <div class="addr-title">Address ${index + 1}</div>
-                    <div class="addr-text">${fullAddr}</div>
+                    <div class="addr-text">
+                        ${fullAddr}<br>
+                        Ward: ${(a.ward && a.ward.trim() !== '') ? a.ward.trim() : 'NA'}<br>
+                        Landmark: ${(a.landmark && a.landmark.trim() !== '') ? a.landmark.trim() : 'NA'}<br>
+                        Pin: 491995
+                    </div>
                 </div>
                 <div class="addr-3dots" onclick="event.stopPropagation(); toggleDotMenu(${a.id})">⋮</div>
                 <div class="dot-menu" id="addrDotMenu-${a.id}">
@@ -1399,164 +3014,379 @@
             </div>`;
         }).join('');
     }
-
-    function setDefaultAddress(id) {
-        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
-        addresses.forEach(a => a.isDefault = (a.id === id));
-        localStorage.setItem('sb_addresses', JSON.stringify(addresses));
-        renderAddressList();
-    }
-
-    function toggleDotMenu(id) {
-        document.querySelectorAll('.dot-menu').forEach(m => {
-            if(m.id !== `addrDotMenu-${id}`) m.style.display = 'none';
-        });
-        const menu = document.getElementById(`addrDotMenu-${id}`);
-        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    
+    function setDefaultAddress(id) { 
+        let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
+        
+        addresses.forEach(a => {
+            a.isDefault = (a.id === id);
+        }); 
+        
+        localStorage.setItem('sb_addresses', JSON.stringify(addresses)); 
+        renderAddressList(); 
     }
     
-    function deleteAddress(id) {
-        openCustomConfirm(
-            "Remove Address?", 
-            "Are you sure you want to remove this saved address securely?", 
-            function() {
-                let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
-                addresses = addresses.filter(a => a.id !== id);
-                if(addresses.length > 0 && !addresses.find(a=>a.isDefault)) addresses[0].isDefault = true;
-                
-                localStorage.setItem('sb_addresses', JSON.stringify(addresses));
-                renderAddressList();
-                showToast("Address Removed");
+    function toggleDotMenu(id) { 
+        document.querySelectorAll('.dot-menu').forEach(m => { 
+            if(m.id !== `addrDotMenu-${id}`) {
+                m.style.display = 'none'; 
             }
-        );
-    }
-
-    document.addEventListener('click', function(e) {
-        if(!e.target.classList.contains('addr-3dots')) {
-            document.querySelectorAll('.dot-menu').forEach(m => m.style.display = 'none');
+        }); 
+        
+        const menu = document.getElementById(`addrDotMenu-${id}`); 
+        
+        if(menu.style.display === 'block') {
+            menu.style.display = 'none';
+        } else {
+            menu.style.display = 'block';
         }
+    }
+    
+    function deleteAddress(id) { 
+        openCustomConfirm("Remove Address?", "Are you sure you want to remove this saved address securely?", function() { 
+            let addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
+            
+            addresses = addresses.filter(a => a.id !== id); 
+            
+            // Automatically assign a new default if the deleted one was default
+            if(addresses.length > 0 && !addresses.find(a => a.isDefault)) { 
+                addresses[0].isDefault = true; 
+            } 
+            
+            localStorage.setItem('sb_addresses', JSON.stringify(addresses)); 
+            renderAddressList(); 
+            showToast("Address Removed"); 
+        }); 
+    }
+    
+    // Close the 3-dots menu when clicked outside
+    document.addEventListener('click', function(e) { 
+        if(!e.target.classList.contains('addr-3dots')) { 
+            document.querySelectorAll('.dot-menu').forEach(m => {
+                m.style.display = 'none';
+            }); 
+        } 
     });
 
-    const products = [
-        { id: 1, name: 'Combine copy page180 M.R.P=42', price: 21 },
-        { id: 2, name: 'Combine copy page180 M.R.P=50', price: 25 },
-        { id: 3, name: 'Combine copy page112 M.R.P=20', price: 10 },
-        { id: 4, name: 'Box Maths Copy Page172 M.R.P=45', price: 22.5 },
-        { id: 5, name: 'Four Line Copy page128 M.R.P=20', price: 10 },
-        { id: 6, name: 'Double line page172 M.R.P=45', price: 22.5 },
-        { id: 7, name: 'Blank Copy page172 M.R.P=40', price: 20 },
-        { id: 8, name: 'Blank Copy page128 M.R.P=20', price: 10 },
-        { id: 9, name: 'Rough Copy page108 M.R.P=10', price: 5 }, 
-        { id: 10, name: 'Rough Copy page100 M.R.P=5', price: 2.5 },
-        { id: 11, name: 'Chart Paper', price: 5 }
-    ];
-    
-    let cart = [];
+    // =========================================================================
+    // 11. SEARCH LOGIC
+    // =========================================================================
+    function filterProducts() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        
+        const filtered = PRODUCTS.filter(p => {
+            return p.name.toLowerCase().includes(query);
+        });
+        
+        renderGrid(filtered);
+    }
 
-    function renderGrid() {
+    // =========================================================================
+    // 12. PRODUCTS & CART RENDERING ENGINE
+    // =========================================================================
+    function renderGrid(dataToRender) {
         const grid = document.getElementById('productGrid');
-        grid.innerHTML = products.map(p => {
+        const noData = document.getElementById('noProductFound');
+        
+        if (dataToRender.length === 0) {
+            grid.innerHTML = "";
+            noData.style.display = 'block';
+            return;
+        } else {
+            noData.style.display = 'none';
+        }
+
+        grid.innerHTML = dataToRender.map(p => {
             const inCart = cart.find(c => c.id === p.id);
             const priceDisp = p.price % 1 === 0 ? p.price : p.price.toFixed(2);
+            const discountPercent = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+            
+            // Fallback to placeholder if image array is missing or empty
+            const primaryImage = (p.images && p.images.length > 0) ? p.images[0] : PLACEHOLDER_IMG;
+            
             return `
-            <div class="card">
-                <h3>${p.name}</h3>
-                <div class="price">₹${priceDisp}</div>
+            <div class="product-card" onclick="openPDP(${p.id})">
+                <div class="discount-tag">${discountPercent}% OFF</div>
+                <img src="${primaryImage}" class="product-img" alt="${p.name}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                <div class="product-title">${p.name}</div>
+                <div class="mrp-row">MRP ₹${p.mrp}</div>
+                <div class="price-row"><span class="actual-price">₹${priceDisp}</span></div>
                 <div class="btn-container">
                     ${inCart ? `
-                        <div class="cart-qty-toggle">
+                        <div class="cart-qty-toggle" onclick="event.stopPropagation()">
                             <button class="toggle-btn" onclick="updateCart(${p.id}, -1)">-</button>
                             <span>${inCart.qty}</span>
                             <button class="toggle-btn" onclick="updateCart(${p.id}, 1)">+</button>
                         </div>
-                    ` : `<button class="add-btn" onclick="updateCart(${p.id}, 1)">Add to Cart</button>`}
+                    ` : `<button class="add-btn-outline" onclick="event.stopPropagation(); updateCart(${p.id}, 1)">ADD</button>`}
                 </div>
             </div>`;
         }).join("");
     }
+    
+    // Product Details Page (PDP) Functionality
+    function openPDP(id) {
+        currentPdpId = id; 
+        const product = PRODUCTS.find(x => x.id === id); 
+        
+        if(!product) return;
+        
+        const priceDisp = product.price % 1 === 0 ? product.price : product.price.toFixed(2);
+        const discountPercent = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+
+        // Generate Slider Images HTML dynamically based on how many images exist in array
+        let sliderHtml = '';
+        if (product.images && product.images.length > 0) {
+            product.images.forEach((imgSrc) => {
+                sliderHtml += `
+                <div class="pdp-slide">
+                    <img src="${imgSrc}" alt="${product.name}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                </div>`;
+            });
+        } else {
+            sliderHtml = `
+            <div class="pdp-slide">
+                <img src="${PLACEHOLDER_IMG}" alt="No Image">
+            </div>`;
+        }
+
+        // Generate Dots HTML (Only if there is more than 1 image)
+        let dotsHtml = '';
+        if (product.images && product.images.length > 1) {
+            dotsHtml = `<div class="pdp-slider-dots">`;
+            
+            product.images.forEach((_, index) => {
+                const activeClass = (index === 0) ? 'active' : '';
+                dotsHtml += `<div class="pdp-dot ${activeClass}" id="pdpDot-${index}"></div>`;
+            });
+            
+            dotsHtml += `</div>`;
+        }
+
+        document.getElementById('pdpContent').innerHTML = `
+            <div class="pdp-slider-container" id="pdpSliderContainer" onscroll="handleSliderScroll(this, ${product.images ? product.images.length : 1})">
+                ${sliderHtml}
+            </div>
+            ${dotsHtml}
+            
+            <div class="pdp-details">
+                <div class="pdp-title">${product.name}</div>
+                <div class="pdp-price-section">
+                    <span class="pdp-actual-price">₹${priceDisp}</span>
+                    <span class="pdp-mrp">MRP ₹${product.mrp}</span>
+                    <span class="pdp-discount">${discountPercent}% OFF</span>
+                </div>
+                <div class="pdp-tax-info">Inclusive of all taxes</div>
+            </div>
+            
+            <div class="pdp-block">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <div>
+                    <div class="pdp-block-title">Product Details</div>
+                    <div class="pdp-block-desc">${product.desc || 'No description provided.'}</div>
+                </div>
+            </div>`;
+            
+        renderPdpBottomBar(); 
+        navTo('pdp');
+    }
+
+    // Handles the active dot change when swiping images
+    function handleSliderScroll(element, totalSlides) {
+        if(totalSlides <= 1) return;
+        
+        const scrollPosition = element.scrollLeft;
+        const slideWidth = element.offsetWidth;
+        const currentIndex = Math.round(scrollPosition / slideWidth);
+        
+        document.querySelectorAll('.pdp-dot').forEach((dot, index) => {
+            if(index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    function renderPdpBottomBar() {
+        const product = PRODUCTS.find(x => x.id === currentPdpId); 
+        const inCart = cart.find(c => c.id === currentPdpId); 
+        const btnContainer = document.getElementById('pdpBtnContainer');
+        
+        if(inCart) { 
+            btnContainer.innerHTML = `
+            <div class="cart-qty-toggle" style="height: 52px; border-radius: 12px; font-size: 18px;">
+                <button class="toggle-btn" style="width: 40px; height: 40px; font-size: 24px;" onclick="updateCart(${product.id}, -1)">-</button>
+                <span>${inCart.qty}</span>
+                <button class="toggle-btn" style="width: 40px; height: 40px; font-size: 24px;" onclick="updateCart(${product.id}, 1)">+</button>
+            </div>`; 
+        } else { 
+            btnContainer.innerHTML = `<button class="modal-btn" style="padding:16px; font-size:15px; text-transform:uppercase;" onclick="updateCart(${product.id}, 1)">ADD TO CART</button>`; 
+        }
+    }
 
     function updateCart(id, delta) {
-        const p = products.find(i => i.id === id);
+        const product = PRODUCTS.find(i => i.id === id); 
         let itemIndex = cart.findIndex(c => c.id === id);
         
-        if(itemIndex > -1) {
-            cart[itemIndex].qty += delta;
+        if(itemIndex > -1) { 
+            cart[itemIndex].qty += delta; 
+            
+            // Remove item if qty is less than 1
             if(cart[itemIndex].qty < 1) {
-                cart.splice(itemIndex, 1);
+                cart.splice(itemIndex, 1); 
             }
-        } else if(delta > 0) {
-            cart.push({...p, qty: 1});
+        } else if(delta > 0) { 
+            cart.push({...product, qty: 1}); 
+            showToast("Item added to cart"); 
         }
+        
         updateUI();
     }
 
+    // Master function to sync all views based on Cart status
     function updateUI() {
-        renderGrid();
-        const total = cart.reduce((a, c) => a + (c.price * c.qty), 0);
+        // Only re-filter products on current view
+        filterProducts(); 
+        
+        // Ensure PDP button is synced if PDP is currently open
+        if(currentPdpId) {
+            renderPdpBottomBar();
+        }
+
+        const totalQty = cart.reduce((a, c) => a + c.qty, 0);
+        const totalPrice = cart.reduce((a, c) => a + (c.price * c.qty), 0);
+        const totalMrp = cart.reduce((a, c) => a + (c.mrp * c.qty), 0);
+        const totalDiscount = totalMrp - totalPrice;
+
+        // Update Cart Badges across Top and Bottom Navbars
+        const badges = [document.getElementById('topCartBadge'), document.getElementById('navCartBadge')];
+        badges.forEach(badge => { 
+            if(totalQty > 0) { 
+                badge.innerText = totalQty; 
+                badge.style.display = 'block'; 
+            } else { 
+                badge.style.display = 'none'; 
+            } 
+        });
+
         const container = document.getElementById('cartItemsContainer');
         const summary = document.getElementById('receiptSummary');
         const btn = document.getElementById('submitOrderBtn');
         const alertBox = document.getElementById('minAlert');
+        const summaryTitle = document.getElementById('summaryTitleText');
 
         if(cart.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:15px; opacity:0.5; font-size: 13px; font-weight:600;">🛒 Your cart is empty</div>`;
-            summary.style.display = 'none';
+            container.innerHTML = `
+            <div style="text-align:center; padding:50px 15px; opacity:0.5; font-size: 15px; font-weight:600; background-color: var(--solid-card); border-radius: 12px; border: 1px solid var(--border);">
+                <div style="font-size:45px; margin-bottom:10px;">🛒</div>
+                Your cart is empty
+            </div>`;
+            
+            summary.style.display = 'none'; 
+            summaryTitle.style.display = 'none';
             alertBox.style.display = 'none';
-            btn.disabled = true;
         } else {
+            summaryTitle.style.display = 'block';
+            
+            // 🌟 GENERATE DETAILED MATH CALCULATION FOR EACH CART ITEM
             container.innerHTML = cart.map(c => {
-                const lineTotal = c.price * c.qty;
+                const priceDisp = c.price % 1 === 0 ? c.price : c.price.toFixed(2);
+                const lineTotal = (c.price * c.qty) % 1 === 0 ? (c.price * c.qty) : (c.price * c.qty).toFixed(2);
+                const discountPercent = Math.round(((c.mrp - c.price) / c.mrp) * 100);
+                const primaryImage = (c.images && c.images.length > 0) ? c.images[0] : PLACEHOLDER_IMG;
+                
                 return `
-                <div class="cart-item-row">
-                    <span style="width:75%; font-weight:700;">${c.qty} x ${c.name}</span>
-                    <span style="font-weight:800; color:var(--primary);">₹${lineTotal}</span>
+                <div class="cart-card">
+                    <div class="cart-card-img-box">
+                        <img src="${primaryImage}" alt="${c.name}" onerror="this.src='${PLACEHOLDER_IMG}'">
+                    </div>
+                    
+                    <div class="cart-card-info">
+                        <div style="padding-right: 20px;">
+                            <div class="cart-card-title">${c.name}</div>
+                            
+                            <div class="cart-card-pricing">
+                                <div>
+                                    <span class="cart-card-mrp">MRP ₹${c.mrp}</span>
+                                    <span class="cart-card-discount">${discountPercent}% OFF</span>
+                                </div>
+                                <div class="cart-card-calculation">
+                                    Qty: ${c.qty} × ₹${priceDisp} = <span class="total-bold">₹${lineTotal}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="cart-card-remove" onclick="updateCart(${c.id}, -${c.qty})">✕</button>
+                        
+                        <div class="cart-card-bottom">
+                            <div></div> <div class="cart-card-controls">
+                                <div class="cart-qty-toggle" style="height: 100%;">
+                                    <button class="toggle-btn" style="width: 26px; height: 26px;" onclick="updateCart(${c.id}, -1)">-</button>
+                                    <span>${c.qty}</span>
+                                    <button class="toggle-btn" style="width: 26px; height: 26px;" onclick="updateCart(${c.id}, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>`;
             }).join("");
             
-            document.getElementById('subTotal').innerText = `₹${total}`;
-            document.getElementById('grandTotal').innerText = `₹${total}`;
+            // Render Order Summary Mathematics
             summary.style.display = 'block';
             
-            if(total >= 100) {
-                btn.disabled = false;
-                alertBox.style.display = 'none';
-            } else {
-                btn.disabled = true;
-                alertBox.style.display = 'block';
-                alertBox.innerText = `Add ₹${100 - total} more for free delivery`;
+            document.getElementById('mrpTotal').innerText = `₹${totalMrp % 1 === 0 ? totalMrp : totalMrp.toFixed(2)}`;
+            document.getElementById('discountTotal').innerText = `${totalDiscount % 1 === 0 ? totalDiscount : totalDiscount.toFixed(2)}`;
+            document.getElementById('subTotal').innerText = `₹${totalPrice % 1 === 0 ? totalPrice : totalPrice.toFixed(2)}`;
+            document.getElementById('grandTotal').innerText = `₹${totalPrice % 1 === 0 ? totalPrice : totalPrice.toFixed(2)}`;
+            
+            // Check Minimum Order Value for Free Delivery Logic
+            if(totalPrice >= 100) { 
+                btn.disabled = false; 
+                alertBox.style.display = 'none'; 
+            } else { 
+                btn.disabled = true; 
+                alertBox.style.display = 'block'; 
+                alertBox.innerText = `Add ₹${100 - totalPrice} more for free delivery`; 
             }
         }
     }
 
-    let pendingOrderData = null;
-
+    // =========================================================================
+    // 13. CHECKOUT & WHATSAPP INTEGRATION
+    // =========================================================================
     document.getElementById('submitOrderBtn').addEventListener('click', function() {
-        const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
+        const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]');
         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
 
-        if(!p.fName || !p.phone) {
-            showToast("Please complete your profile to place the order.");
+        // 1. Ensure Profile is Complete
+        if(!profile.fName || !profile.phone) { 
+            showToast("Please complete your profile to place the order."); 
             sessionStorage.setItem('checkout_chain', 'step1_profile'); 
-            navTo('profile-edit');
-            return;
+            navTo('profile-edit'); 
+            return; 
         }
         
-        if(!defaultAddr || !defaultAddr.street) {
-            showToast("Please add your delivery address to proceed.");
+        // 2. Ensure Address is provided
+        if(!defaultAddr || !defaultAddr.street) { 
+            showToast("Please add your delivery address to proceed."); 
             sessionStorage.setItem('checkout_chain', 'step2_address'); 
-            openAddressEdit(null);
-            return;
+            openAddressEdit(null); 
+            return; 
         }
 
-        const name = `${p.fName} ${p.lName||''}`.trim();
+        // Generate Formatted String for WhatsApp Message
+        const customerName = `${profile.fName} ${profile.lName||''}`.trim();
         
         let finalAddr = "";
-        
         if (defaultAddr.house && defaultAddr.house.trim() !== "") {
             finalAddr += defaultAddr.house.trim() + ", ";
         }
-        
         if (defaultAddr.street && defaultAddr.street.trim() !== "") {
             finalAddr += defaultAddr.street.trim() + "\n";
         } else {
@@ -1565,104 +3395,123 @@
         
         let wardStr = (defaultAddr.ward && defaultAddr.ward.trim() !== "") ? defaultAddr.ward.trim() : "NA";
         let landmarkStr = (defaultAddr.landmark && defaultAddr.landmark.trim() !== "") ? defaultAddr.landmark.trim() : "NA";
-
+        
         finalAddr += "Ward: " + wardStr + "\n";
         finalAddr += "Landmark: " + landmarkStr + "\n";
         finalAddr += "Pin: 491995";
 
-        const total = document.getElementById('grandTotal').innerText.replace('₹', '');
+        const grandTotal = document.getElementById('grandTotal').innerText.replace('₹', '');
         
+        // Compile Cart Items into text
         let msgItems = "";
-        cart.forEach((i) => {
-            const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
-            const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
+        cart.forEach((item) => {
+            const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
+            const lineTotal = (item.price * item.qty) % 1 === 0 ? (item.price * item.qty) : (item.price * item.qty).toFixed(2);
             
-            let itemName = i.name;
-            let mrpText = "";
-            if(itemName.includes("M.R.P")) {
-                let parts = itemName.split("M.R.P");
-                itemName = parts[0].trim();
-                mrpText = "\nM.R.P" + parts[1];
-            }
-            
-            msgItems += `■ *${itemName}*${mrpText}\nQty: ${i.qty} | Price: ₹${priceDisp} | Total: ₹${lineTotal}\n\n`;
+            msgItems += `■ *${item.name}*\n`;
+            msgItems += `M.R.P: ₹${item.mrp}\n`;
+            msgItems += `Qty: ${item.qty} | Price: ₹${priceDisp} | Total: ₹${lineTotal}\n\n`;
         });
+        
         msgItems = msgItems.trim(); 
         
-        const msg = `🛍️ *ORDER DETAILS*\n\n` +
-                    `👤 *Customer:*\n` +
-                    `Name: ${name}\n` +
-                    `Phone: ${p.phone}\n\n` +
-                    `📍 *Delivery Address:*\n` +
-                    `${finalAddr}\n\n` +
-                    `📦 *Items:*\n` +
-                    `${msgItems}\n\n` +
-                    `💵 *Payment Mode:* COD\n` +
-                    `💰 *Grand Total: ₹${total}*`;
-        
+        const finalWhatsappMsg = 
+            `🛍️ *ORDER DETAILS*\n\n` +
+            `👤 *Customer:*\n` +
+            `Name: ${customerName}\n` +
+            `Phone: ${profile.phone}\n\n` +
+            `📍 *Delivery Address:*\n` +
+            `${finalAddr}\n\n` +
+            `📦 *Items:*\n` +
+            `${msgItems}\n\n` +
+            `💵 *Payment Mode:* COD\n` +
+            `💰 *Grand Total: ₹${grandTotal}*`;
+                  
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-        pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
+        
+        // Store order locally to save it upon return from WhatsApp
+        pendingOrderData = { 
+            date: dateStr, 
+            items: cart.slice(), 
+            total: grandTotal, 
+            name: customerName 
+        };
         
         sessionStorage.setItem('waitingForWaReturn', 'true');
-
-        const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(msg)}`;
+        
+        // Trigger WhatsApp Deep Link
+        const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(finalWhatsappMsg)}`;
         window.location.href = waLink;
     });
 
-    document.addEventListener("visibilitychange", function() {
-        if (document.visibilityState === 'visible') {
-            if (sessionStorage.getItem('waitingForWaReturn') === 'true') {
-                sessionStorage.removeItem('waitingForWaReturn');
-                document.getElementById('waConfirmOverlay').classList.add('show');
-            }
-        }
+    // Detect when user comes back to the webapp after sending WhatsApp message
+    document.addEventListener("visibilitychange", function() { 
+        if (document.visibilityState === 'visible' && sessionStorage.getItem('waitingForWaReturn') === 'true') { 
+            sessionStorage.removeItem('waitingForWaReturn'); 
+            document.getElementById('waConfirmOverlay').classList.add('show'); 
+        } 
     });
 
     function waConfirmYes() {
         document.getElementById('waConfirmOverlay').classList.remove('show');
+        
         if (pendingOrderData) {
-            const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
+            const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]'); 
+            
+            // Auto increment Order ID
             const orderId = orders.length > 0 ? orders[orders.length - 1].id + 1 : 1;
-            pendingOrderData.id = orderId;
+            pendingOrderData.id = orderId; 
+            
             orders.push(pendingOrderData);
-            localStorage.setItem('sb_orders', JSON.stringify(orders));
+            
+            localStorage.setItem('sb_orders', JSON.stringify(orders)); 
             pendingOrderData = null; 
-
-            cart = [];
-            updateUI();
+            
+            // Empty the cart
+            cart = []; 
+            updateUI(); 
+            
+            // Show Success Screen
             document.getElementById('successOverlay').classList.add('show');
         }
     }
-
-    function waConfirmNo() {
-        document.getElementById('waConfirmOverlay').classList.remove('show');
+    
+    function waConfirmNo() { 
+        document.getElementById('waConfirmOverlay').classList.remove('show'); 
         pendingOrderData = null; 
-        showToast("Action cancelled. Your order was not saved.");
+        showToast("Action cancelled. Your order was not saved."); 
+    }
+    
+    function closeSuccessPopup() { 
+        document.getElementById('successOverlay').classList.remove('show'); 
+        navTo('orders'); 
     }
 
-    function closeSuccessPopup() {
-        document.getElementById('successOverlay').classList.remove('show');
-        navTo('home');
-    }
-
-    window.openOrderDetails = function(id) {
-        navTo('order-details');
-        renderSingleOrderDetails(id);
+    // =========================================================================
+    // 14. ORDER HISTORY VIEWER
+    // =========================================================================
+    window.openOrderDetails = function(id) { 
+        navTo('order-details'); 
+        renderSingleOrderDetails(id); 
     };
-
+    
     function renderSingleOrderDetails(id) {
-        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
-        const o = orders.find(x => x.id === id);
-        if(!o) return;
-
-        let itemsHtml = o.items.map(i => {
-            const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
-            const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
+        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]'); 
+        const orderData = orders.find(x => x.id === id); 
+        
+        if(!orderData) return;
+        
+        let itemsHtml = orderData.items.map(item => {
+            const priceDisp = item.price % 1 === 0 ? item.price : item.price.toFixed(2);
+            const lineTotal = (item.price * item.qty) % 1 === 0 ? (item.price * item.qty) : (item.price * item.qty).toFixed(2);
+            
             return `
-            <div style="padding: 15px; background: var(--solid-card); border-radius: 14px; margin-bottom: 12px; border: 1.5px solid var(--border); box-shadow: 0 3px 8px rgba(0,0,0,0.02);">
-                <div style="font-weight: 800; font-size: 13px; margin-bottom: 8px; color: var(--text);">📘 ${i.name}</div>
+            <div style="padding: 15px; background-color: var(--solid-card); border-radius: 14px; margin-bottom: 12px; border: 1.5px solid var(--border); box-shadow: 0 3px 8px rgba(0,0,0,0.02);">
+                <div style="font-weight: 800; font-size: 13px; margin-bottom: 8px; color: var(--text);">📘 ${item.name}</div>
                 <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); align-items: center;">
-                    <span style="background: var(--input-bg); padding: 5px 8px; border-radius: 6px; font-weight: 600;">Qty: <b style="color:var(--text);">${i.qty}</b> × ₹${priceDisp}</span>
+                    <span style="background-color: var(--input-bg); padding-top: 5px; padding-bottom: 5px; padding-left: 8px; padding-right: 8px; border-radius: 6px; font-weight: 600;">
+                        Qty: <b style="color:var(--text);">${item.qty}</b> × ₹${priceDisp}
+                    </span>
                     <span style="font-weight: 800; font-size: 16px; color: var(--primary);">₹${lineTotal}</span>
                 </div>
             </div>`;
@@ -1672,67 +3521,77 @@
             <div class="profile-info-box" style="margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                 <div class="info-row">
                     <span class="info-label">Order Number</span>
-                    <span class="info-value">#${o.id}</span>
+                    <span class="info-value">#${orderData.id}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Order Date</span>
-                    <span class="info-value">${o.date}</span>
+                    <span class="info-value">${orderData.date}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Status</span>
                     <span class="info-value" style="color: var(--success); display: flex; align-items: center; gap: 6px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
                         Order Sent to WhatsApp
                     </span>
                 </div>
             </div>
             
             <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 15px; padding-left: 5px; color: var(--text);">Items Ordered</h3>
+            
             ${itemsHtml}
             
-            <div class="profile-info-box" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--primary-glow); border: 1.5px dashed var(--primary);">
+            <div class="profile-info-box" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; background-color: var(--primary-glow); border: 1.5px dashed var(--primary);">
                 <span style="font-weight: 800; color: var(--primary); font-size: 15px;">Grand Total</span>
-                <span style="font-size: 20px; font-weight: 800; color: var(--text);">₹${o.total}</span>
+                <span style="font-size: 20px; font-weight: 800; color: var(--text);">₹${orderData.total}</span>
             </div>
         `;
     }
 
     function loadOrderHistory() {
-        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
+        const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]'); 
         const container = document.getElementById('fullOrderHistoryList');
         
         if(orders.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:50px 15px; opacity:0.6;"><div style="font-size:45px; margin-bottom:12px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">📦</div><div style="font-size:16px; font-weight:800;">No Orders Yet</div><p style="font-size: 13px; margin-top: 5px;">Your secure orders will appear here.</p><button onclick="navTo(\'home\', true)" class="add-btn" style="width:auto; padding:12px 20px; margin-top:20px; border-radius: 10px; box-shadow: 0 6px 15px var(--primary-glow);">Start Shopping</button></div>';
+            container.innerHTML = `
+            <div style="text-align:center; padding-top: 50px; padding-bottom: 50px; padding-left: 15px; padding-right: 15px; opacity:0.6;">
+                <div style="font-size:45px; margin-bottom:12px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">📦</div>
+                <div style="font-size:16px; font-weight:800;">No Orders Yet</div>
+                <p style="font-size: 13px; margin-top: 5px;">Your secure orders will appear here.</p>
+                <button onclick="navTo('home', true)" class="modal-btn" style="width:auto; padding-top:12px; padding-bottom:12px; padding-left:20px; padding-right:20px; margin-top:20px; border-radius: 10px; box-shadow: 0 6px 15px var(--primary-glow);">Start Shopping</button>
+            </div>`;
             return;
         }
 
-        container.innerHTML = orders.slice().reverse().map(o => {
-            const totalItems = o.items.reduce((sum, item) => sum + item.qty, 0);
-            const itemSummary = o.items.length === 1 ? o.items[0].name : `${o.items[0].name} & ${o.items.length - 1} more`;
+        container.innerHTML = orders.slice().reverse().map(order => {
+            const totalItems = order.items.reduce((sum, item) => sum + item.qty, 0);
+            const itemSummary = order.items.length === 1 ? order.items[0].name : `${order.items[0].name} & ${order.items.length - 1} more`;
 
             return `
             <div class="order-card" style="padding: 0;">
-                <div style="padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="padding-top: 14px; padding-bottom: 14px; padding-left: 16px; padding-right: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
                     <div>
-                        <div style="font-size: 15px; font-weight: 800; color: var(--text);">Order #${o.id}</div>
-                        <div style="font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 4px;">${o.date}</div>
+                        <div style="font-size: 15px; font-weight: 800; color: var(--text);">Order #${order.id}</div>
+                        <div style="font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 4px;">${order.date}</div>
                     </div>
                     <span class="order-status-pill">Confirmed</span>
                 </div>
                 
-                <div style="padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; background: var(--bg);">
+                <div style="padding-top: 14px; padding-bottom: 14px; padding-left: 16px; padding-right: 16px; display: flex; justify-content: space-between; align-items: center; background-color: var(--bg);">
                     <div style="font-size: 13px; color: var(--muted);">
                         <div style="font-weight: 800; color: var(--text); margin-bottom: 3px;">${totalItems} Items</div>
                         <div style="white-space: nowrap; font-weight: 500; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">${itemSummary}</div>
                     </div>
                     <div style="text-align: right;">
                         <div style="font-size: 11px; font-weight: 700; color: var(--muted);">Total Amount</div>
-                        <div style="font-size: 16px; font-weight: 800; color: var(--text);">₹${o.total}</div>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--text);">₹${order.total}</div>
                     </div>
                 </div>
                 
-                <div style="padding: 10px 16px 16px;">
-                    <div class="view-details-btn" style="margin-top: 0;" onclick="openOrderDetails(${o.id})">
+                <div style="padding-top: 10px; padding-bottom: 16px; padding-left: 16px; padding-right: 16px;">
+                    <div class="view-details-btn" style="margin-top: 0;" onclick="openOrderDetails(${order.id})">
                         View Order Details ➔
                     </div>
                 </div>
