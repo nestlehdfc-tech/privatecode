@@ -53,6 +53,12 @@
             --time-color: #facc15; --time-bg: rgba(202, 138, 4, 0.15);
         }
         
+        /* 🚀 CRITICAL FIX: Prevent Pull-to-Refresh Globally */
+        html {
+            overscroll-behavior-y: none !important;
+            overscroll-behavior-x: none !important;
+        }
+
         * { box-sizing: border-box; } 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -61,8 +67,9 @@
             color: var(--text); 
             transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease; 
             -webkit-tap-highlight-color: transparent; 
-            /* Prevents Pull-to-Refresh globally to protect form data */
-            overscroll-behavior-y: none; 
+            /* Strict block on native bouncing/refreshing to protect form data */
+            overscroll-behavior-y: none !important; 
+            overscroll-behavior: none !important;
         }
 
         /* =========================================
@@ -330,7 +337,7 @@
             }
         })();
 
-        // 🚀 PWA SERVICE WORKER REGISTRATION
+        // 🚀 PWA SERVICE WORKER REGISTRATION (Enables offline capability if hosted correctly)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('sw.js').then(function() {
@@ -338,6 +345,20 @@
                 }).catch(function(err) {});
             });
         }
+        
+        // 🛑 ADVANCED ANTI PULL-TO-REFRESH SCRIPT (Prevents data loss on all forms)
+        let _touchStartY = 0;
+        document.addEventListener('touchstart', function(e) {
+            _touchStartY = e.touches[0].pageY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            const y = e.touches[0].pageY;
+            // Block the native refresh swipe if the user is at the very top of the screen
+            if (window.scrollY === 0 && y > _touchStartY) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </head>
 
@@ -361,6 +382,14 @@
         <button id="retryConnectionBtn" onclick="manualRetry()" class="large-save-btn" style="box-shadow: 0 8px 20px rgba(26, 92, 255, 0.25); height: 55px; font-size: 16px;">Try Again</button>
     </div>
 </div>
+
+<script>
+    // INSTANT OFFLINE CHECK ON PAGE LOAD
+    if (!navigator.onLine) {
+        document.getElementById('premiumOfflineOverlay').style.display = 'flex';
+        document.getElementById('premiumOfflineOverlay').classList.add('show');
+    }
+</script>
 
 <div id="splashScreen" class="splash-screen">
     <div class="splash-logo">
@@ -838,12 +867,6 @@
     }
     window.addEventListener('online', handleConnectionChange);
     window.addEventListener('offline', handleConnectionChange);
-    
-    // Initial check (Strict Enforcement)
-    if (!navigator.onLine) { 
-        document.getElementById('premiumOfflineOverlay').style.display = 'flex';
-        document.getElementById('premiumOfflineOverlay').classList.add('show');
-    }
 
     function manualRetry() {
         const btn = document.getElementById('retryConnectionBtn');
@@ -1294,17 +1317,14 @@
         container.innerHTML = addresses.map((a, index) => {
             let fullAddr = '';
             
-            // CONDITION 1: If House Number is empty, do NOT show 'NA', just skip it.
             if (a.house && a.house.trim() !== '') {
                 fullAddr += `<b style="color:var(--text);">${a.house.trim()}</b>, `;
             }
             
-            // Street
             if (a.street && a.street.trim() !== '') {
                 fullAddr += `${a.street.trim()}`;
             }
 
-            // CONDITION 2: If Ward or Landmark is empty, SHOW 'NA'.
             let wardDisp = (a.ward && a.ward.trim() !== '') ? a.ward.trim() : 'NA';
             let lmDisp = (a.landmark && a.landmark.trim() !== '') ? a.landmark.trim() : 'NA';
 
@@ -1479,29 +1499,24 @@
 
         const name = `${p.fName} ${p.lName||''}`.trim();
         
-        // --- PERFECT WHATSAPP ADDRESS FORMATTING ---
         let finalAddr = "";
         
-        // Condition 1: If House Number is empty, SKIP completely.
         if (defaultAddr.house && defaultAddr.house.trim() !== "") {
             finalAddr += defaultAddr.house.trim() + ", ";
         }
         
-        // Street
         if (defaultAddr.street && defaultAddr.street.trim() !== "") {
             finalAddr += defaultAddr.street.trim() + "\n";
         } else {
             finalAddr += "\n";
         }
         
-        // Condition 2: If Ward or Landmark is empty, show 'NA'
         let wardStr = (defaultAddr.ward && defaultAddr.ward.trim() !== "") ? defaultAddr.ward.trim() : "NA";
         let landmarkStr = (defaultAddr.landmark && defaultAddr.landmark.trim() !== "") ? defaultAddr.landmark.trim() : "NA";
 
         finalAddr += "Ward: " + wardStr + "\n";
         finalAddr += "Landmark: " + landmarkStr + "\n";
         finalAddr += "Pin: 491995";
-        // -------------------------------------------
 
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
