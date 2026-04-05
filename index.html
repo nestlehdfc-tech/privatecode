@@ -69,11 +69,11 @@
         .view-section { 
             display: none; 
             padding-bottom: 85px; 
-            animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
         .view-section.active { display: block; }
         @keyframes slideUpFade { 
-            from { opacity: 0; transform: translateY(15px); } 
+            from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
@@ -84,7 +84,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bg); z-index: 9999999; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            transition: opacity 0.4s ease-out; 
+            transition: opacity 0.3s ease-out; 
         }
         .splash-logo svg { 
             width: 80px; height: 80px; color: var(--primary); 
@@ -111,7 +111,7 @@
             font-weight: 800; font-size: 19px; color: var(--primary); 
             letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; 
         }
-        .brand-icon { width: 26px; height: 26px; stroke-width: 2px; }
+        .brand-icon { width: 26px; height: 26px; stroke-width: 2.2px; }
         
         .nav-profile-btn { 
             background: var(--primary-glow); padding: 6px; border-radius: 50%; 
@@ -177,7 +177,7 @@
         .confirm-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; box-shadow: none; }
 
         /* =========================================
-           FORMS & INPUTS (MOBILE SCALED)
+           FORMS & INPUTS
            ========================================= */
         .page-wrapper { padding: 15px 12px; }
         
@@ -195,7 +195,7 @@
         .gender-options input[type="radio"] { width: 18px; height: 18px; accent-color: var(--primary); }
 
         /* =========================================
-           COMPONENTS (MENUS, BUTTONS, CARDS)
+           COMPONENTS (MENUS, BUTTONS)
            ========================================= */
         .account-menu { background: var(--solid-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.02); }
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer; color: var(--text); font-weight: 700; font-size: 15px; transition: background 0.2s; }
@@ -219,7 +219,6 @@
         .text-btn { background: transparent; color: var(--muted); border: none; font-weight: 700; font-size: 14px; padding: 10px; cursor: pointer; width: 100%; transition: 0.2s; }
         .text-btn:active { background: var(--input-bg); border-radius: 8px; }
 
-        /* ADDRESS CARDS */
         .add-new-addr-btn { background: var(--primary-glow); color: var(--primary); border: none; width: 100%; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; }
         .add-new-addr-btn:active { transform: scale(0.98); background: rgba(26,92,255,0.15); }
         
@@ -237,24 +236,17 @@
         .dot-menu div:active { background: var(--input-bg); }
         .dot-menu div:last-child { border-bottom: none; color: var(--danger); }
 
-        /* ORDER CARDS */
         .order-card { background: var(--solid-card); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.02); overflow: hidden; }
         .order-status-pill { display: inline-block; font-weight: 700; font-size: 10px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--success); text-transform: uppercase; letter-spacing: 0.5px;}
         .view-details-btn { display: block; width: 100%; text-align: center; background: var(--primary-glow); color: var(--primary); font-weight: 800; padding: 12px; border-radius: 10px; margin-top: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
         .view-details-btn:active { transform: scale(0.98); }
 
-        /* =========================================
-           BOTTOM NAVIGATION
-           ========================================= */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 2500; padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
         .bottom-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--muted); font-size: 10px; font-weight: 700; gap: 4px; background: none; border: none; cursor: pointer; transition: 0.2s; }
         .bottom-nav-item.active { color: var(--primary); }
         .bottom-nav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; transition: 0.2s; }
         .bottom-nav-item.active svg { transform: scale(1.15); }
 
-        /* =========================================
-           SUPPORT & ACTION CARDS
-           ========================================= */
         .contact-item-premium {
             display: flex; align-items: center; padding: 15px; margin-bottom: 14px;
             background: var(--solid-card); border: 1px solid var(--border);
@@ -264,24 +256,17 @@
         .contact-item-premium:active { transform: scale(0.97); background: var(--input-bg); }
         .contact-item-premium.time-btn { cursor: default; }
         .contact-item-premium.time-btn:active { transform: none; background: var(--solid-card); }
-        
-        .icon-circle {
-            width: 44px; height: 44px; border-radius: 50%; display: flex;
-            justify-content: center; align-items: center; margin-right: 14px; flex-shrink: 0;
-        }
+        .icon-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 14px; flex-shrink: 0; }
         .icon-circle svg { width: 20px; height: 20px; stroke-width: 2.2; }
-        
         .btn-text-content { display: flex; flex-direction: column; }
         .btn-title { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
         .btn-subtitle { font-size: 12px; font-weight: 600; color: var(--muted); }
 
-        /* =========================================
-           MODALS & TOAST
-           ========================================= */
         #toast { visibility: hidden; min-width: 220px; background-color: #1e293b; color: #fff; text-align: center; border-radius: 10px; padding: 14px; font-weight: 600; position: fixed; z-index: 5000; left: 50%; bottom: 90px; font-size: 13px; transform: translateX(-50%); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; animation: fadein 0.4s, fadeout 0.4s 2.5s; }
+        #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
         
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 15px; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 4000; justify-content: center; align-items: center; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 15px; opacity: 0; transition: opacity 0.2s ease; }
+        .overlay.show { display: flex; opacity: 1; }
         .modal-card { background: var(--solid-card); padding: 30px 20px; border-radius: 20px; text-align: center; max-width: 310px; width: 100%; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative; }
         .modal-icon { font-size: 45px; margin-bottom: 12px; color: var(--success); }
         .modal-card h2 { margin: 0 0 10px; color: var(--text); font-size: 20px; font-weight: 800; }
@@ -289,14 +274,40 @@
         .modal-btn { background: var(--primary); color: white; border: none; padding: 14px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; font-size: 14px; transition: 0.2s; box-shadow: 0 6px 15px var(--primary-glow);}
         .modal-btn:active { transform: scale(0.96); }
         
-        .offline-pulse { animation: offlineAlert 1.5s infinite alternate; }
-        @keyframes offlineAlert { from { transform: scale(0.95); opacity: 0.8; } to { transform: scale(1.05); opacity: 1; } }
+        /* SUPER PREMIUM OFFLINE SCREEN */
+        #premiumOfflineOverlay {
+            background: var(--bg);
+            backdrop-filter: none;
+            flex-direction: column;
+            z-index: 99999999;
+            width: 100%;
+            height: 100%;
+        }
+        .offline-icon-container {
+            width: 90px; height: 90px; background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            margin: 0 auto 25px; color: var(--danger);
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.05);
+            animation: pulseDanger 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .offline-icon-container svg { width: 40px; height: 40px; stroke-width: 2.5; }
+        @keyframes pulseDanger {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .shake-animation { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
 
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 90px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 90px; opacity: 1; } to { bottom: 0; opacity: 0; } }
         @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* SWITCH TOGGLE */
         .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .4s; border-radius: 34px; }
@@ -306,6 +317,7 @@
     </style>
 
     <script>
+        // Theme Setup
         (function() {
             var savedTheme = localStorage.getItem('sb_theme');
             var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -315,30 +327,46 @@
                 document.documentElement.setAttribute('data-theme', 'light');
             }
         })();
+
+        // 🚀 PWA SERVICE WORKER REGISTRATION
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function() {
+                    console.log('App successfully cached.');
+                }).catch(function(err) {});
+            });
+        }
     </script>
 </head>
 
 <body>
 
-<div id="offlineOverlay" class="overlay" style="z-index: 99999999;">
-    <div class="modal-card">
-        <div class="modal-icon offline-pulse" style="color: var(--danger);">🌐</div>
-        <h2 style="color: var(--danger);">No Internet Connection</h2>
-        <p>Please turn on your mobile data or Wi-Fi to continue using the application.</p>
-        <div style="font-size: 12px; color: var(--muted); font-weight: 700; background: var(--input-bg); padding: 10px; border-radius: 8px;">
-            Waiting for connection... ⏳
+<div id="premiumOfflineOverlay" class="overlay">
+    <div style="text-align: center; padding: 30px; width: 100%; max-width: 320px; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div class="offline-icon-container">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 1l22 22"></path>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
         </div>
+        <h2 style="color: var(--text); font-weight: 800; font-size: 26px; margin-bottom: 8px; letter-spacing: -0.5px;">No Connection</h2>
+        <p style="color: var(--muted); font-size: 15px; font-weight: 500; margin-bottom: 35px; line-height: 1.5;">Please check your Wi-Fi or mobile data to continue smoothly.</p>
+        <button id="retryConnectionBtn" onclick="manualRetry()" class="large-save-btn" style="box-shadow: 0 8px 20px rgba(26, 92, 255, 0.25); height: 55px; font-size: 16px;">Try Again</button>
     </div>
 </div>
 
 <div id="splashScreen" class="splash-screen">
     <div class="splash-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 4V3a2 2 0 0 1 4 0v1"></path>
-            <rect x="4" y="4" width="16" height="18" rx="4" ry="4"></rect>
-            <path d="M6 14h12v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4z"></path>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="3" width="14" height="18" rx="4.5"></rect>
             <path d="M8 9h8"></path>
             <path d="M12 9v3"></path>
+            <path d="M7 15h10v3a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-3z"></path>
         </svg>
     </div>
 </div>
@@ -361,14 +389,12 @@
         <h2 style="color: var(--danger);">Clear Application Data</h2>
         <p style="text-align: left;">
             This action will permanently delete your locally saved <b>Profile</b> and <b>Addresses</b>.<br><br>
-            <span style="color: var(--success); font-weight: 700;">✅ Your Order History is completely safe and will not be erased.</span><br><br>
+            <span style="color: var(--success); font-weight: 700;">✅ Your Order History is safe.</span><br><br>
             Type <b>clear data</b> below to confirm:
         </p>
-        
         <div class="material-input" style="margin-bottom: 20px; text-align: left;">
             <input type="text" id="advancedConfirmInput" placeholder="clear data" oninput="checkAdvancedConfirm()" style="text-align: center; font-weight: 800; color: var(--danger); font-size: 15px;">
         </div>
-
         <div style="display: flex; gap: 10px;">
             <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0;" onclick="closeAdvancedConfirm()">Cancel</button>
             <button class="modal-btn" style="background: var(--danger); box-shadow: none; flex: 1; padding: 12px; opacity: 0.4; cursor: not-allowed; transition: 0.3s;" id="advancedConfirmBtn" disabled>Clear Now</button>
@@ -400,11 +426,10 @@
 <nav id="topNav">
     <div class="brand">
         <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 4V3a2 2 0 0 1 4 0v1"></path>
-            <rect x="4" y="4" width="16" height="18" rx="4" ry="4"></rect>
-            <path d="M6 14h12v4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-4z"></path>
+            <rect x="5" y="3" width="14" height="18" rx="4.5"></rect>
             <path d="M8 9h8"></path>
             <path d="M12 9v3"></path>
+            <path d="M7 15h10v3a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-3z"></path>
         </svg>
         safeblue
     </div>
@@ -606,10 +631,9 @@
             <div class="menu-item" onclick="navTo('orders')">
                 <div class="menu-item-left">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="currentColor" fill-opacity="0.1"></path>
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                         <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                         <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        <path d="M9 10.5l2 2 4-4" stroke="var(--primary)"></path>
                     </svg>
                     Order History
                 </div>
@@ -781,10 +805,9 @@
     </button>
     <button class="bottom-nav-item" onclick="navTo('orders', true)" id="nav-orders">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" fill="currentColor" fill-opacity="0.1"></path>
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
             <line x1="12" y1="22.08" x2="12" y2="12"></line>
-            <path d="M9 10.5l2 2 4-4"></path>
         </svg>
         Orders
     </button>
@@ -798,22 +821,44 @@
 </div>
 
 <script>
-    // --- ADVANCED OFFLINE DETECTION SYSTEM ---
+    // --- TURBO OFFLINE DETECTION SYSTEM ---
     function handleConnectionChange() {
-        const offlineOverlay = document.getElementById('offlineOverlay');
+        const offlineOverlay = document.getElementById('premiumOfflineOverlay');
         if (navigator.onLine) {
-            offlineOverlay.style.display = 'none';
+            offlineOverlay.classList.remove('show');
+            setTimeout(() => { offlineOverlay.style.display = 'none'; }, 300);
         } else {
             offlineOverlay.style.display = 'flex';
+            // Force browser repaint to trigger CSS animation smoothly
+            void offlineOverlay.offsetWidth;
+            offlineOverlay.classList.add('show');
         }
     }
-    
     window.addEventListener('online', handleConnectionChange);
     window.addEventListener('offline', handleConnectionChange);
     
-    // Initial connection check on load
-    if (!navigator.onLine) {
-        document.getElementById('offlineOverlay').style.display = 'flex';
+    // Initial check (Strict Enforcement)
+    if (!navigator.onLine) { 
+        document.getElementById('premiumOfflineOverlay').style.display = 'flex';
+        document.getElementById('premiumOfflineOverlay').classList.add('show');
+    }
+
+    function manualRetry() {
+        const btn = document.getElementById('retryConnectionBtn');
+        btn.innerHTML = 'Checking... ⏳';
+        btn.style.opacity = '0.7';
+        
+        setTimeout(() => {
+            if(navigator.onLine) {
+                handleConnectionChange();
+                showToast("Internet Restored! 🚀");
+            } else {
+                btn.innerHTML = 'Try Again';
+                btn.style.opacity = '1';
+                btn.classList.add('shake-animation');
+                setTimeout(()=> btn.classList.remove('shake-animation'), 400);
+            }
+        }, 800);
     }
 
     // --- GLOBAL ENTER KEY HANDLER ---
@@ -834,10 +879,10 @@
         document.getElementById('confirmTitle').innerText = title;
         document.getElementById('confirmMessage').innerText = message;
         confirmActionCallback = callback;
-        document.getElementById('customConfirmOverlay').style.display = 'flex';
+        document.getElementById('customConfirmOverlay').classList.add('show');
     }
     function closeCustomConfirm() {
-        document.getElementById('customConfirmOverlay').style.display = 'none';
+        document.getElementById('customConfirmOverlay').classList.remove('show');
         confirmActionCallback = null;
     }
     document.getElementById('confirmActionBtn').addEventListener('click', function() {
@@ -851,10 +896,10 @@
         document.getElementById('advancedConfirmInput').value = '';
         checkAdvancedConfirm(); 
         advancedConfirmCallback = callback;
-        document.getElementById('advancedConfirmOverlay').style.display = 'flex';
+        document.getElementById('advancedConfirmOverlay').classList.add('show');
     }
     function closeAdvancedConfirm() {
-        document.getElementById('advancedConfirmOverlay').style.display = 'none';
+        document.getElementById('advancedConfirmOverlay').classList.remove('show');
         advancedConfirmCallback = null;
     }
     
@@ -964,7 +1009,7 @@
             document.getElementById('splashScreen').style.opacity = '0';
             setTimeout(() => { 
                 document.getElementById('splashScreen').style.display = 'none'; 
-            }, 400);
+            }, 300);
         }, 500);
         
         migrateAddressData(); 
@@ -979,7 +1024,6 @@
         setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
     }
 
-    // --- SMART THEME ENGINE LOGIC ---
     function toggleTheme() {
         const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
         const newTheme = isCurrentlyDark ? 'light' : 'dark';
@@ -1004,7 +1048,6 @@
         }
     });
 
-    // --- FORM VALIDATION UTILS ---
     function isPhoneNumberValid(phone) {
         const digitsOnly = phone.replace(/[^0-9]/g, ''); 
         if(digitsOnly.length < 10) {
@@ -1018,7 +1061,6 @@
         return true;
     }
 
-    // --- ONBOARDING ENGINE ---
     function skipOnboardingProfile() {
         localStorage.setItem('sb_skip_onboarding', 'true');
         navTo('home', false, false);
@@ -1082,7 +1124,6 @@
         navTo('home', false, false);
     }
 
-    // --- PROFILE MANAGEMENT ---
     function handleProfileClick() {
         const p = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         if (!p.fName || !p.phone) {
@@ -1158,7 +1199,6 @@
 
     function clearAllData() {
         openAdvancedConfirm(function() {
-            // SAFE CLEAR: Only remove profile, addresses & onboarding. KEEP Orders Safe!
             localStorage.removeItem('sb_profile');
             localStorage.removeItem('sb_addresses');
             localStorage.removeItem('sb_skip_onboarding');
@@ -1173,7 +1213,6 @@
         });
     }
 
-    // --- ADDRESS MANAGEMENT ---
     function migrateAddressData() {
         const oldAddr = JSON.parse(localStorage.getItem('sb_address') || 'null');
         if(oldAddr && !oldAddr.length) { 
@@ -1311,7 +1350,6 @@
         }
     });
 
-    // --- E-COMMERCE ENGINE ---
     const products = [
         { id: 1, name: 'Combine copy page180 M.R.P=42', price: 21 },
         { id: 2, name: 'Combine copy page180 M.R.P=50', price: 25 },
@@ -1328,7 +1366,6 @@
     
     let cart = [];
 
-    // ENHANCED PRO CART LOGIC (Groups multiple additions perfectly)
     function renderGrid() {
         const grid = document.getElementById('productGrid');
         grid.innerHTML = products.map(p => {
@@ -1361,7 +1398,6 @@
                 cart.splice(itemIndex, 1);
             }
         } else if(delta > 0) {
-            // Adds unique ID item purely once
             cart.push({...p, qty: 1});
         }
         updateUI();
@@ -1436,33 +1472,39 @@
         const finalAddr = `${houseNo}, ${streetStr}\nWard: ${wardStr}\nLandmark: ${landmarkStr}\nPin: 491995`;
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
-        // PROFESSIONAL WHATSAPP INVOICE FORMATTING
         let msgItems = "";
         cart.forEach((i) => {
             const priceDisp = i.price % 1 === 0 ? i.price : i.price.toFixed(2);
             const lineTotal = (i.price * i.qty) % 1 === 0 ? (i.price * i.qty) : (i.price * i.qty).toFixed(2);
-            msgItems += `▫️ *${i.name}*\nQty: ${i.qty} | Price: ₹${priceDisp} | Total: ₹${lineTotal}\n\n`;
+            
+            let itemName = i.name;
+            let mrpText = "";
+            if(itemName.includes("M.R.P")) {
+                let parts = itemName.split("M.R.P");
+                itemName = parts[0].trim();
+                mrpText = "\nM.R.P" + parts[1];
+            }
+            
+            msgItems += `■ *${itemName}*${mrpText}\nQty: ${i.qty} | Price: ₹${priceDisp} | Total: ₹${lineTotal}\n\n`;
         });
-        msgItems = msgItems.trim(); // removes the trailing empty line
+        msgItems = msgItems.trim(); 
         
         const msg = `🛍️ *ORDER DETAILS*\n\n` +
                     `👤 *Customer:*\n` +
                     `Name: ${name}\n` +
                     `Phone: ${p.phone}\n\n` +
-                    `📍 *DELIVERY ADDRESS*\n` +
-                    `---------------------------------\n` +
+                    `📍 *Delivery Address:*\n` +
                     `${finalAddr}\n\n` +
                     `📦 *Items:*\n` +
                     `${msgItems}\n\n` +
-                    `💰 *Grand Total: ₹${total}*\n` +
-                    `Payment Mode: COD`;
+                    `💵 *Payment Mode:* COD\n` +
+                    `💰 *Grand Total: ₹${total}*`;
         
         const dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
         pendingOrderData = { date: dateStr, items: cart.slice(), total: total, name: name };
         
         sessionStorage.setItem('waitingForWaReturn', 'true');
 
-        // ULTRA FAST NATIVE DEEP LINK FOR INSTANT OPENING
         const waLink = `whatsapp://send?phone=916263839343&text=${encodeURIComponent(msg)}`;
         window.location.href = waLink;
     });
@@ -1471,13 +1513,13 @@
         if (document.visibilityState === 'visible') {
             if (sessionStorage.getItem('waitingForWaReturn') === 'true') {
                 sessionStorage.removeItem('waitingForWaReturn');
-                document.getElementById('waConfirmOverlay').style.display = 'flex';
+                document.getElementById('waConfirmOverlay').classList.add('show');
             }
         }
     });
 
     function waConfirmYes() {
-        document.getElementById('waConfirmOverlay').style.display = 'none';
+        document.getElementById('waConfirmOverlay').classList.remove('show');
         if (pendingOrderData) {
             const orders = JSON.parse(localStorage.getItem('sb_orders') || '[]');
             const orderId = orders.length > 0 ? orders[orders.length - 1].id + 1 : 1;
@@ -1488,18 +1530,18 @@
 
             cart = [];
             updateUI();
-            document.getElementById('successOverlay').style.display = 'flex';
+            document.getElementById('successOverlay').classList.add('show');
         }
     }
 
     function waConfirmNo() {
-        document.getElementById('waConfirmOverlay').style.display = 'none';
+        document.getElementById('waConfirmOverlay').classList.remove('show');
         pendingOrderData = null; 
         showToast("Action cancelled. Your order was not saved.");
     }
 
     function closeSuccessPopup() {
-        document.getElementById('successOverlay').style.display = 'none';
+        document.getElementById('successOverlay').classList.remove('show');
         navTo('home');
     }
 
