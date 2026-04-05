@@ -605,7 +605,7 @@
             color: var(--muted); 
             line-height: 1.5; 
             font-weight: 500;
-            white-space: pre-line; /* Allows line breaks in description */
+            white-space: pre-line; 
         }
 
         /* --------------------------------------------------------------------------
@@ -2528,6 +2528,11 @@
                 } else if (section === 'addresses') { 
                     titleText = 'Manage Addresses'; 
                     topTitle.classList.remove('brand-color'); 
+                } else if (section === 'address-edit') { 
+                    // Make title change dynamically without crashing
+                    const isEdit = document.getElementById('inpAddrId') && document.getElementById('inpAddrId').value;
+                    titleText = isEdit ? 'Edit Address' : 'Add New Address'; 
+                    topTitle.classList.remove('brand-color'); 
                 } else { 
                     topTitle.classList.remove('brand-color'); 
                 }
@@ -2954,7 +2959,6 @@
     
     function openAddressEdit(id) {
         document.getElementById('inpAddrId').value = id || ''; 
-        document.getElementById('addressEditTitle').innerText = id ? 'Edit Address' : 'Add New Address';
         
         if(id) {
             const addresses = JSON.parse(localStorage.getItem('sb_addresses') || '[]'); 
@@ -2973,6 +2977,7 @@
             if(!sessionStorage.getItem('draft_inpLandmark')) document.getElementById('inpLandmark').value = '';
         }
         
+        // Use navTo to safely manage transitions and title setting
         navTo('address-edit');
     }
     
