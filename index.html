@@ -61,6 +61,8 @@
             color: var(--text); 
             transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease; 
             -webkit-tap-highlight-color: transparent; 
+            /* Prevents Pull-to-Refresh globally to protect form data */
+            overscroll-behavior-y: none; 
         }
 
         /* =========================================
@@ -405,11 +407,11 @@
 <div id="waConfirmOverlay" class="overlay">
     <div class="modal-card">
         <div class="modal-icon" style="color: var(--whatsapp); font-size: 50px; margin-bottom: 15px;">📱</div>
-        <h2>Message Delivered?</h2>
-        <p>Did you successfully complete the checkout process on WhatsApp?</p>
+        <h2>Order Sent?</h2>
+        <p>Did you successfully send the order message on WhatsApp?</p>
         <div style="display: flex; gap: 10px;">
-            <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0; padding: 12px 5px;" onclick="waConfirmNo()">Go Back</button>
-            <button class="modal-btn" style="background: var(--whatsapp); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.25); flex: 1.2; padding: 12px 5px;" onclick="waConfirmYes()">Yes, Confirmed ✅</button>
+            <button class="text-btn" style="background: var(--input-bg); color: var(--text); border-radius: 10px; flex: 1; margin: 0; padding: 12px 5px; font-weight: 800;" onclick="waConfirmNo()">No, Not Yet</button>
+            <button class="modal-btn" style="background: var(--whatsapp); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.25); flex: 1.2; padding: 12px 5px;" onclick="waConfirmYes()">Yes, Sent ✅</button>
         </div>
     </div>
 </div>
@@ -1009,7 +1011,7 @@
             document.getElementById('splashScreen').style.opacity = '0';
             setTimeout(() => { 
                 document.getElementById('splashScreen').style.display = 'none'; 
-            }, 300);
+            }, 400);
         }, 500);
         
         migrateAddressData(); 
@@ -1291,17 +1293,30 @@
         
         container.innerHTML = addresses.map((a, index) => {
             let fullAddr = '';
-            if(a.house) fullAddr += `<b style="color:var(--text);">${a.house}</b>, `;
-            fullAddr += `${a.street}`;
-            if(a.landmark) fullAddr += `<br>Landmark: ${a.landmark}`;
-            if(a.ward) fullAddr += `<br>Ward No: ${a.ward}`;
-            fullAddr += `<br>KABIRDHAM DISTRICT, CHHATTISGARH.`;
+            
+            // CONDITION 1: If House Number is empty, do NOT show 'NA', just skip it.
+            if (a.house && a.house.trim() !== '') {
+                fullAddr += `<b style="color:var(--text);">${a.house.trim()}</b>, `;
+            }
+            
+            // Street
+            if (a.street && a.street.trim() !== '') {
+                fullAddr += `${a.street.trim()}`;
+            }
+
+            // CONDITION 2: If Ward or Landmark is empty, SHOW 'NA'.
+            let wardDisp = (a.ward && a.ward.trim() !== '') ? a.ward.trim() : 'NA';
+            let lmDisp = (a.landmark && a.landmark.trim() !== '') ? a.landmark.trim() : 'NA';
+
+            fullAddr += `<br>Ward: ${wardDisp}`;
+            fullAddr += `<br>Landmark: ${lmDisp}`;
+            fullAddr += `<br>Pin: 491995`;
 
             return `
             <div class="address-card ${a.isDefault ? 'selected' : ''}" onclick="setDefaultAddress(${a.id})">
                 <input type="radio" class="addr-radio" name="default_addr" ${a.isDefault ? 'checked' : ''}>
                 <div class="addr-details">
-                    <div class="addr-title">Address ${index + 1} <span class="addr-pin">491995</span></div>
+                    <div class="addr-title">Address ${index + 1}</div>
                     <div class="addr-text">${fullAddr}</div>
                 </div>
                 <div class="addr-3dots" onclick="event.stopPropagation(); toggleDotMenu(${a.id})">⋮</div>
@@ -1464,12 +1479,30 @@
 
         const name = `${p.fName} ${p.lName||''}`.trim();
         
-        const houseNo = defaultAddr.house ? defaultAddr.house.trim() : 'NA';
-        const streetStr = defaultAddr.street ? defaultAddr.street.trim() : 'NA';
-        const wardStr = defaultAddr.ward ? defaultAddr.ward.trim() : 'NA';
-        const landmarkStr = defaultAddr.landmark ? defaultAddr.landmark.trim() : 'NA';
+        // --- PERFECT WHATSAPP ADDRESS FORMATTING ---
+        let finalAddr = "";
+        
+        // Condition 1: If House Number is empty, SKIP completely.
+        if (defaultAddr.house && defaultAddr.house.trim() !== "") {
+            finalAddr += defaultAddr.house.trim() + ", ";
+        }
+        
+        // Street
+        if (defaultAddr.street && defaultAddr.street.trim() !== "") {
+            finalAddr += defaultAddr.street.trim() + "\n";
+        } else {
+            finalAddr += "\n";
+        }
+        
+        // Condition 2: If Ward or Landmark is empty, show 'NA'
+        let wardStr = (defaultAddr.ward && defaultAddr.ward.trim() !== "") ? defaultAddr.ward.trim() : "NA";
+        let landmarkStr = (defaultAddr.landmark && defaultAddr.landmark.trim() !== "") ? defaultAddr.landmark.trim() : "NA";
 
-        const finalAddr = `${houseNo}, ${streetStr}\nWard: ${wardStr}\nLandmark: ${landmarkStr}\nPin: 491995`;
+        finalAddr += "Ward: " + wardStr + "\n";
+        finalAddr += "Landmark: " + landmarkStr + "\n";
+        finalAddr += "Pin: 491995";
+        // -------------------------------------------
+
         const total = document.getElementById('grandTotal').innerText.replace('₹', '');
         
         let msgItems = "";
