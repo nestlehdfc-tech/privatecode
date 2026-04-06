@@ -477,6 +477,9 @@
             padding-top: 20px;
             padding-bottom: 20px;
             position: relative;
+            scroll-behavior: smooth; /* ADDED FOR SMOOTH SCROLLING */
+            -webkit-overflow-scrolling: touch; /* ADDED FOR SMOOTH SCROLLING */
+            touch-action: pan-y pan-x; /* Allow hand swiping */
         }
 
         .pdp-slider-container::-webkit-scrollbar { 
@@ -1608,14 +1611,79 @@
         .fs-nav-btn:active {
             background-color: var(--input-bg);
         }
+
+        /* --------------------------------------------------------------------------
+           21. NEW STYLES: PDP ARROWS AND 3 THEME OPTIONS
+           -------------------------------------------------------------------------- */
+        .pdp-arrow-btn {
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            z-index: 10;
+            background: var(--solid-card); 
+            border: 1px solid var(--border); 
+            color: var(--text);
+            width: 38px; 
+            height: 38px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+        .pdp-arrow-btn:active { 
+            background-color: var(--input-bg); 
+            transform: translateY(-50%) scale(0.9); 
+        }
+        .pdp-arrow-btn.left { 
+            left: 10px; 
+        }
+        .pdp-arrow-btn.right { 
+            right: 10px; 
+        }
+
+        .theme-option-btn {
+            flex: 1; 
+            padding: 10px; 
+            border-radius: 8px; 
+            border: 1.5px solid var(--border);
+            background: var(--solid-card); 
+            color: var(--muted); 
+            font-weight: 700; 
+            font-size: 13px;
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .theme-option-btn.active {
+            border-color: var(--primary); 
+            background: var(--primary-glow); 
+            color: var(--primary);
+        }
     </style>
 
     <script>
+        // =========================================================================
+        // 🛠️ EASY CONFIGURATION (EDIT YOUR APP NAME HERE)
+        // =========================================================================
+        // Ek hi baar naam set karna hai, jise pura app use karega
+        const APP_CONFIG = {
+            appName: "safeblue" 
+        };
+
         // 1. Initial Theme Setup (Avoids flicker on load)
         (function() {
-            var savedTheme = localStorage.getItem('sb_theme');
-            var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            var mode = localStorage.getItem('sb_theme_mode') || 'system';
+            var savedTheme = localStorage.getItem('sb_theme'); 
+            
+            // Migrate old theme setting if present
+            if(savedTheme && !localStorage.getItem('sb_theme_mode')) {
+                mode = savedTheme; 
+                localStorage.setItem('sb_theme_mode', mode);
+            }
+
+            if (mode === 'dark' || (mode === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -1649,20 +1717,21 @@
 <body>
 
 <div id="fullscreenImageViewer" class="overlay">
-    <div style="width: 100%; padding: 15px; display: flex; justify-content: flex-end; position: absolute; top: 0; z-index: 30;">
+    <div style="width: 100%; padding: 15px; display: flex; justify-content: space-between; position: absolute; top: 0; z-index: 30; align-items: center;">
+        <div style="background: rgba(0,0,0,0.5); color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">Pinch to Zoom 🔍</div>
         <button onclick="closeImageViewer()" style="background: var(--solid-card); border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
     </div>
     
-    <button id="fsPrevBtn" class="fs-nav-btn" style="left: 15px;" onclick="moveFsSlide(-1)">
+    <button id="fsPrevBtn" class="fs-nav-btn" style="left: 15px;" onclick="moveFsSlide(-1, event)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
 
-    <div id="fsSliderContainer" class="pdp-slider-container" style="height: 100vh; width: 100%; background: transparent; border: none; align-items: center; padding: 0;" onscroll="handleFsSliderScroll(this)">
+    <div id="fsSliderContainer" class="pdp-slider-container" style="height: 100vh; width: 100%; background: transparent; border: none; align-items: center; padding: 0; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; touch-action: pan-y pan-x;" onscroll="handleFsSliderScroll(this)">
     </div>
     
-    <button id="fsNextBtn" class="fs-nav-btn" style="right: 15px;" onclick="moveFsSlide(1)">
+    <button id="fsNextBtn" class="fs-nav-btn" style="right: 15px;" onclick="moveFsSlide(1, event)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 24px; height: 24px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
 
@@ -2054,20 +2123,22 @@
                 </div>
                 <div class="chevron">›</div>
             </div>
-
-            <div class="menu-item">
-                <div class="menu-item-left">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    Dark Mode Theme
-                </div>
-                <label class="switch">
-                    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
-                    <span class="slider"></span>
-                </label>
-            </div>
             
+            <div class="menu-item" onclick="toggleThemeMenu()">
+                <div class="menu-item-left">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; stroke: var(--primary);"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    App Theme Preference
+                </div>
+                <div class="chevron" id="themeChevron" style="transition: transform 0.3s;">›</div>
+            </div>
+            <div id="themeOptionsDropdown" style="display: none; padding: 15px; background-color: var(--input-bg); border-bottom: 1px solid var(--border);">
+                <div style="display: flex; gap: 10px;">
+                    <button id="themeBtn-light" class="theme-option-btn" onclick="setAppTheme('light')">Light Mode</button>
+                    <button id="themeBtn-dark" class="theme-option-btn" onclick="setAppTheme('dark')">Dark Mode</button>
+                    <button id="themeBtn-system" class="theme-option-btn" onclick="setAppTheme('system')">Default</button>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -2404,8 +2475,111 @@
     }
 
     // =========================================================================
-    // FULLSCREEN IMAGE VIEWER LOGIC (NEW FEATURE)
+    // NEW THEME LOGIC WITH COLLAPSIBLE MENU
     // =========================================================================
+    function toggleThemeMenu() {
+        const dropdown = document.getElementById('themeOptionsDropdown');
+        const chevron = document.getElementById('themeChevron');
+        if (dropdown.style.display === 'none') {
+            dropdown.style.display = 'block';
+            chevron.style.transform = 'rotate(90deg)';
+        } else {
+            dropdown.style.display = 'none';
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    function setAppTheme(mode) {
+        localStorage.setItem('sb_theme_mode', mode);
+        applyThemeMode();
+    }
+
+    function applyThemeMode() {
+        let mode = localStorage.getItem('sb_theme_mode') || 'system';
+        
+        ['light', 'dark', 'system'].forEach(b => {
+            const el = document.getElementById('themeBtn-' + b);
+            if(el) { 
+                if(b === mode) el.classList.add('active'); 
+                else el.classList.remove('active'); 
+            }
+        });
+
+        if (mode === 'system') {
+            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', mode);
+        }
+    }
+
+    // =========================================================================
+    // FULLSCREEN IMAGE VIEWER & PINCH-TO-ZOOM LOGIC
+    // =========================================================================
+    let pinchInitialDistance = 0;
+    let pinchCurrentScale = 1;
+
+    function getPinchDistance(touches) {
+        return Math.hypot(touches[0].pageX - touches[1].pageX, touches[0].pageY - touches[1].pageY);
+    }
+
+    function handlePinchStart(e, img) {
+        if (e.touches.length === 2) {
+            pinchInitialDistance = getPinchDistance(e.touches);
+            const transform = img.style.transform;
+            if(transform.includes('scale')) {
+                pinchCurrentScale = parseFloat(transform.replace(/[^0-9.]/g, '')) || 1;
+            } else {
+                pinchCurrentScale = 1;
+            }
+        }
+    }
+
+    function handlePinchMove(e, img) {
+        if (e.touches.length === 2) {
+            e.preventDefault(); // Stop normal swiping while zooming
+            let currentDistance = getPinchDistance(e.touches);
+            let scaleDirection = currentDistance / pinchInitialDistance;
+            let newScale = pinchCurrentScale * scaleDirection;
+            newScale = Math.min(Math.max(newScale, 1), 5); // Limit zoom from 1x to 5x
+            img.style.transform = `scale(${newScale})`;
+        }
+    }
+
+    function handlePinchEnd(e, img) {
+        if (e.touches.length < 2) {
+            const transform = img.style.transform;
+            if(transform.includes('scale')) {
+                let currentScale = parseFloat(transform.replace(/[^0-9.]/g, '')) || 1;
+                // Snap back to normal if barely zoomed
+                if(currentScale <= 1.05) {
+                    img.style.transform = 'scale(1)';
+                    img.style.cursor = 'zoom-in';
+                } else {
+                    img.style.cursor = 'zoom-out';
+                }
+            }
+        }
+    }
+
+    // Double tap/click to zoom fallback
+    function toggleZoom(img, event) {
+        event.stopPropagation();
+        const transform = img.style.transform;
+        let currentScale = 1;
+        if(transform.includes('scale')) {
+            currentScale = parseFloat(transform.replace(/[^0-9.]/g, '')) || 1;
+        }
+        
+        if (currentScale > 1) {
+            img.style.transform = 'scale(1)';
+            img.style.cursor = 'zoom-in';
+        } else {
+            img.style.transform = 'scale(2.5)';
+            img.style.cursor = 'zoom-out';
+        }
+    }
+
     function openImageViewer(productId, startIndex) {
         const product = PRODUCTS.find(x => x.id === productId);
         if(!product || !product.images || product.images.length === 0) return;
@@ -2423,8 +2597,14 @@
 
         product.images.forEach((imgSrc, index) => {
             slidesHtml += `
-            <div class="pdp-slide" style="height: 100%; align-items: center; justify-content: center; width: 100vw; flex: 0 0 100vw;">
-                <img src="${imgSrc}" style="max-width: 95vw; max-height: 85vh; object-fit: contain;" onerror="this.src='${PLACEHOLDER_IMG}'">
+            <div class="pdp-slide" style="height: 100%; align-items: center; justify-content: center; width: 100vw; flex: 0 0 100vw; overflow: auto;">
+                <img src="${imgSrc}" 
+                     style="max-width: 95vw; max-height: 85vh; object-fit: contain; transition: transform 0.1s ease-out; cursor: zoom-in; touch-action: none;" 
+                     onclick="toggleZoom(this, event)" 
+                     ontouchstart="handlePinchStart(event, this)" 
+                     ontouchmove="handlePinchMove(event, this)" 
+                     ontouchend="handlePinchEnd(event, this)"
+                     onerror="this.src='${PLACEHOLDER_IMG}'">
             </div>`;
 
             const activeClass = (index === startIndex) ? 'active' : '';
@@ -2467,7 +2647,8 @@
     }
     
     // Logic for left/right arrow buttons in Fullscreen viewer
-    function moveFsSlide(direction) {
+    function moveFsSlide(direction, event) {
+        if(event) event.stopPropagation();
         const container = document.getElementById('fsSliderContainer');
         const slideWidth = container.offsetWidth;
         const scrollPosition = container.scrollLeft;
@@ -2700,7 +2881,7 @@
                 
                 let titleText = section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ');
                 if (section === 'home') { 
-                    titleText = 'safeblue'; 
+                    titleText = APP_CONFIG.appName; 
                     topTitle.classList.add('brand-color'); 
                 } else if (section === 'cart') { 
                     titleText = 'Your Cart'; 
@@ -2785,6 +2966,15 @@
     });
 
     function bootApp() {
+        applyThemeMode(); // Set correct theme UI buttons on load
+        
+        // Dynamically update the App name based on APP_CONFIG
+        document.title = APP_CONFIG.appName + " | Premium Store";
+        const topTitle = document.getElementById('topTitle');
+        if (topTitle) topTitle.innerText = APP_CONFIG.appName;
+        const obTitle = document.querySelector('#view-onboarding-profile h2');
+        if (obTitle) obTitle.innerHTML = `Welcome to ${APP_CONFIG.appName} 👋`;
+
         const hash = window.location.hash.replace('#', '');
         const profile = JSON.parse(localStorage.getItem('sb_profile') || '{}');
         const skipped = localStorage.getItem('sb_skip_onboarding');
@@ -2803,7 +2993,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        syncToggleSwitch(); 
         setupAutoSave(); 
         bootApp();
         
@@ -2832,32 +3021,6 @@
             toast.className = toast.className.replace("show", ""); 
         }, 3000); 
     }
-
-    function toggleTheme() {
-        const isCurrentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const newTheme = isCurrentlyDark ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        document.getElementById('themeCheckbox').checked = !isCurrentlyDark;
-        
-        localStorage.setItem('sb_theme', newTheme); 
-    }
-    
-    function syncToggleSwitch() { 
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; 
-        const checkbox = document.getElementById('themeCheckbox'); 
-        if (checkbox) {
-            checkbox.checked = isDark; 
-        }
-    }
-    
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => { 
-        if (!localStorage.getItem('sb_theme')) { 
-            const newTheme = event.matches ? "dark" : "light"; 
-            document.documentElement.setAttribute('data-theme', newTheme); 
-            syncToggleSwitch(); 
-        } 
-    });
 
     function isPhoneNumberValid(phone) {
         const digitsOnly = phone.replace(/[^0-9]/g, ''); 
@@ -3294,6 +3457,18 @@
         }).join("");
     }
     
+    // Smooth Pdp Slider with Arrows function
+    function movePdpSlide(direction, event) {
+        if(event) event.stopPropagation();
+        const container = document.getElementById('pdpSliderContainer');
+        const slideWidth = container.offsetWidth;
+        const scrollPosition = container.scrollLeft;
+        const currentIndex = Math.round(scrollPosition / slideWidth);
+        
+        const newIndex = currentIndex + direction;
+        container.scrollTo({ left: slideWidth * newIndex, behavior: 'smooth' });
+    }
+
     // Product Details Page (PDP) Functionality
     function openPDP(id) {
         currentPdpId = id; 
@@ -3320,8 +3495,13 @@
             </div>`;
         }
 
+        let navArrowsHtml = '';
         let dotsHtml = '';
         if (product.images && product.images.length > 1) {
+            navArrowsHtml = `
+                <button class="pdp-arrow-btn left" onclick="movePdpSlide(-1, event)">❮</button>
+                <button class="pdp-arrow-btn right" onclick="movePdpSlide(1, event)">❯</button>
+            `;
             dotsHtml = `<div class="pdp-slider-dots">`;
             
             product.images.forEach((_, index) => {
@@ -3333,8 +3513,11 @@
         }
 
         document.getElementById('pdpContent').innerHTML = `
-            <div class="pdp-slider-container" id="pdpSliderContainer" onscroll="handleSliderScroll(this, ${product.images ? product.images.length : 1})">
-                ${sliderHtml}
+            <div style="position: relative;">
+                ${navArrowsHtml}
+                <div class="pdp-slider-container" id="pdpSliderContainer" onscroll="handleSliderScroll(this, ${product.images ? product.images.length : 1})">
+                    ${sliderHtml}
+                </div>
             </div>
             ${dotsHtml}
             
